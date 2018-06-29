@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    tools:context="com.sputa.avarez.CarSearch">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:padding="10dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_white">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_title3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="جستجوی خودرو"
+                android:textColor="@android:color/black"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.100000024" />
+
+            <EditText
+                android:id="@+id/txt_describ"
+                android:layout_width="195dp"
+                android:layout_height="51dp"
+
+                android:height="35dp"
+                android:background="@drawable/style_editview"
+                android:gravity="center_horizontal|start"
+                android:inputType="textPersonName"
+                android:paddingStart="10dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.77"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.233" />
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="شماره موتور :"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.239" />
+        </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

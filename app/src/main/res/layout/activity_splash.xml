@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:layoutDirection="rtl"
+    android:padding="10dp"
+    tools:context="com.sputa.avarez.Splash">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/btn_white">
+
+        <com.sputa.avarez.my_views.MyTextView
+            android:id="@+id/txt_software"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="نرم افزار پرداخت عوارض خودرو"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/img_grey"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo_bw" />
+
+        <ImageView
+            android:id="@+id/img_red"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/logo_red" />
+
+        <com.sputa.avarez.my_views.MyTextView
+            android:id="@+id/txt_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="شرکت شاخص اندیشان غرب"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/img_red_grey"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo_red_grey" />
+    </RelativeLayout>
+
+</RelativeLayout>

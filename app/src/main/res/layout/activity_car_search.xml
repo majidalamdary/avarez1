@@ -18,8 +18,132 @@
             android:layout_height="match_parent"
             android:background="@drawable/btn_white">
 
+            <LinearLayout
+                android:id="@+id/btn_pay"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_red"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.8">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="پرداخت"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
             <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/lbl_title3"
+                android:id="@+id/lbl_price"
+                android:layout_width="167dp"
+                android:layout_height="33dp"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.04"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.79" />
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_help"
+                android:layout_width="355dp"
+                android:layout_height="43dp"
+                android:text="برای جستجو و پرداخت عوارض خودروی خود یکی از موارد بالا را وارد کنید و دکمه جستجو را انتخاب کنید"
+                android:textAlignment="viewStart"
+                android:textColor="#797979"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.61"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.96" />
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_msg"
+                android:layout_width="318dp"
+                android:layout_height="64dp"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.61"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.7" />
+
+            <LinearLayout
+                android:id="@+id/btn_search"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_green"
+                android:gravity="center"
+                android:onClick="clk_search"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.57">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="جستجو"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_back"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.59"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="clk_back"
+                app:layout_constraintVertical_bias="0.57">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="برگشت"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="جستجوی خودرو"
@@ -29,39 +153,76 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.100000024" />
+                app:layout_constraintVertical_bias="0.060000002" />
 
             <EditText
-                android:id="@+id/txt_describ"
-                android:layout_width="195dp"
-                android:layout_height="51dp"
+                android:id="@+id/txt_motor"
+                android:layout_width="211dp"
+                android:layout_height="37dp"
 
                 android:height="35dp"
                 android:background="@drawable/style_editview"
-                android:gravity="center_horizontal|start"
-                android:inputType="textPersonName"
-                android:paddingStart="10dp"
+                android:gravity="center_vertical|start"
+                android:hint="شماره موتور را وارد کنید"
 
+                android:inputType="text|number"
+                android:paddingStart="10dp"
+                android:textAlignment="viewStart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.77"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.233" />
+                app:layout_constraintVertical_bias="0.26999998" />
 
             <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/lbl_title2"
+                android:id="@+id/lbl_motor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="شماره موتور :"
                 android:textColor="@android:color/black"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.239" />
+                app:layout_constraintVertical_bias="0.26999998" />
+
+            <EditText
+                android:id="@+id/txt_parvande"
+                android:layout_width="211dp"
+                android:layout_height="37dp"
+
+                android:height="35dp"
+                android:background="@drawable/style_editview"
+                android:gravity="center_vertical|start"
+                android:hint="شماره پرونده را وارد کنید"
+
+                android:inputType="number"
+                android:paddingStart="10dp"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.77"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.42000002" />
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_parvandeh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="شماره پرونده :"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.05"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.42000002" />
+
         </android.support.constraint.ConstraintLayout>
     </RelativeLayout>
 

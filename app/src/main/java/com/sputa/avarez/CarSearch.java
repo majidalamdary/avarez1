@@ -1,13 +1,293 @@
 package com.sputa.avarez;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Random;
 
 public class CarSearch extends AppCompatActivity {
+    private int screenWidth;
+    private int screenHeight;
+    private boolean is_requested;
+    MyAsyncTask mm;
+    private String last_query;
 
+    private void set_size(int vid,Double width,Double height,String typ)
+    {
+        View v =findViewById(vid);
+        if(typ.equals("cons")) {
+            ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) v.getLayoutParams();
+            lp.width=(int)(screenWidth* width);
+            lp.height=(int)(screenHeight* height);;
+            v.setLayoutParams(lp);
+        }
+        if(typ.equals("line")) {
+            LinearLayout.LayoutParams lp= (LinearLayout.LayoutParams) v.getLayoutParams();
+            lp.width=(int)(screenWidth* width);
+            lp.height=(int)(screenHeight* height);;
+            v.setLayoutParams(lp);
+        }
+        if(typ.equals("rel")) {
+            RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) v.getLayoutParams();
+            lp.width=(int)(screenWidth* width);
+            lp.height=(int)(screenHeight* height);;
+            v.setLayoutParams(lp);
+        }
+    }
+    private void set_size_txt(int vid,Double size,String typ)
+    {
+        TextView v =(TextView) findViewById(vid);
+        if(typ.equals("cons")) {
+            ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) v.getLayoutParams();
+            v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
+            v.setLayoutParams(lp);
+        }
+        if(typ.equals("line")) {
+            LinearLayout.LayoutParams lp= (LinearLayout.LayoutParams) v.getLayoutParams();
+            v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
+            v.setLayoutParams(lp);
+        }
+        if(typ.equals("rel")) {
+            RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) v.getLayoutParams();
+            v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
+            v.setLayoutParams(lp);
+        }
+    }
+    private void set_size_edit(int vid,Double size,String typ)
+    {
+        EditText v =(EditText) findViewById(vid);
+        if(typ.equals("cons")) {
+            ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) v.getLayoutParams();
+            v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
+            v.setLayoutParams(lp);
+        }
+        if(typ.equals("line")) {
+            LinearLayout.LayoutParams lp= (LinearLayout.LayoutParams) v.getLayoutParams();
+            v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
+            v.setLayoutParams(lp);
+        }
+        if(typ.equals("rel")) {
+            RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) v.getLayoutParams();
+            v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
+            v.setLayoutParams(lp);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_search);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        screenWidth = displayMetrics.widthPixels;
+        screenHeight = displayMetrics.heightPixels;
+
+        set_size(R.id.txt_motor,.52,.07,"cons");
+        set_size_txt(R.id.lbl_title,.08,"cons");
+        set_size_txt(R.id.lbl_motor,.05,"cons");
+        set_size_edit(R.id.txt_motor,.06,"cons");
+
+        set_size(R.id.txt_parvande,.52,.07,"cons");
+        set_size_txt(R.id.lbl_parvandeh,.05,"cons");
+        set_size_edit(R.id.txt_parvande,.04,"cons");
+        set_size_edit(R.id.txt_motor,.04,"cons");
+
+
+        set_size(R.id.btn_search,.3,.065,"cons");
+        set_size(R.id.btn_back,.3,.065,"cons");
+        set_size_txt(R.id.lbl_search,.054,"line");
+        set_size_txt(R.id.lbl_back,.054,"line");
+        set_size(R.id.btn_pay,.3,.065,"cons");
+
+        set_size_txt(R.id.lbl_help,.033,"cons");
     }
+
+    public void clk_search(View view) {
+        EditText txt_motor=findViewById(R.id.txt_motor);
+        EditText txt_parvande=findViewById(R.id.txt_parvande);
+        String
+                search_type="none";
+        if(txt_motor.getText().toString().length()>0)
+        {
+            search_type="ok";
+        }
+        else if(txt_parvande.getText().toString().length()>0)
+        {
+            search_type="ok";
+        }
+        if(search_type.equals("ok"))
+        {
+            last_query = getResources().getString(R.string.site_url) + "do.aspx?param=get_avarez_motor&key_motor="+txt_motor.getText().toString()+"&key_parvandeh="+txt_parvande.getText().toString()+ "&rnd=" + String.valueOf(new Random().nextInt());
+           // Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
+            mm=new MyAsyncTask();
+            mm.url = (last_query);
+            mm.execute("");
+            is_requested=true;
+        }
+
+    }
+
+    public void clk_back(View view) {
+        finish();
+    }
+
+    private class MyAsyncTask extends AsyncTask<String, Integer, Double> {
+
+
+        public String ss = "", url = "";
+
+
+        @Override
+        protected Double doInBackground(String... params) {
+            // TODO Auto-generated method stub
+
+            //  dd=params[0];
+            try {
+                postData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Double result) {
+
+            int
+                    start=ss.indexOf("<output>");
+            int
+                    end=ss.indexOf("</output>");
+            String
+                    output_str="";
+            String
+                    param_str = "";
+
+                int
+                        start1 = ss.indexOf("<param>");
+                int
+                        end1 = ss.indexOf("</param>");
+
+                param_str = ss.substring(start1 + 7, end1);
+           // Toast.makeText(CarSearch.this, ss, Toast.LENGTH_SHORT).show();
+
+                if (param_str.equals("get_avarez_motor") && is_requested) {
+                    start1 = ss.indexOf("<result>");
+                    end1 = ss.indexOf("</result>");
+                    TextView lbl_msg=findViewById(R.id.lbl_msg);
+                    if(end1>0) {
+                        String
+                                rslt = ss.substring(start1 + 8, end1);
+
+
+                        if(rslt.equals("NotFound"))
+                        {
+                            lbl_msg.setText("اطلاعات خودرو شما پیدا نشد لطفا به یکی از شعب پیش خوان دولت یا شهرداری شهر خود مراجعه نمائید.");
+                        }
+                        else
+                        {
+                            start1 = rslt.indexOf("<price>");
+                            end1 = rslt.indexOf("</price>");
+                            String
+                                    rslt_price = rslt.substring(start1 + 7, end1);
+                            Toast.makeText(CarSearch.this, rslt_price, Toast.LENGTH_SHORT).show();
+
+                            int
+                                avarez_price=-1;
+                            try {
+                                avarez_price =Integer.valueOf(rslt_price);
+                            }catch (Exception e1){}
+                            if(avarez_price>=0)
+                            {
+                                String
+                                        new_str="";
+                                int j=0;
+                                for(int i=rslt_price.length()-1 ;i>=0;i--)
+                                {
+                                    j++;
+                                    if(j!=rslt_price.length() && j % 3 ==0)
+                                        new_str=","+rslt_price.charAt(i)+new_str;
+                                    else
+                                        new_str=rslt_price.charAt(i)+new_str;
+                                }
+                                start1 = rslt.indexOf("<name>");
+                                end1 = rslt.indexOf("</name>");
+                                String
+                                        rslt_name = rslt.substring(start1 + 6, end1);
+
+
+                                LinearLayout btn_pay=findViewById(R.id.btn_pay);
+                                if(avarez_price>0)
+                                    btn_pay.setVisibility(View.VISIBLE);
+                                lbl_msg.setText("نام مالک : "+rslt_name+"\n"+" مبلغ عوارض شما " +new_str+" ریال می باشد.");
+                            }
+                            else
+                            {
+                                lbl_msg.setText("متاسفانه خطایی رخ داده است");
+                            }
+                        }
+
+
+//                        LinearLayout lay_main =findViewById(R.id.lay_main);
+//                        fun.enableDisableView(lay_main,true);
+//                        LinearLayout lay_wait =findViewById(R.id.lay_wait);
+//                        lay_wait.setVisibility(View.GONE);
+                    }
+                    is_requested = false;
+                }
+
+
+
+        }
+
+
+
+
+
+
+        protected void onProgressUpdate(Integer... progress) {
+            //pb.setProgress(progress[0]);
+        }
+
+        public void postData() throws IOException {
+            HttpClient httpclient = new DefaultHttpClient(); // Create HTTP Client
+            HttpGet httpget = new HttpGet(url); // Set the action you want to do
+            HttpResponse response = httpclient.execute(httpget); // Executeit
+            HttpEntity entity = response.getEntity();
+            InputStream is = entity.getContent(); // Create an InputStream with the response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf8"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) // Read line by line
+                sb.append(line);
+
+            String resString = sb.toString(); // Result is here
+            ss = resString;
+            //Log.d("majid", resString);
+            is.close();
+        }
+    }
+
+
 }

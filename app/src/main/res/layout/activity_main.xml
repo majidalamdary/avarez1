@@ -47,7 +47,7 @@
                 android:id="@+id/lbl_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="جستجوی خودرو"
+                android:text="پرداخت عوارض "
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
         </LinearLayout>

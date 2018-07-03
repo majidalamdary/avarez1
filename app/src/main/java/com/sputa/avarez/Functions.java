@@ -23,7 +23,8 @@ public class Functions {
             font_name_yekan = "fonts/Yekan.ttf";
     public static String
             font_name_iiranSens = "fonts/iransans.ttf";
-
+    public static int
+            Time_out_limit = 10;
 
     public static String u_id = "";
     public static String u_name = "";

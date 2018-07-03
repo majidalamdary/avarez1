@@ -85,4 +85,9 @@ public class MainActivity extends AppCompatActivity {
         Intent I = new Intent(this,CarSearch.class);
         startActivity(I);
     }
+
+    public void clk_tracking(View view) {
+        Intent I = new Intent(this,Tracking.class);
+        startActivity(I);
+    }
 }

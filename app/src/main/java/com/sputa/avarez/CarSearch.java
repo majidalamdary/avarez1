@@ -33,6 +33,8 @@ public class CarSearch extends AppCompatActivity {
     private boolean is_requested;
     MyAsyncTask mm;
     private String last_query;
+    RelativeLayout lay_main;
+    private Functions fun;
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -98,6 +100,8 @@ public class CarSearch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_search);
+        lay_main= findViewById(R.id.lay_main);
+        fun=new Functions();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
@@ -123,6 +127,9 @@ public class CarSearch extends AppCompatActivity {
         set_size(R.id.btn_pay,.3,.065,"cons");
 
         set_size_txt(R.id.lbl_help,.033,"cons");
+        set_size(R.id.img_help_motor,.08,.06,"cons");
+        set_size(R.id.img_help_parvandeh,.08,.06,"cons");
+
     }
 
     public void clk_search(View view) {
@@ -152,6 +159,34 @@ public class CarSearch extends AppCompatActivity {
 
     public void clk_back(View view) {
         finish();
+    }
+
+    public void clk_help_motor(View view) {
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        RelativeLayout lay_help_motor = findViewById(R.id.lay_help_motor);
+        set_size(R.id.im_help_motor_pic,.8,.8,"rel");
+        fun.enableDisableView(lay_main,false);
+        lay_message.setVisibility(View.VISIBLE);
+        lay_help_motor.setVisibility(View.VISIBLE);
+    }
+
+    public void clk_message(View view) {
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        RelativeLayout lay_help_motor = findViewById(R.id.lay_help_motor);
+
+        fun.enableDisableView(lay_main,true);
+        lay_message.setVisibility(View.GONE);
+        lay_help_motor.setVisibility(View.GONE);
+    }
+
+    public void clk_help_parvandeh(View view) {
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        RelativeLayout lay_help_motor = findViewById(R.id.lay_help_parvandeh);
+        set_size(R.id.lbl_help_parvandeh,.6,.3,"rel");
+        set_size_txt(R.id.lbl_help_parvandeh,.042,"rel");
+        fun.enableDisableView(lay_main,false);
+        lay_message.setVisibility(View.VISIBLE);
+        lay_help_motor.setVisibility(View.VISIBLE);
     }
 
     private class MyAsyncTask extends AsyncTask<String, Integer, Double> {

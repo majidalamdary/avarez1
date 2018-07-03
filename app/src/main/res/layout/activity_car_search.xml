@@ -8,6 +8,7 @@
     tools:context="com.sputa.avarez.CarSearch">
 
     <RelativeLayout
+        android:id="@+id/lay_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
@@ -122,13 +123,13 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/btn_grey"
                 android:gravity="center"
+                android:onClick="clk_back"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.59"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:onClick="clk_back"
                 app:layout_constraintVertical_bias="0.57">
 
                 <com.sputa.avarez.my_views.MyTextView
@@ -139,7 +140,6 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
             </LinearLayout>
-
 
 
             <com.sputa.avarez.my_views.MyTextView
@@ -159,13 +159,11 @@
                 android:id="@+id/txt_motor"
                 android:layout_width="211dp"
                 android:layout_height="37dp"
-
                 android:height="35dp"
                 android:background="@drawable/style_editview"
                 android:gravity="center_vertical|start"
                 android:hint="شماره موتور را وارد کنید"
-
-                android:inputType="text|number"
+                android:inputType="text"
                 android:paddingStart="10dp"
                 android:textAlignment="viewStart"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -174,6 +172,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.26999998" />
+
 
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_motor"
@@ -199,7 +198,7 @@
                 android:gravity="center_vertical|start"
                 android:hint="شماره پرونده را وارد کنید"
 
-                android:inputType="number"
+                android:inputType="text"
                 android:paddingStart="10dp"
                 android:textAlignment="viewStart"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -223,7 +222,112 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.42000002" />
 
+            <ImageView
+                android:id="@+id/img_help_parvandeh"
+                android:layout_width="31dp"
+                android:layout_height="27dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.99"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.42000002"
+                android:onClick="clk_help_parvandeh"
+                app:srcCompat="@drawable/help" />
+
+            <ImageView
+                android:id="@+id/img_help_motor"
+                android:layout_width="31dp"
+                android:layout_height="27dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.99"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.26999998"
+                android:onClick="clk_help_motor"
+                app:srcCompat="@drawable/help" />
         </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#8e333333"
+        android:gravity="center"
+        android:onClick="clk_message"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/lay_wait"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/btn_white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_please_wait"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="لطفا کمی صبر کنید"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_help_parvandeh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_white"
+            android:visibility="gone">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_help_parvandeh"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:padding="10dp"
+                android:text="جهت دریافت شماره پرونده می توانید به یکی از شعب پیشخوان دولت مراجعه نمائید"
+                android:textColor="@android:color/black" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_help_motor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/im_help_motor_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/motor" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

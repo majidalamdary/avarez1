@@ -65,7 +65,7 @@ public class Splash extends AppCompatActivity {
         TextView txt_company = (TextView) findViewById(R.id.txt_company);
         txt_company.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.065));
         RelativeLayout.LayoutParams lp_txt_company = (RelativeLayout.LayoutParams) txt_company.getLayoutParams();
-        lp_txt_company.setMarginStart((int)(screenWidth*.19));
+        lp_txt_company.setMarginStart((int)(screenWidth*.11));
         lp_txt_company.topMargin=((int)(screenHeight*.53));
         txt_company.setLayoutParams(lp_txt_company);
         txt_company.setVisibility(View.GONE);
@@ -73,7 +73,7 @@ public class Splash extends AppCompatActivity {
         TextView txt_software = (TextView) findViewById(R.id.txt_software);
         txt_software.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.045));
         RelativeLayout.LayoutParams lp_txt_software = (RelativeLayout.LayoutParams) txt_software.getLayoutParams();
-        lp_txt_software.setMarginStart((int)(screenWidth*.24));
+        lp_txt_software.setMarginStart((int)(screenWidth*.155));
         lp_txt_software.topMargin=((int)(screenHeight*.62));
         txt_software.setLayoutParams(lp_txt_software);
         txt_software.setVisibility(View.GONE);

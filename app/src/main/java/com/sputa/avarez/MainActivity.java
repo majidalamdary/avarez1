@@ -1,8 +1,11 @@
 package com.sputa.avarez;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -11,7 +14,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private int screenWidth;
@@ -67,20 +72,36 @@ public class MainActivity extends AppCompatActivity {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
-        set_size(R.id.btn_search,.67,.12,"cons");
-        set_size(R.id.btn_peygiri,.67,.125,"cons");
-        set_size(R.id.btn_setting,.67,.125,"cons");
-        set_size(R.id.btn_exit,.67,.125,"cons");
+        set_size(R.id.btn_search,.57,.12,"cons");
+        set_size(R.id.btn_peygiri,.57,.125,"cons");
+        set_size(R.id.btn_setting,.57,.125,"cons");
+        set_size(R.id.btn_exit,.57,.125,"cons");
+        set_size(R.id.btn_aboutus,.57,.125,"cons");
 
         set_size_txt(R.id.lbl_subject,.055,"line");
         set_size_txt(R.id.lbl_peygiri,.055,"line");
         set_size_txt(R.id.lbl_setting,.055,"line");
         set_size_txt(R.id.lbl_exit,.055,"line");
+        set_size_txt(R.id.lbl_aboutus,.055,"line");
         set_size_txt(R.id.lbl_title,.08,"cons");
 
 
     }
 
+    private boolean shouldAllowBack()
+    {
+        return false;
+    }
+    @Override
+    public void onBackPressed() {
+        if (!shouldAllowBack()) {
+
+            Toast.makeText(this, "برای خروج دکمه خروج را لمس کنید", Toast.LENGTH_SHORT).show();
+            
+        } else {
+            super.onBackPressed();
+        }
+    }
     public void clk_search(View view) {
         Intent I = new Intent(this,CarSearch.class);
         startActivity(I);
@@ -89,5 +110,30 @@ public class MainActivity extends AppCompatActivity {
     public void clk_tracking(View view) {
         Intent I = new Intent(this,Tracking.class);
         startActivity(I);
+    }
+
+    public void clk_exit(View view) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("خروج؟")
+                .setMessage("آیا می خواهید خارج شوید؟")
+                .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        finish();
+
+                    }
+                }).setNegativeButton("نه نمی خوام", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // continue with delete
+
+            }
+        })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

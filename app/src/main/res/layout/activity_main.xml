@@ -25,7 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.110000014" />
+            app:layout_constraintVertical_bias="0.060000002" />
 
         <LinearLayout
             android:id="@+id/btn_search"
@@ -33,15 +33,15 @@
             android:layout_height="70dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:onClick="clk_search"
             android:background="@drawable/btn_main_color"
             android:gravity="center"
+            android:onClick="clk_search"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.32">
+            app:layout_constraintVertical_bias="0.22000003">
 
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_subject"
@@ -58,21 +58,21 @@
             android:layout_height="70dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:onClick="clk_tracking"
             android:background="@drawable/btn_main_color"
             android:gravity="center"
+            android:onClick="clk_tracking"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.51">
+            app:layout_constraintVertical_bias="0.39999998">
 
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_peygiri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="پیگیری خرید"
+                android:text="پیگیری پرداخت"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -90,13 +90,37 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.7">
+            app:layout_constraintVertical_bias="0.58000004">
 
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="تنظیمات"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btn_aboutus"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/btn_main_color"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.76">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_aboutus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="درباره ما"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -110,11 +134,12 @@
             android:background="@drawable/btn_main_color"
             android:gravity="center"
             android:orientation="horizontal"
+            android:onClick="clk_exit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.89">
+            app:layout_constraintVertical_bias="0.94">
 
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_exit"

@@ -61,6 +61,7 @@ public class CarSearch extends AppCompatActivity {
             v.setLayoutParams(lp);
         }
     }
+
     private void set_size_txt(int vid,Double size,String typ)
     {
         TextView v =(TextView) findViewById(vid);
@@ -82,7 +83,7 @@ public class CarSearch extends AppCompatActivity {
     }
     private void set_size_edit(int vid,Double size,String typ)
     {
-        EditText v =(EditText) findViewById(vid);
+        EditText v = findViewById(vid);
         if(typ.equals("cons")) {
             ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) v.getLayoutParams();
             v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
@@ -110,6 +111,7 @@ public class CarSearch extends AppCompatActivity {
         timer.start();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE); // the results will be higher than using the activity context object or the getWindowManager() shortcut
+        assert wm != null;
         wm.getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
@@ -284,12 +286,27 @@ public class CarSearch extends AppCompatActivity {
                                     end1 = rslt.indexOf("</name>");
                                     String
                                             rslt_name = rslt.substring(start1 + 6, end1);
+                                    start1 = rslt.indexOf("<CarName>");
+                                    end1 = rslt.indexOf("</CarName>");
+                                    String
+                                            rslt_CarName = rslt.substring(start1 + 9, end1);
 
 
                                     LinearLayout btn_pay = findViewById(R.id.btn_pay);
                                     if (avarez_price > 0)
                                         btn_pay.setVisibility(View.VISIBLE);
-                                    lbl_msg.setText("نام مالک : " + rslt_name + "\n" + " مبلغ عوارض شما " + new_str + " ریال می باشد.");
+                                    String
+                                            msg="";
+                                    if(rslt_name.length()>2)
+                                    {
+                                        msg += "نام مالک : " + rslt_name + "\n";
+                                    }
+                                    if(rslt_CarName.length()>2)
+                                    {
+                                        msg += "نام خودرو : " + rslt_CarName + "\n";
+                                    }
+                                    msg+= " مبلغ عوارض شما " + new_str + " ریال می باشد.";
+                                    lbl_msg.setText(msg);
                                 } else {
                                     lbl_msg.setText("متاسفانه خطایی رخ داده است");
                                 }

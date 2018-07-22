@@ -34,7 +34,7 @@ public class MyTextView extends TextView {
 
     private void init() {
         if (!isInEditMode()) {
-            Typeface tf = Functions.get_font_iransens(getContext().getAssets());
+            Typeface tf = Functions.get_font_vazir(getContext().getAssets());
             setTypeface(tf);
         }
     }

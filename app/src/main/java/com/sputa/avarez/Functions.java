@@ -23,6 +23,9 @@ public class Functions {
             font_name_yekan = "fonts/Yekan.ttf";
     public static String
             font_name_iiranSens = "fonts/iransans.ttf";
+    public static String
+            font_name_vazir = "fonts/Vazir.ttf";
+
     public static int
             Time_out_limit = 10;
 
@@ -65,7 +68,11 @@ public class Functions {
         Typeface tf_items =  Typeface.createFromAsset(context,font_name_iiranSens );
         return tf_items;
     }
-
+    public static   Typeface get_font_vazir(AssetManager context)
+    {
+        Typeface tf_items =  Typeface.createFromAsset(context,font_name_vazir );
+        return tf_items;
+    }
 }
 
 

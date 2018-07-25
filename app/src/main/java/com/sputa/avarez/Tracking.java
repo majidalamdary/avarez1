@@ -9,9 +9,12 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,6 +106,47 @@ public class Tracking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
         lay_main= findViewById(R.id.lay_main);
+
+        String[] arraySpinner = new String[] {
+                "شماره موتور", "شماره پروند ملی"
+        };
+        Spinner s = (Spinner) findViewById(R.id.spn_search_type);
+        ArrayAdapter<String> adapter;
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        s.setAdapter(adapter);
+        Spinner spn= findViewById(R.id.spn_search_type);
+
+        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                if(position==0)
+                {
+                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                    lay_motor_search.setVisibility(View.VISIBLE);
+                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+                    lay_parvandeh_search.setVisibility(View.GONE);
+
+                }
+                if(position==1)
+                {
+                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                    lay_motor_search.setVisibility(View.GONE);
+                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+                    lay_parvandeh_search.setVisibility(View.VISIBLE);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+
         fun=new Functions();
 
         timer = new Timer("timeout");
@@ -117,12 +161,14 @@ public class Tracking extends AppCompatActivity {
         set_size_txt(R.id.lbl_title,.08,"cons");
         set_size_txt(R.id.lbl_motor,.05,"cons");
         set_size_edit(R.id.txt_motor,.06,"cons");
+        set_size_txt(R.id.lbl_search_type,.05,"cons");
 
         set_size(R.id.txt_parvande,.52,.07,"cons");
-        set_size_txt(R.id.lbl_parvandeh,.05,"cons");
+        set_size_txt(R.id.lbl_parvandeh,.04,"cons");
         set_size_edit(R.id.txt_parvande,.04,"cons");
         set_size_edit(R.id.txt_motor,.04,"cons");
-
+        set_size(R.id.lbl_msg,.9,.25,"cons");
+        set_size_txt(R.id.lbl_msg,.042,"cons");
 
         set_size(R.id.btn_search,.3,.065,"cons");
         set_size(R.id.btn_back,.3,.065,"cons");

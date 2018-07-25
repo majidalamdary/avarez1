@@ -103,12 +103,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void clk_search(View view) {
-        Intent I = new Intent(this,CarSearch.class);
+        Intent I = new Intent(this,SelectAvarezType.class);
+        I.putExtra("typ","search");
         startActivity(I);
     }
 
     public void clk_tracking(View view) {
-        Intent I = new Intent(this,Tracking.class);
+        Intent I = new Intent(this,SelectAvarezType.class);
+        I.putExtra("typ","tracking");
         startActivity(I);
     }
 

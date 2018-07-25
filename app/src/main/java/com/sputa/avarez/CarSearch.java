@@ -1,6 +1,8 @@
 package com.sputa.avarez;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +12,14 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +33,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.util.Random;
+
+import static com.sputa.avarez.Functions.font_name_vazir;
 
 public class CarSearch extends AppCompatActivity {
     private int screenWidth;
@@ -38,6 +48,11 @@ public class CarSearch extends AppCompatActivity {
     private Functions fun;
     private int tim=1;
     private Timer timer;
+    private String motorSerial;
+    private String rslt_MerchantId="",rslt_TerMinalId="";
+    private String rslt_TransactionKey="",rslt_OrderId="";
+    private String rslt_MainProfile="";
+    private String rslt_price="0";
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -105,6 +120,17 @@ public class CarSearch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_search);
         lay_main= findViewById(R.id.lay_main);
+        String[] arraySpinner = new String[] {
+                "شماره موتور", "شماره پروند ملی"
+        };
+        Spinner s = (Spinner) findViewById(R.id.spn_search_type);
+        ArrayAdapter<String> adapter;
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        s.setAdapter(adapter);
+
+
+
         fun=new Functions();
 
         timer = new Timer("timeout");
@@ -120,9 +146,45 @@ public class CarSearch extends AppCompatActivity {
         set_size_txt(R.id.lbl_title,.08,"cons");
         set_size_txt(R.id.lbl_motor,.05,"cons");
         set_size_edit(R.id.txt_motor,.06,"cons");
+        set_size_txt(R.id.lbl_search_type,.05,"cons");
+        set_size_txt(R.id.lbl_msg,.048,"cons");
+        set_size(R.id.lbl_msg,.9,.18,"cons");
+        Spinner spn= findViewById(R.id.spn_search_type);
+        set_size(R.id.spn_search_type,.52,.07,"cons");
+        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                if(position==0)
+                {
+                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                    lay_motor_search.setVisibility(View.VISIBLE);
+                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+                    lay_parvandeh_search.setVisibility(View.GONE);
+
+                }
+                if(position==1)
+                {
+                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                    lay_motor_search.setVisibility(View.GONE);
+                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+                    lay_parvandeh_search.setVisibility(View.VISIBLE);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+//        ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) spn.getLayoutParams();
+//        spn.sette setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
+//        spn.setLayoutParams(lp);
 
         set_size(R.id.txt_parvande,.52,.07,"cons");
-        set_size_txt(R.id.lbl_parvandeh,.05,"cons");
+        set_size_txt(R.id.lbl_parvandeh,.04,"cons");
         set_size_edit(R.id.txt_parvande,.04,"cons");
         set_size_edit(R.id.txt_motor,.04,"cons");
 
@@ -136,6 +198,27 @@ public class CarSearch extends AppCompatActivity {
         set_size_txt(R.id.lbl_help,.033,"cons");
         set_size(R.id.img_help_motor,.08,.06,"cons");
         set_size(R.id.img_help_parvandeh,.08,.06,"cons");
+
+
+
+        set_size(R.id.lay_confirm,0.95,.14,"cons");
+        set_size(R.id.btn_yes_correct,.12,.052,"cons");
+        set_size(R.id.btn_no_will_correct,.3,.052,"cons");
+        set_size_txt(R.id.lbl_confirm_msg,.044,"cons");
+        set_size_txt(R.id.lbl_yes_correct,.04,"line");
+        set_size_txt(R.id.lbl_no_will_correct,.04,"line");
+
+        set_size(R.id.lay_complete_info,0.83,.42,"rel");
+        set_size(R.id.btn_save_complete,0.26,.06,"cons");
+        set_size(R.id.btn_back_complete,0.26,.06,"cons");
+
+        set_size(R.id.txt_name_complete,.44,.07,"cons");
+        set_size_txt(R.id.lbl_name_complete,.04,"cons");
+        set_size_edit(R.id.txt_name_complete,.04,"cons");
+        set_size(R.id.txt_family_complete,.44,.07,"cons");
+        set_size_txt(R.id.lbl_family_complete,.04,"cons");
+        set_size_edit(R.id.txt_family_complete,.04,"cons");
+        set_size_txt(R.id.lbl_complete_title,.051,"cons");
 
     }
 
@@ -155,7 +238,7 @@ public class CarSearch extends AppCompatActivity {
         if(search_type.equals("ok"))
         {
             last_query = getResources().getString(R.string.site_url) + "do.aspx?param=get_avarez_motor&key_motor="+txt_motor.getText().toString()+"&key_parvandeh="+txt_parvande.getText().toString()+ "&rnd=" + String.valueOf(new Random().nextInt());
-           // Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
+       //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
             mm=new MyAsyncTask();
             mm.url = (last_query);
             mm.execute("");
@@ -167,6 +250,10 @@ public class CarSearch extends AppCompatActivity {
             lay_wait.setVisibility(View.VISIBLE);
             set_size(R.id.lay_wait,.6,.3,"rel");
             set_size_txt(R.id.lbl_please_wait,.05,"line");
+            LinearLayout btn_pay= findViewById(R.id.btn_pay);
+            btn_pay.setVisibility(View.GONE);
+            ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
+            lay_confirm.setVisibility(View.GONE);
         }
 
     }
@@ -186,7 +273,9 @@ public class CarSearch extends AppCompatActivity {
 
     public void clk_message(View view) {
         LinearLayout lay_wait = findViewById(R.id.lay_wait);
-        if(lay_wait.getVisibility()==(View.GONE)) {
+        ConstraintLayout lay_complete_info = findViewById(R.id.lay_complete_info);
+
+        if(lay_wait.getVisibility()==(View.GONE) && lay_complete_info.getVisibility()==(View.GONE))  {
             RelativeLayout lay_message = findViewById(R.id.lay_message);
             RelativeLayout lay_help_motor = findViewById(R.id.lay_help_motor);
             RelativeLayout lay_help_parvandeh = findViewById(R.id.lay_help_parvandeh);
@@ -206,6 +295,108 @@ public class CarSearch extends AppCompatActivity {
         fun.enableDisableView(lay_main,false);
         lay_message.setVisibility(View.VISIBLE);
         lay_help_motor.setVisibility(View.VISIBLE);
+    }
+
+    public void clk_yes_correct(View view) {
+        ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
+        LinearLayout lay_btn_pay = findViewById(R.id.btn_pay);
+        lay_confirm.setVisibility(View.GONE);
+        lay_btn_pay.setVisibility(View.VISIBLE);
+    }
+
+    public void clk_no_will_correct(View view) {
+
+        fun.enableDisableView(lay_main, false);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        lay_message.setVisibility(View.VISIBLE);
+        ConstraintLayout lay_wait = findViewById(R.id.lay_complete_info);
+        lay_wait.setVisibility(View.VISIBLE);
+
+    }
+
+    public void clk_back_complete(View view) {
+        fun.enableDisableView(lay_main, true);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        lay_message.setVisibility(View.GONE);
+        ConstraintLayout lay_wait = findViewById(R.id.lay_complete_info);
+        lay_wait.setVisibility(View.GONE);
+    }
+
+    public void clk_save_complete(View view) {
+        EditText txt_name_complete=findViewById(R.id.txt_name_complete);
+        EditText txt_family_complete=findViewById(R.id.txt_family_complete);
+        String
+                search_type="none";
+        if(txt_name_complete.getText().toString().length()>0)
+        {
+            search_type="ok";
+        }
+        else if(txt_family_complete.getText().toString().length()>0)
+        {
+            search_type="ok";
+        }
+        if(search_type.equals("ok"))
+        {
+            last_query = getResources().getString(R.string.site_url) + "do.aspx?param=save_complete&motorSerial="+motorSerial+"&name="+ URLEncoder.encode(txt_name_complete.getText().toString())+"&family="+URLEncoder.encode(txt_family_complete.getText().toString())+ "&rnd=" + String.valueOf(new Random().nextInt());
+            //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
+            mm=new MyAsyncTask();
+            mm.url = (last_query);
+            mm.execute("");
+            is_requested=true;
+            fun.enableDisableView(lay_main,false);
+            ConstraintLayout lay_complete_info = findViewById(R.id.lay_complete_info);
+            fun.enableDisableView(lay_complete_info,false);
+            RelativeLayout lay_message = findViewById(R.id.lay_message);
+            lay_message.setVisibility(View.VISIBLE);
+            LinearLayout lay_wait = findViewById(R.id.lay_wait);
+            lay_wait.setVisibility(View.VISIBLE);
+            set_size(R.id.lay_wait,.6,.3,"rel");
+            set_size_txt(R.id.lbl_please_wait,.05,"line");
+        }
+        else
+        {
+            Toast.makeText(this, "لطفا اطلاعات را کامل وارد کنید", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void clk_pay(View view) {
+        fun.enableDisableView(lay_main,false);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        lay_message.setVisibility(View.VISIBLE);
+        ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
+        lay_gate.setVisibility(View.VISIBLE);
+        WebView webview = (WebView)findViewById(R.id.web_view);
+        webview.setWebViewClient(new CarSearch.myWebClient());
+        webview.getSettings().setJavaScriptEnabled(true);
+        rslt_price="1000";
+        webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount="+rslt_price+"&AdditionalInfo="+rslt_MainProfile+"-CTSCar&MerchantID="+rslt_MerchantId+"&TerminalId="+rslt_TerMinalId+"&TransactionKey="+rslt_TransactionKey+"&OrderId="+rslt_OrderId);
+
+
+
+
+
+    }
+    public class myWebClient extends WebViewClient
+    {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            // TODO Auto-generated method stub
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // TODO Auto-generated method stub
+            view.loadUrl(url);
+            return true;
+        }
+        @Override
+        public void onLoadResource(WebView  view, String  url){
+
+
+            TextView txt=findViewById(R.id.txt_url);
+            txt.setText(view.getUrl());
+        }
     }
 
     private class MyAsyncTask extends AsyncTask<String, Integer, Double> {
@@ -236,9 +427,10 @@ public class CarSearch extends AppCompatActivity {
             String
                     output_str="";
             String
-                    param_str = "";
+                    param_str;
+            param_str = "";
 
-                int
+            int
                         start1 = ss.indexOf("<param>");
                 int
                         end1 = ss.indexOf("</param>");
@@ -246,7 +438,32 @@ public class CarSearch extends AppCompatActivity {
 
                     param_str = ss.substring(start1 + 7, end1);
                     // Toast.makeText(CarSearch.this, ss, Toast.LENGTH_SHORT).show();
-
+                    if (param_str.equals("save_complete") && is_requested) {
+                        start1 = ss.indexOf("<result>");
+                        end1 = ss.indexOf("</result>");
+                        
+                        if (end1 > 0) {
+                            String
+                                    rslt = ss.substring(start1 + 8, end1);
+                            if(rslt.equals("ok"))
+                            {
+                                Toast.makeText(CarSearch.this, "ذخیره با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
+                                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                                btn_pay.setVisibility(View.VISIBLE);
+                                ConstraintLayout lay_complete = findViewById(R.id.lay_confirm);
+                                lay_complete.setVisibility(View.GONE);
+                            }
+                        }
+                        is_requested = false;
+                        fun.enableDisableView(lay_main, true);
+                        RelativeLayout lay_message = findViewById(R.id.lay_message);
+                        ConstraintLayout lay_complete_info = findViewById(R.id.lay_complete_info);
+                        fun.enableDisableView(lay_complete_info,true);
+                        lay_complete_info.setVisibility(View.GONE);
+                        lay_message.setVisibility(View.GONE);
+                        LinearLayout lay_wait = findViewById(R.id.lay_wait);
+                        lay_wait.setVisibility(View.GONE);
+                    }
                     if (param_str.equals("get_avarez_motor") && is_requested) {
                         start1 = ss.indexOf("<result>");
                         end1 = ss.indexOf("</result>");
@@ -261,8 +478,7 @@ public class CarSearch extends AppCompatActivity {
                             } else {
                                 start1 = rslt.indexOf("<price>");
                                 end1 = rslt.indexOf("</price>");
-                                String
-                                        rslt_price = rslt.substring(start1 + 7, end1);
+                                rslt_price = rslt.substring(start1 + 7, end1);
 //                            Toast.makeText(CarSearch.this, rslt_price, Toast.LENGTH_SHORT).show();
 
                                 int
@@ -286,15 +502,42 @@ public class CarSearch extends AppCompatActivity {
                                     end1 = rslt.indexOf("</name>");
                                     String
                                             rslt_name = rslt.substring(start1 + 6, end1);
+                                    start1 = rslt.indexOf("<motorSerial>");
+                                    end1 = rslt.indexOf("</motorSerial>");
+                                    motorSerial = rslt.substring(start1 + 13, end1);
+
                                     start1 = rslt.indexOf("<CarName>");
                                     end1 = rslt.indexOf("</CarName>");
                                     String
                                             rslt_CarName = rslt.substring(start1 + 9, end1);
+                                    start1 = rslt.indexOf("<MainProfile>");
+                                    end1 = rslt.indexOf("</MainProfile>");
+                                    rslt_MainProfile = rslt.substring(start1 + 13, end1);
+                                    start1 = rslt.indexOf("<CanEPay>");
+                                    end1 = rslt.indexOf("</CanEPay>");
+                                    String
+                                            rslt_CanEPay = rslt.substring(start1 + 9, end1);
+                                    if(rslt_CanEPay.equals("1"))
+                                    {
+                                        start1 = rslt.indexOf("<MerchantId>");
+                                        end1 = rslt.indexOf("</MerchantId>");
+                                        rslt_MerchantId = rslt.substring(start1 + 12, end1);
+                                        start1 = rslt.indexOf("<TerMinalId>");
+                                        end1 = rslt.indexOf("</TerMinalId>");
+                                        rslt_TerMinalId = rslt.substring(start1 + 12, end1);
+                                        start1 = rslt.indexOf("<TransactionKey>");
+                                        end1 = rslt.indexOf("</TransactionKey>");
+                                        rslt_TransactionKey = rslt.substring(start1 + 16, end1);
+                                        start1 = rslt.indexOf("<OrderId>");
+                                        end1 = rslt.indexOf("</OrderId>");
+                                        rslt_OrderId = rslt.substring(start1 + 9, end1);
 
-
+                                    }
                                     LinearLayout btn_pay = findViewById(R.id.btn_pay);
-                                    if (avarez_price > 0)
-                                        btn_pay.setVisibility(View.VISIBLE);
+                                    ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
+                                    lay_confirm.setVisibility(View.VISIBLE);
+//                                    if (avarez_price > 0)
+//                                        btn_pay.setVisibility(View.VISIBLE);
                                     String
                                             msg="";
                                     if(rslt_name.length()>2)

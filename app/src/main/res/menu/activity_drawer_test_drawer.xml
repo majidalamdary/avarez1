@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile"
+            android:title="پروفایل" />
+        <item
+            android:id="@+id/nav_my_cars"
+            android:icon="@drawable/car"
+            android:title="خودروهای من" />
+        <item
+            android:id="@+id/nav_abone"
+            android:icon="@drawable/abone"
+            android:title="اشتراک های من" />
+        <item
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/message"
+            android:title="پیام ها" />
+    </group>
+
+    <item android:title="اطلاعات و ارتباطات">
+        <menu>
+            <item
+                android:id="@+id/nav_contact_us"
+                android:icon="@drawable/viber"
+                android:title="ارتباط با ما" />
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/logo_bw"
+                android:title="درباره ما" />
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/exit"
+                android:title="خروج" />
+        </menu>
+    </item>
+
+</menu>

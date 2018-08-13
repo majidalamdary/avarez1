@@ -53,6 +53,9 @@ public class CarSearch extends AppCompatActivity {
     private String rslt_TransactionKey="",rslt_OrderId="";
     private String rslt_MainProfile="";
     private String rslt_price="0";
+    private String rslt_CanEPay="";
+    private int avarez_price;
+    private String rslt_name;
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -147,7 +150,7 @@ public class CarSearch extends AppCompatActivity {
         set_size_txt(R.id.lbl_motor,.05,"cons");
         set_size_edit(R.id.txt_motor,.06,"cons");
         set_size_txt(R.id.lbl_search_type,.05,"cons");
-        set_size_txt(R.id.lbl_msg,.048,"cons");
+        set_size_txt(R.id.lbl_msg,.039,"cons");
         set_size(R.id.lbl_msg,.9,.18,"cons");
         Spinner spn= findViewById(R.id.spn_search_type);
         set_size(R.id.spn_search_type,.52,.07,"cons");
@@ -301,7 +304,8 @@ public class CarSearch extends AppCompatActivity {
         ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
         LinearLayout lay_btn_pay = findViewById(R.id.btn_pay);
         lay_confirm.setVisibility(View.GONE);
-        lay_btn_pay.setVisibility(View.VISIBLE);
+        if(avarez_price>0)
+            lay_btn_pay.setVisibility(View.VISIBLE);
     }
 
     public void clk_no_will_correct(View view) {
@@ -311,6 +315,9 @@ public class CarSearch extends AppCompatActivity {
         lay_message.setVisibility(View.VISIBLE);
         ConstraintLayout lay_wait = findViewById(R.id.lay_complete_info);
         lay_wait.setVisibility(View.VISIBLE);
+        EditText txt_name_complete=findViewById(R.id.txt_name_complete);
+        EditText txt_family_complete=findViewById(R.id.txt_family_complete);
+        
 
     }
 
@@ -360,17 +367,22 @@ public class CarSearch extends AppCompatActivity {
     }
 
     public void clk_pay(View view) {
-        fun.enableDisableView(lay_main,false);
-        RelativeLayout lay_message = findViewById(R.id.lay_message);
-        lay_message.setVisibility(View.VISIBLE);
-        ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
-        lay_gate.setVisibility(View.VISIBLE);
-        WebView webview = (WebView)findViewById(R.id.web_view);
-        webview.setWebViewClient(new CarSearch.myWebClient());
-        webview.getSettings().setJavaScriptEnabled(true);
-        rslt_price="1000";
-        webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount="+rslt_price+"&AdditionalInfo="+rslt_MainProfile+"-CTSCar&MerchantID="+rslt_MerchantId+"&TerminalId="+rslt_TerMinalId+"&TransactionKey="+rslt_TransactionKey+"&OrderId="+rslt_OrderId);
-
+        if (rslt_CanEPay.equals("1")) {
+            fun.enableDisableView(lay_main, false);
+            RelativeLayout lay_message = findViewById(R.id.lay_message);
+            lay_message.setVisibility(View.VISIBLE);
+            ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
+            lay_gate.setVisibility(View.VISIBLE);
+            WebView webview = (WebView) findViewById(R.id.web_view);
+            webview.setWebViewClient(new CarSearch.myWebClient());
+            webview.getSettings().setJavaScriptEnabled(true);
+            //rslt_price="1000";
+            webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
+        }
+        else
+        {
+            Toast.makeText(this, "متاسفانه شهرداری شهر شما فاقد امکان پرداخت الکترونیک می باشد لطفا به دفاتر پیش خوان دولت مراجعه نمایید", Toast.LENGTH_SHORT).show();
+        }
 
 
 
@@ -471,8 +483,6 @@ public class CarSearch extends AppCompatActivity {
                         if (end1 > 0) {
                             String
                                     rslt = ss.substring(start1 + 8, end1);
-
-
                             if (rslt.equals("NotFound")) {
                                 lbl_msg.setText("اطلاعات خودرو شما پیدا نشد لطفا به یکی از شعب پیش خوان دولت یا شهرداری شهر خود مراجعه نمائید.");
                             } else {
@@ -481,8 +491,7 @@ public class CarSearch extends AppCompatActivity {
                                 rslt_price = rslt.substring(start1 + 7, end1);
 //                            Toast.makeText(CarSearch.this, rslt_price, Toast.LENGTH_SHORT).show();
 
-                                int
-                                        avarez_price = -1;
+                                avarez_price = -1;
                                 try {
                                     avarez_price = Integer.valueOf(rslt_price);
                                 } catch (Exception e1) {
@@ -500,8 +509,7 @@ public class CarSearch extends AppCompatActivity {
                                     }
                                     start1 = rslt.indexOf("<name>");
                                     end1 = rslt.indexOf("</name>");
-                                    String
-                                            rslt_name = rslt.substring(start1 + 6, end1);
+                                    rslt_name = rslt.substring(start1 + 6, end1);
                                     start1 = rslt.indexOf("<motorSerial>");
                                     end1 = rslt.indexOf("</motorSerial>");
                                     motorSerial = rslt.substring(start1 + 13, end1);
@@ -515,8 +523,7 @@ public class CarSearch extends AppCompatActivity {
                                     rslt_MainProfile = rslt.substring(start1 + 13, end1);
                                     start1 = rslt.indexOf("<CanEPay>");
                                     end1 = rslt.indexOf("</CanEPay>");
-                                    String
-                                            rslt_CanEPay = rslt.substring(start1 + 9, end1);
+                                    rslt_CanEPay = rslt.substring(start1 + 9, end1);
                                     if(rslt_CanEPay.equals("1"))
                                     {
                                         start1 = rslt.indexOf("<MerchantId>");
@@ -536,8 +543,12 @@ public class CarSearch extends AppCompatActivity {
                                     LinearLayout btn_pay = findViewById(R.id.btn_pay);
                                     ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
                                     lay_confirm.setVisibility(View.VISIBLE);
-//                                    if (avarez_price > 0)
-//                                        btn_pay.setVisibility(View.VISIBLE);
+                                    if (avarez_price > 0)
+                                    {
+                                        //btn_pay.setVisibility(View.VISIBLE);
+                                    }
+                                    else
+                                        btn_pay.setVisibility(View.GONE);
                                     String
                                             msg="";
                                     if(rslt_name.length()>2)

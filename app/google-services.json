@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "771359763759",
+    "firebase_url": "https://avarez-7f8cb.firebaseio.com",
+    "project_id": "avarez-7f8cb",
+    "storage_bucket": "avarez-7f8cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771359763759:android:099f6f13858ae1cd",
+        "android_client_info": {
+          "package_name": "com.sputa.avarez"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771359763759-tu045iquf7ggb3l9tijbiitc4fe40q5r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSoYFEroh35HpZq6W6VKi0gagWdmtpIg0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

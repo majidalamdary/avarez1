@@ -74,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
         set_size(R.id.btn_search,.57,.12,"cons");
         set_size(R.id.btn_peygiri,.57,.125,"cons");
-        set_size(R.id.btn_setting,.57,.125,"cons");
+        //set_size(R.id.btn_setting,.57,.125,"cons");
         set_size(R.id.btn_exit,.57,.125,"cons");
         set_size(R.id.btn_aboutus,.57,.125,"cons");
 
         set_size_txt(R.id.lbl_subject,.055,"line");
         set_size_txt(R.id.lbl_peygiri,.055,"line");
-        set_size_txt(R.id.lbl_setting,.055,"line");
+       // set_size_txt(R.id.lbl_setting,.055,"line");
         set_size_txt(R.id.lbl_exit,.055,"line");
         set_size_txt(R.id.lbl_aboutus,.055,"line");
         set_size_txt(R.id.lbl_title,.08,"cons");

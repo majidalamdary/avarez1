@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
-    tools:context=".SelectAvarezType">
+    tools:context=".SelectGhabzType">
 
 
     <LinearLayout
@@ -55,7 +55,7 @@
                         android:id="@+id/lbl_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="لطفا نوع عوارض را انتخاب کنید"
+                        android:text="لطفا نوع قبض خدماتی را انتخاب کنید"
                         android:textColor="@android:color/white"
                         android:textSize="20sp" />
 
@@ -78,7 +78,7 @@
                     android:background="#a1a1a1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="clk_car_avarez"
+                    android:onClick="clk_gas_ghabz"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp">
 
@@ -100,7 +100,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:src="@drawable/car" />
+                                android:src="@drawable/gas" />
 
                         </LinearLayout>
 
@@ -116,7 +116,7 @@
                                 android:id="@+id/lbl_car_avarez"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="عوارض خودرو"
+                                android:text="قبض گاز"
                                 android:textColor="@android:color/black"
                                 android:textSize="20sp" />
 

@@ -2,6 +2,9 @@ package com.sputa.avarez;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -15,7 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class Splash extends AppCompatActivity {
     private int screenWidth;
@@ -73,11 +78,20 @@ public class Splash extends AppCompatActivity {
         TextView txt_software = (TextView) findViewById(R.id.txt_software);
         txt_software.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * 0.045));
         RelativeLayout.LayoutParams lp_txt_software = (RelativeLayout.LayoutParams) txt_software.getLayoutParams();
-        lp_txt_software.setMarginStart((int)(screenWidth*.155));
+        lp_txt_software.setMarginStart((int)(screenWidth*.22));
         lp_txt_software.topMargin=((int)(screenHeight*.62));
         txt_software.setLayoutParams(lp_txt_software);
         txt_software.setVisibility(View.GONE);
 
+
+        SharedPreferences preferences = getSharedPreferences("profile",MODE_PRIVATE);
+        String u_id = preferences.getString("u_id", "");
+        if(!u_id.equalsIgnoreCase(""))
+        {
+            Functions.u_id = u_id;
+            String u_mobile = preferences.getString("u_mobile", "");
+            Functions.u_mobile = u_mobile;
+        }
 
 
         tim = new Timer("draw");
@@ -87,9 +101,12 @@ public class Splash extends AppCompatActivity {
     {
      //   startActivity(new Intent(this,MainActivity.class));
         tim.typ="majid";
-        finish();
 
-        startActivity(new Intent(this,MainActivity.class));
+        finish();
+        if(Functions.u_id.equals("0"))
+            startActivity(new Intent(this,RegisterActivity.class));
+        else
+            startActivity(new Intent(this,DrawerTest.class));
     }
     public class Timer extends Thread {
 
@@ -125,7 +142,7 @@ public class Splash extends AppCompatActivity {
                                 lp_red.setMarginStart(lp_red.getMarginStart() + 2);
                                 img_red_grey.setLayoutParams(lp_red);
                                 if (lp_red.getMarginStart() == start_margin || lp_red.getMarginStart() == start_margin+1) {
-                                    Log.d("majid", "ok1" + String.valueOf(lp_red.getMarginStart()));
+//                                    Log.d("majid", "ok1" + String.valueOf(lp_red.getMarginStart()));
                                     move_arm=false;
                                     img_red_grey.setVisibility(View.GONE);
                                     img_grey.setVisibility(View.GONE);

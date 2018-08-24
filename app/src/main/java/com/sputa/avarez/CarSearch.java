@@ -1,12 +1,17 @@
 package com.sputa.avarez;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -23,6 +28,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sputa.avarez.adapters.item_adapter;
+import com.sputa.avarez.model.items;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,6 +42,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.sputa.avarez.Functions.font_name_vazir;
@@ -56,6 +66,14 @@ public class CarSearch extends AppCompatActivity {
     private String rslt_CanEPay="";
     private int avarez_price;
     private String rslt_name;
+    private String rslt_family;
+    List<items> item =     new ArrayList<>();
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
+    private String rslt_NationalNumber;
+    private String rslt_ChassiSerial;
+    private String rslt_VinNumber;
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -118,13 +136,14 @@ public class CarSearch extends AppCompatActivity {
             v.setLayoutParams(lp);
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_search);
         lay_main= findViewById(R.id.lay_main);
         String[] arraySpinner = new String[] {
-                "شماره موتور", "شماره پروند ملی"
+                "شماره موتور", "شماره شاسی", "شماره VIN"
         };
         Spinner s = (Spinner) findViewById(R.id.spn_search_type);
         ArrayAdapter<String> adapter;
@@ -146,7 +165,7 @@ public class CarSearch extends AppCompatActivity {
         screenHeight = displayMetrics.heightPixels;
 
         set_size(R.id.txt_motor,.52,.07,"cons");
-        set_size_txt(R.id.lbl_title,.08,"cons");
+        set_size_txt(R.id.lbl_title,.065,"cons");
         set_size_txt(R.id.lbl_motor,.05,"cons");
         set_size_edit(R.id.txt_motor,.06,"cons");
         set_size_txt(R.id.lbl_search_type,.05,"cons");
@@ -158,12 +177,21 @@ public class CarSearch extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
+                EditText txt_motor = findViewById(R.id.txt_motor);
+                EditText txt_parvande = findViewById(R.id.txt_parvande);
+                EditText txt_vin = findViewById(R.id.txt_vin);
+
+                txt_motor.setText("");
+                txt_parvande.setText("");
+                txt_vin.setText("");
                 if(position==0)
                 {
                     ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
                     lay_motor_search.setVisibility(View.VISIBLE);
                     ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
                     lay_parvandeh_search.setVisibility(View.GONE);
+                    ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
+                    lay_vin_search.setVisibility(View.GONE);
 
                 }
                 if(position==1)
@@ -172,8 +200,25 @@ public class CarSearch extends AppCompatActivity {
                     lay_motor_search.setVisibility(View.GONE);
                     ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
                     lay_parvandeh_search.setVisibility(View.VISIBLE);
+                    ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
+                    lay_vin_search.setVisibility(View.GONE);
 
                 }
+                if(position==2)
+                {
+                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                    lay_motor_search.setVisibility(View.GONE);
+                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+                    lay_parvandeh_search.setVisibility(View.GONE);
+                    ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
+                    lay_vin_search.setVisibility(View.VISIBLE);
+
+                }
+
+
+
+
+
             }
 
             @Override
@@ -187,7 +232,7 @@ public class CarSearch extends AppCompatActivity {
 //        spn.setLayoutParams(lp);
 
         set_size(R.id.txt_parvande,.52,.07,"cons");
-        set_size_txt(R.id.lbl_parvandeh,.04,"cons");
+        set_size_txt(R.id.lbl_shasi,.04,"cons");
         set_size_edit(R.id.txt_parvande,.04,"cons");
         set_size_edit(R.id.txt_motor,.04,"cons");
 
@@ -197,6 +242,7 @@ public class CarSearch extends AppCompatActivity {
         set_size_txt(R.id.lbl_search,.054,"line");
         set_size_txt(R.id.lbl_back,.054,"line");
         set_size(R.id.btn_pay,.3,.065,"cons");
+        set_size(R.id.btn_detail,.3,.065,"cons");
 
         set_size_txt(R.id.lbl_help,.033,"cons");
         set_size(R.id.img_help_motor,.08,.06,"cons");
@@ -211,23 +257,39 @@ public class CarSearch extends AppCompatActivity {
         set_size_txt(R.id.lbl_yes_correct,.04,"line");
         set_size_txt(R.id.lbl_no_will_correct,.04,"line");
 
-        set_size(R.id.lay_complete_info,0.83,.42,"rel");
+        set_size(R.id.lay_complete_info,0.83,.76,"rel");
         set_size(R.id.btn_save_complete,0.26,.06,"cons");
         set_size(R.id.btn_back_complete,0.26,.06,"cons");
 
         set_size(R.id.txt_name_complete,.44,.07,"cons");
+        set_size(R.id.txt_family_complete,.44,.07,"cons");
         set_size_txt(R.id.lbl_name_complete,.04,"cons");
         set_size_edit(R.id.txt_name_complete,.04,"cons");
-        set_size(R.id.txt_family_complete,.44,.07,"cons");
+
         set_size_txt(R.id.lbl_family_complete,.04,"cons");
         set_size_edit(R.id.txt_family_complete,.04,"cons");
+
+        set_size_txt(R.id.lbl_melliId_complete,.04,"cons");
+        set_size_edit(R.id.txt_melliID_complete,.044,"cons");
+        set_size(R.id.txt_melliID_complete,.44,.07,"cons");
+
+        set_size_txt(R.id.lbl_shasi_complete,.04,"cons");
+        set_size_edit(R.id.txt_shasi_complete,.044,"cons");
+        set_size(R.id.txt_shasi_complete,.44,.07,"cons");
+
+        set_size_txt(R.id.lbl_VIN_complete,.04,"cons");
+        set_size_edit(R.id.txt_VIN_complete,.044,"cons");
+        set_size(R.id.txt_VIN_complete,.44,.07,"cons");
+
         set_size_txt(R.id.lbl_complete_title,.051,"cons");
+
 
     }
 
     public void clk_search(View view) {
         EditText txt_motor=findViewById(R.id.txt_motor);
         EditText txt_parvande=findViewById(R.id.txt_parvande);
+        EditText txt_vin=findViewById(R.id.txt_vin);
         String
                 search_type="none";
         if(txt_motor.getText().toString().length()>0)
@@ -237,10 +299,14 @@ public class CarSearch extends AppCompatActivity {
         else if(txt_parvande.getText().toString().length()>0)
         {
             search_type="ok";
+        } 
+        else if(txt_vin.getText().toString().length()>0)
+        {
+            search_type="ok";
         }
         if(search_type.equals("ok"))
         {
-            last_query = getResources().getString(R.string.site_url) + "do.aspx?param=get_avarez_motor&key_motor="+txt_motor.getText().toString()+"&key_parvandeh="+txt_parvande.getText().toString()+ "&rnd=" + String.valueOf(new Random().nextInt());
+                last_query = getResources().getString(R.string.site_url) + "do.aspx?param=get_avarez_motor&key_motor="+txt_motor.getText().toString()+"&key_shasi="+txt_parvande.getText().toString()+ "&key_vin="+txt_vin.getText().toString()+ "&u_id="+Functions.u_id+"&rnd=" + String.valueOf(new Random().nextInt());
        //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
             mm=new MyAsyncTask();
             mm.url = (last_query);
@@ -255,8 +321,15 @@ public class CarSearch extends AppCompatActivity {
             set_size_txt(R.id.lbl_please_wait,.05,"line");
             LinearLayout btn_pay= findViewById(R.id.btn_pay);
             btn_pay.setVisibility(View.GONE);
+            LinearLayout btn_detail= findViewById(R.id.btn_detail);
+            btn_detail.setVisibility(View.GONE);
+
             ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
             lay_confirm.setVisibility(View.GONE);
+        }
+        else
+        {
+            Toast.makeText(this, "لطفا اطلاعات خودرو خود را وارد کنید", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -273,6 +346,14 @@ public class CarSearch extends AppCompatActivity {
         lay_message.setVisibility(View.VISIBLE);
         lay_help_motor.setVisibility(View.VISIBLE);
     }
+    public void clk_help_vin(View view) {
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        RelativeLayout lay_help_motor = findViewById(R.id.lay_help_vin);
+        set_size(R.id.im_help_vin_pic,.8,.8,"rel");
+        fun.enableDisableView(lay_main,false);
+        lay_message.setVisibility(View.VISIBLE);
+        lay_help_motor.setVisibility(View.VISIBLE);
+    }
 
     public void clk_message(View view) {
         LinearLayout lay_wait = findViewById(R.id.lay_wait);
@@ -282,15 +363,17 @@ public class CarSearch extends AppCompatActivity {
             RelativeLayout lay_message = findViewById(R.id.lay_message);
             RelativeLayout lay_help_motor = findViewById(R.id.lay_help_motor);
             RelativeLayout lay_help_parvandeh = findViewById(R.id.lay_help_parvandeh);
+            ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
 
             fun.enableDisableView(lay_main, true);
             lay_message.setVisibility(View.GONE);
             lay_help_motor.setVisibility(View.GONE);
             lay_help_parvandeh.setVisibility(View.GONE);
+            lay_detail.setVisibility(View.GONE);
         }
     }
 
-    public void clk_help_parvandeh(View view) {
+    public void clk_help_shasi(View view) {
         RelativeLayout lay_message = findViewById(R.id.lay_message);
         RelativeLayout lay_help_motor = findViewById(R.id.lay_help_parvandeh);
         set_size(R.id.lbl_help_parvandeh,.6,.3,"rel");
@@ -303,9 +386,12 @@ public class CarSearch extends AppCompatActivity {
     public void clk_yes_correct(View view) {
         ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
         LinearLayout lay_btn_pay = findViewById(R.id.btn_pay);
+        LinearLayout lay_btn_detail = findViewById(R.id.btn_detail);
         lay_confirm.setVisibility(View.GONE);
-        if(avarez_price>0)
+        if(avarez_price>0) {
             lay_btn_pay.setVisibility(View.VISIBLE);
+            lay_btn_detail.setVisibility(View.VISIBLE);
+        }
     }
 
     public void clk_no_will_correct(View view) {
@@ -317,7 +403,14 @@ public class CarSearch extends AppCompatActivity {
         lay_wait.setVisibility(View.VISIBLE);
         EditText txt_name_complete=findViewById(R.id.txt_name_complete);
         EditText txt_family_complete=findViewById(R.id.txt_family_complete);
-        
+        EditText txt_melliID_complete=findViewById(R.id.txt_melliID_complete);
+        EditText txt_shasi_complete=findViewById(R.id.txt_shasi_complete);
+        EditText txt_VIN_complete=findViewById(R.id.txt_VIN_complete);
+        txt_name_complete.setText(rslt_name);
+        txt_family_complete.setText(rslt_family);
+        txt_melliID_complete.setText(rslt_NationalNumber);
+        txt_shasi_complete.setText(rslt_ChassiSerial);
+        txt_VIN_complete.setText(rslt_VinNumber);
 
     }
 
@@ -327,24 +420,43 @@ public class CarSearch extends AppCompatActivity {
         lay_message.setVisibility(View.GONE);
         ConstraintLayout lay_wait = findViewById(R.id.lay_complete_info);
         lay_wait.setVisibility(View.GONE);
+        ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
+        lay_detail.setVisibility(View.GONE);
     }
 
     public void clk_save_complete(View view) {
         EditText txt_name_complete=findViewById(R.id.txt_name_complete);
         EditText txt_family_complete=findViewById(R.id.txt_family_complete);
+        EditText txt_melliID_complete=findViewById(R.id.txt_melliID_complete);
+        EditText txt_shasi_complete=findViewById(R.id.txt_shasi_complete);
+        EditText txt_VIN_complete=findViewById(R.id.txt_VIN_complete);
+
         String
-                search_type="none";
-        if(txt_name_complete.getText().toString().length()>0)
+                search_type="ok";
+        if(txt_name_complete.getText().toString().length()==0 && search_type.equals("ok"))
         {
-            search_type="ok";
+            search_type="none";
         }
-        else if(txt_family_complete.getText().toString().length()>0)
+        if(txt_family_complete.getText().toString().length()==0 && search_type.equals("ok"))
         {
-            search_type="ok";
+            search_type="none";
         }
+        if(txt_melliID_complete.getText().toString().length()==0 && search_type.equals("ok"))
+        {
+            search_type="none";
+        }
+        if(txt_shasi_complete.getText().toString().length()==0 && search_type.equals("ok"))
+        {
+            search_type="none";
+        }
+        if(txt_VIN_complete.getText().toString().length()==0 && search_type.equals("ok"))
+        {
+            search_type="none";
+        }
+
         if(search_type.equals("ok"))
         {
-            last_query = getResources().getString(R.string.site_url) + "do.aspx?param=save_complete&motorSerial="+motorSerial+"&name="+ URLEncoder.encode(txt_name_complete.getText().toString())+"&family="+URLEncoder.encode(txt_family_complete.getText().toString())+ "&rnd=" + String.valueOf(new Random().nextInt());
+            last_query = getResources().getString(R.string.site_url) + "do.aspx?param=save_complete&motorSerial="+motorSerial+"&name="+ URLEncoder.encode(txt_name_complete.getText().toString())+"&family="+URLEncoder.encode(txt_family_complete.getText().toString())+ "&melliID="+URLEncoder.encode(txt_melliID_complete.getText().toString())+ "&shasi="+URLEncoder.encode(txt_shasi_complete.getText().toString())+ "&VIN="+URLEncoder.encode(txt_VIN_complete.getText().toString())+ "&rnd=" + String.valueOf(new Random().nextInt());
             //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
             mm=new MyAsyncTask();
             mm.url = (last_query);
@@ -362,7 +474,7 @@ public class CarSearch extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "لطفا اطلاعات را کامل وارد کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "لطفا تمامی اطلاعات را کامل وارد کنید", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -378,16 +490,28 @@ public class CarSearch extends AppCompatActivity {
             webview.getSettings().setJavaScriptEnabled(true);
             //rslt_price="1000";
             webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
+//            EditText txt=findViewById(R.id.txt_motor);
+//            txt.setText("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
+            //http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=187000&AdditionalInfo=10000089-CTSCar&MerchantID=118088384&TerminalId=17995091&TransactionKey=AZ24JJ95SS&OrderId=10000089235123552
         }
         else
         {
-            Toast.makeText(this, "متاسفانه شهرداری شهر شما فاقد امکان پرداخت الکترونیک می باشد لطفا به دفاتر پیش خوان دولت مراجعه نمایید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "متاسفانه شهرداری شهر شما فاقد امکان پرداخت الکترونیک می باشد", Toast.LENGTH_SHORT).show();
         }
 
 
 
 
     }
+
+    public void clk_detail(View view) {
+        fun.enableDisableView(lay_main, false);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        lay_message.setVisibility(View.VISIBLE);
+        ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
+        lay_detail.setVisibility(View.VISIBLE);
+    }
+
     public class myWebClient extends WebViewClient
     {
         @Override
@@ -409,6 +533,21 @@ public class CarSearch extends AppCompatActivity {
             TextView txt=findViewById(R.id.txt_url);
             txt.setText(view.getUrl());
         }
+    }
+    private void save_car(String motor) {
+        last_query = getResources().getString(R.string.site_url) + "do.aspx?param=save_car&carMotor="+motor+"&u_id="+Functions.u_id+"&rnd=" + String.valueOf(new Random().nextInt());
+        //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
+        mm=new MyAsyncTask();
+        mm.url = (last_query);
+        mm.execute("");
+        is_requested=true;
+        fun.enableDisableView(lay_main,false);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        lay_message.setVisibility(View.VISIBLE);
+        LinearLayout lay_wait = findViewById(R.id.lay_wait);
+        lay_wait.setVisibility(View.VISIBLE);
+        set_size(R.id.lay_wait,.6,.3,"rel");
+        set_size_txt(R.id.lbl_please_wait,.05,"line");
     }
 
     private class MyAsyncTask extends AsyncTask<String, Integer, Double> {
@@ -450,6 +589,32 @@ public class CarSearch extends AppCompatActivity {
 
                     param_str = ss.substring(start1 + 7, end1);
                     // Toast.makeText(CarSearch.this, ss, Toast.LENGTH_SHORT).show();
+                    if (param_str.equals("save_car") && is_requested) {
+                        start1 = ss.indexOf("<result>");
+                        end1 = ss.indexOf("</result>");
+
+                        if (end1 > 0) {
+                            String
+                                    rslt = ss.substring(start1 + 8, end1);
+                            if(rslt.equals("ok"))
+                            {
+                                Toast.makeText(CarSearch.this, "این خودرو به لیست خودرو های شما اضافه شد", Toast.LENGTH_SHORT).show();
+                                fun.enableDisableView(lay_main,true);
+                                RelativeLayout lay_message = findViewById(R.id.lay_message);
+                                lay_message.setVisibility(View.GONE);
+                                LinearLayout lay_wait = findViewById(R.id.lay_wait);
+                                lay_wait.setVisibility(View.GONE);
+                            }
+                            else
+                            {
+                                fun.enableDisableView(lay_main,true);
+                                RelativeLayout lay_message = findViewById(R.id.lay_message);
+                                lay_message.setVisibility(View.GONE);
+                                LinearLayout lay_wait = findViewById(R.id.lay_wait);
+                                lay_wait.setVisibility(View.GONE);
+                            }
+                        }
+                    }
                     if (param_str.equals("save_complete") && is_requested) {
                         start1 = ss.indexOf("<result>");
                         end1 = ss.indexOf("</result>");
@@ -462,6 +627,9 @@ public class CarSearch extends AppCompatActivity {
                                 Toast.makeText(CarSearch.this, "ذخیره با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
                                 LinearLayout btn_pay = findViewById(R.id.btn_pay);
                                 btn_pay.setVisibility(View.VISIBLE);
+                                LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                                btn_detail.setVisibility(View.VISIBLE);
+
                                 ConstraintLayout lay_complete = findViewById(R.id.lay_confirm);
                                 lay_complete.setVisibility(View.GONE);
                             }
@@ -484,7 +652,7 @@ public class CarSearch extends AppCompatActivity {
                             String
                                     rslt = ss.substring(start1 + 8, end1);
                             if (rslt.equals("NotFound")) {
-                                lbl_msg.setText("اطلاعات خودرو شما پیدا نشد لطفا به یکی از شعب پیش خوان دولت یا شهرداری شهر خود مراجعه نمائید.");
+                                lbl_msg.setText("اطلاعات خودرو شما پیدا نشد.");
                             } else {
                                 start1 = rslt.indexOf("<price>");
                                 end1 = rslt.indexOf("</price>");
@@ -507,9 +675,25 @@ public class CarSearch extends AppCompatActivity {
                                         else
                                             new_str = rslt_price.charAt(i) + new_str;
                                     }
+
+
                                     start1 = rslt.indexOf("<name>");
                                     end1 = rslt.indexOf("</name>");
                                     rslt_name = rslt.substring(start1 + 6, end1);
+
+                                    start1 = rslt.indexOf("<family>");
+                                    end1 = rslt.indexOf("</family>");
+                                    rslt_family = rslt.substring(start1 + 8, end1);
+                                    start1 = rslt.indexOf("<NationalNumber>");
+                                    end1 = rslt.indexOf("</NationalNumber>");
+                                    rslt_NationalNumber = rslt.substring(start1 + 16, end1);
+                                    start1 = rslt.indexOf("<ChassiSerial>");
+                                    end1 = rslt.indexOf("</ChassiSerial>");
+                                    rslt_ChassiSerial = rslt.substring(start1 + 14, end1);
+                                    start1 = rslt.indexOf("<VinNumber>");
+                                    end1 = rslt.indexOf("</VinNumber>");
+                                    rslt_VinNumber = rslt.substring(start1 + 11, end1);
+
                                     start1 = rslt.indexOf("<motorSerial>");
                                     end1 = rslt.indexOf("</motorSerial>");
                                     motorSerial = rslt.substring(start1 + 13, end1);
@@ -518,6 +702,10 @@ public class CarSearch extends AppCompatActivity {
                                     end1 = rslt.indexOf("</CarName>");
                                     String
                                             rslt_CarName = rslt.substring(start1 + 9, end1);
+                                    start1 = rslt.indexOf("<CouncilName>");
+                                    end1 = rslt.indexOf("</CouncilName>");
+                                    String
+                                            rslt_CouncilName = rslt.substring(start1 + 13, end1);
                                     start1 = rslt.indexOf("<MainProfile>");
                                     end1 = rslt.indexOf("</MainProfile>");
                                     rslt_MainProfile = rslt.substring(start1 + 13, end1);
@@ -540,20 +728,30 @@ public class CarSearch extends AppCompatActivity {
                                         rslt_OrderId = rslt.substring(start1 + 9, end1);
 
                                     }
+
+
+
                                     LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                                    LinearLayout btn_detail = findViewById(R.id.btn_detail);
                                     ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
                                     lay_confirm.setVisibility(View.VISIBLE);
                                     if (avarez_price > 0)
                                     {
                                         //btn_pay.setVisibility(View.VISIBLE);
                                     }
-                                    else
+                                    else {
                                         btn_pay.setVisibility(View.GONE);
+                                        btn_detail.setVisibility(View.GONE);
+                                    }
                                     String
                                             msg="";
+                                    if(rslt_CouncilName.length()>0)
+                                    {
+                                        msg += "" + rslt_CouncilName + "\n";
+                                    }
                                     if(rslt_name.length()>2)
                                     {
-                                        msg += "نام مالک : " + rslt_name + "\n";
+                                        msg += "نام مالک : " + rslt_name+" "+rslt_family + "\n";
                                     }
                                     if(rslt_CarName.length()>2)
                                     {
@@ -561,6 +759,119 @@ public class CarSearch extends AppCompatActivity {
                                     }
                                     msg+= " مبلغ عوارض شما " + new_str + " ریال می باشد.";
                                     lbl_msg.setText(msg);
+
+
+                                    start1 = rslt.indexOf("<hisCount>");
+                                    end1 = rslt.indexOf("</hisCount>");
+                                    int rslt_hisCount = Integer.valueOf(rslt.substring(start1 + 10, end1));
+                                    //Toast.makeText(CarSearch.this, String.valueOf(rslt_hisCount), Toast.LENGTH_SHORT).show();
+                                    item.clear();
+                                    if(rslt_hisCount>0)
+                                    {
+                                        for(int i=0;i<rslt_hisCount;i++)
+                                        {
+                                            start1 = rslt.indexOf("<his"+String.valueOf(i)+">");
+                                            end1 = rslt.indexOf("</his"+String.valueOf(i)+">");
+                                            String rslt_hisItems = (rslt.substring(start1 + 6, end1));
+                                            start1 = rslt_hisItems.indexOf("<year>");
+                                            end1 = rslt_hisItems.indexOf("</year>");
+                                            String rslt_year = (rslt_hisItems.substring(start1 + 6, end1));
+                                            start1 = rslt_hisItems.indexOf("<avarez>");
+                                            end1 = rslt_hisItems.indexOf("</avarez>");
+                                            String rslt_avarez = (rslt_hisItems.substring(start1 + 8, end1));
+                                            new_str = "";
+                                            j = 0;
+                                            for (int ii = rslt_avarez.length() - 1; ii >= 0; ii--) {
+                                                j++;
+                                                if (j != rslt_avarez.length() && j % 3 == 0)
+                                                    new_str = "," + rslt_avarez.charAt(ii) + new_str;
+                                                else
+                                                    new_str = rslt_avarez.charAt(ii) + new_str;
+                                            }
+                                            rslt_avarez = new_str;
+                                            start1 = rslt_hisItems.indexOf("<farsudegi>");
+                                            end1 = rslt_hisItems.indexOf("</farsudegi>");
+                                            String rslt_farsudegi = (rslt_hisItems.substring(start1 + 11, end1));
+                                            new_str = "";
+                                            j = 0;
+                                            for (int ii = rslt_farsudegi.length() - 1; ii >= 0; ii--) {
+                                                j++;
+                                                if (j != rslt_farsudegi.length() && j % 3 == 0)
+                                                    new_str = "," + rslt_farsudegi.charAt(ii) + new_str;
+                                                else
+                                                    new_str = rslt_farsudegi.charAt(ii) + new_str;
+                                            }
+                                            rslt_farsudegi = new_str;
+                                            start1 = rslt_hisItems.indexOf("<ratePunish>");
+                                            end1 = rslt_hisItems.indexOf("</ratePunish>");
+                                            String rslt_ratePunish = (rslt_hisItems.substring(start1 + 12, end1));
+                                            start1 = rslt_hisItems.indexOf("<Punish>");
+                                            end1 = rslt_hisItems.indexOf("</Punish>");
+                                            String rslt_Punish = (rslt_hisItems.substring(start1 + 8, end1));
+                                            new_str = "";
+                                            j = 0;
+                                            for (int ii = rslt_Punish.length() - 1; ii >= 0; ii--) {
+                                                j++;
+                                                if (j != rslt_Punish.length() && j % 3 == 0)
+                                                    new_str = "," + rslt_Punish.charAt(ii) + new_str;
+                                                else
+                                                    new_str = rslt_Punish.charAt(ii) + new_str;
+                                            }
+                                            rslt_Punish = new_str;
+                                            item.add(new items(rslt_year,rslt_avarez,rslt_farsudegi,rslt_ratePunish,rslt_Punish,"11"));
+                                        }
+                                    }
+
+
+
+
+                                    mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
+                                    mRecyclerView.setHasFixedSize(true);
+                                    mLayoutManager = new LinearLayoutManager(CarSearch.this);
+                                    mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+                                    mAdapter = new item_adapter(CarSearch.this,item);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+                                    start1 = rslt.indexOf("<carSaved>");
+                                    end1 = rslt.indexOf("</carSaved>");
+                                    if(end1>0) {
+                                        String carSaved = rslt.substring(start1 + 10, end1);
+                                        if(carSaved.equals("not"))
+                                        {
+                                            AlertDialog.Builder builder;
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                                builder = new AlertDialog.Builder(CarSearch.this, android.R.style.Theme_Material_Dialog_Alert);
+                                            } else {
+                                                builder = new AlertDialog.Builder(CarSearch.this);
+                                            }
+                                            builder.setTitle("ذخیره خودرو؟")
+                                                    .setMessage("آیا می خواهید این خودرو به لیست خودرو های من اضافه شود؟")
+                                                    .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            // continue with delete
+                                                            // finish();
+                                                            save_car(motorSerial);
+
+                                                        }
+                                                    }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // continue with delete
+
+                                                }
+                                            })
+                                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                                    .show();
+                                        }
+                                        else if(carSaved.equals("yes"))
+                                        {
+
+                                        }
+
+                                    }
+
+
                                 } else {
                                     lbl_msg.setText("متاسفانه خطایی رخ داده است");
                                 }
@@ -611,6 +922,7 @@ public class CarSearch extends AppCompatActivity {
             is.close();
         }
     }
+
 
     public class Timer extends Thread {
 

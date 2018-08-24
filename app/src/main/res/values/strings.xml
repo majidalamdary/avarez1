@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">عوارض شهرداری</string>
-    <string name="site_url">http://e-paytoll.ir/Pages/Common/</string>
+    <!--<string name="site_url">http://e-paytoll.ir/Pages/Common/</string>-->
+    <string name="site_url">http://ardnan.ir/</string>
     <string name="title_activity_drawer_test">DrawerTest</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/message"
-            android:title="پیام ها" />
+            android:title="تازه ها" />
     </group>
 
     <item android:title="اطلاعات و ارتباطات">

@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.sputa.avarez.classes.customFont;
 
-public class SelectAvarezType extends AppCompatActivity   {
+public class SelectGhabzType extends AppCompatActivity   {
     private int screenWidth;
     private int screenHeight;
     private String typ;
@@ -96,7 +96,7 @@ public class SelectAvarezType extends AppCompatActivity   {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_avarez_type);
+        setContentView(R.layout.activity_select_ghabz_type);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
@@ -118,20 +118,16 @@ public class SelectAvarezType extends AppCompatActivity   {
 
 
         typ = getIntent().getStringExtra("typ");
-       // Toast.makeText(this, typ, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, typ, Toast.LENGTH_SHORT).show();
     }
 
-    public void clk_car_avarez(View view) {
+    public void clk_gas_ghabz(View view) {
         if(typ.equals("search")) {
-            Intent I = new Intent(this, CarSearch.class);
+            Intent I = new Intent(this, GhabzSearch.class);
             startActivity(I);
             finish();
         }
-        else if(typ.equals("tracking")) {
-            Intent I = new Intent(this, Tracking.class);
-            startActivity(I);
-            finish();
-        }
+
 
     }
 

@@ -29,8 +29,8 @@ public class Functions {
     public static int
             Time_out_limit = 10;
 
-    public static String u_id = "";
-    public static String u_name = "";
+    public static String u_id = "0";
+    public static String u_mobile = "";
 
     public static int    user_normal =1;
     public Functions() {

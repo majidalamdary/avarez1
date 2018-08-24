@@ -16,10 +16,11 @@
         android:layout_height="131dp"
         android:layout_marginStart="150dp"
         android:layout_marginTop="10dp"
+        android:onClick="clk_ghabz"
         android:background="@drawable/btn_gas">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/img_gas"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,13 +29,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.94"
-            app:srcCompat="@drawable/abone" />
+            app:srcCompat="@drawable/billing" />
 
         <com.sputa.avarez.my_views.MyTextView
-            android:id="@+id/textView3"
+            android:id="@+id/txt_gas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="پرداخت فیش گاز"
+            android:text="پرداخت قبوض خدماتی"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -51,10 +52,11 @@
         android:layout_height="131dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:onClick="clk_profile"
         android:background="@drawable/btn_profile">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/img_profile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -66,7 +68,7 @@
             app:srcCompat="@drawable/profile" />
 
         <com.sputa.avarez.my_views.MyTextView
-            android:id="@+id/textView4"
+            android:id="@+id/txt_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="پروفایل"
@@ -86,10 +88,11 @@
         android:layout_height="100dp"
         android:layout_marginStart="210dp"
         android:layout_marginTop="255dp"
+        android:onClick="clk_about_us"
         android:background="@drawable/btn_about_us">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/img_aboutus"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -98,10 +101,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.94"
-            app:srcCompat="@drawable/setting" />
+            app:srcCompat="@drawable/aboutus" />
 
         <com.sputa.avarez.my_views.MyTextView
-            android:id="@+id/textView5"
+            android:id="@+id/txt_aboutus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="درباره ما"
@@ -121,10 +124,11 @@
         android:layout_height="71dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="360dp"
+        android:onClick="clk_exit"
         android:background="@drawable/btn_grey">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/img_exit"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -136,7 +140,7 @@
             app:srcCompat="@drawable/exit" />
 
         <com.sputa.avarez.my_views.MyTextView
-            android:id="@+id/textView6"
+            android:id="@+id/txt_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="خروج"
@@ -156,10 +160,11 @@
         android:layout_height="100dp"
         android:layout_marginStart="210dp"
         android:layout_marginTop="150dp"
+        android:onClick="clk_news"
         android:background="@drawable/btn_news">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/img_news"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -171,7 +176,7 @@
             app:srcCompat="@drawable/message" />
 
         <com.sputa.avarez.my_views.MyTextView
-            android:id="@+id/textView7"
+            android:id="@+id/txt_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="تازه ها"
@@ -190,11 +195,12 @@
         android:layout_width="187dp"
         android:layout_height="202dp"
         android:layout_marginStart="10dp"
+        android:onClick="clk_avarez"
         android:layout_marginTop="150dp"
         android:background="@drawable/btn_avarez">
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/img_car"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -206,7 +212,7 @@
             app:srcCompat="@drawable/car" />
 
         <com.sputa.avarez.my_views.MyTextView
-            android:id="@+id/textView8"
+            android:id="@+id/txt_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="پرداخت عوارض"
@@ -219,6 +225,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.100000024" />
     </android.support.constraint.ConstraintLayout>
+
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
@@ -227,6 +234,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -26,23 +26,27 @@
         </service>
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".Splash"></activity>
-        <activity android:name=".CarSearch" />
-        <activity android:name=".Tracking" />
-        <activity android:name=".Test" />
-        <activity android:name=".SelectAvarezType"></activity>
-        <activity
-            android:name=".DrawerTest"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
-        <activity android:name=".RegisterActivity">
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CarSearch" />
+        <activity android:name=".Tracking" />
+        <activity android:name=".Test" />
+        <activity android:name=".SelectAvarezType" />
+        <activity
+            android:name=".DrawerTest"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".MyCarList" />
+        <activity android:name=".SelectGhabzType" />
+        <activity android:name=".GhabzSearch" />
+        <activity android:name=".MyEshterakList" />
+        <activity android:name=".AboutUs" />
+        <activity android:name=".NewsList"></activity>
     </application>
 
 </manifest>

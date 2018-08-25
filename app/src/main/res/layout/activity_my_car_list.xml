@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layoutDirection="rtl"
+    android:orientation="vertical"
     tools:context="com.sputa.avarez.MyCarList">
 
     <LinearLayout
         android:id="@+id/lay_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,11 +57,114 @@
         android:visibility="gone">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/lay_gate"
+            android:layout_width="320dp"
+            android:layout_height="550dp"
+            android:background="@drawable/btn_white"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/btn_back_gate"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_grey"
+                android:gravity="center"
+                android:onClick="clk_back_gate"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.52"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.99">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_back_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="برگشت"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="302dp"
+                android:layout_height="441dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.918"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.55" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Url:"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.94"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.029999971" />
+
+            <EditText
+                android:id="@+id/txt_url"
+                android:layout_width="247dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.33"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/lay_detail"
             android:layout_width="320dp"
             android:layout_height="350dp"
             android:background="@drawable/btn_white"
-            android:visibility="visible">
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/btn_pay"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_red"
+                android:gravity="center"
+                android:onClick="clk_pay"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.34"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.94">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="پرداخت"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -188,7 +292,7 @@
             <LinearLayout
                 android:id="@+id/btn_back_detail"
                 android:layout_width="110dp"
-                android:layout_height="38dp"
+                android:layout_height="41dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:background="@drawable/btn_grey"
@@ -227,6 +331,7 @@
                 app:layout_constraintVertical_bias="0.052" />
 
         </android.support.constraint.ConstraintLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

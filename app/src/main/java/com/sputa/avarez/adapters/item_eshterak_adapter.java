@@ -7,10 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sputa.avarez.Functions;
 import com.sputa.avarez.R;
+import com.sputa.avarez.RecyclerViewClickListener;
 import com.sputa.avarez.model.items_cars;
 import com.sputa.avarez.model.items_eshterak;
 
@@ -20,14 +22,15 @@ import java.util.List;
 public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_adapter.my_view_holder> {
     private Context context;
     private List<items_eshterak> item;
-
+    private static RecyclerViewClickListener itemListener;
     private boolean is_requested;
     Functions fun;
     String
             font_name = "";
     Typeface tf;
-    public item_eshterak_adapter(Context context, List<items_eshterak> item) {
+    public item_eshterak_adapter(Context context, List<items_eshterak> item, RecyclerViewClickListener itemListener) {
         this.context = context;
+        this.itemListener = itemListener;
         this.item=item;
         fun = new Functions();
 
@@ -52,16 +55,6 @@ public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_ad
 
 
 
-        holder.crd1.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                //if(view.getId()==R.id.crd1) {
-                  //  Toast.makeText(context, item.get(position).getRadif(), Toast.LENGTH_SHORT).show();
-                //}
-            }
-        });
-
     }
 
 
@@ -72,13 +65,15 @@ public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_ad
     }
 
 
-    class my_view_holder extends RecyclerView.ViewHolder
+    class my_view_holder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
 
        // private TextView txt_radif;
         private TextView txt_price;
         private TextView txt_name;
         private TextView txt_eshterak;
+        private ImageView img_delete;
+        private ImageView img_detail;
 
         private CardView crd1;
 
@@ -87,13 +82,22 @@ public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_ad
             txt_name = itemView.findViewById(R.id.txt_name);
             txt_eshterak = itemView.findViewById(R.id.txt_eshterak);
             txt_price = itemView.findViewById(R.id.txt_price);
+            img_delete = itemView.findViewById(R.id.img_delete_eshterak);
+            img_detail = itemView.findViewById(R.id.img_detail);
             //txt_radif = itemView.findViewById(R.id.txt_radif);
+            img_delete.setOnClickListener(this);
+            img_detail.setOnClickListener(this);
 
 
             crd1 = itemView.findViewById(R.id.crd1);
 
 
 
+        }
+        @Override
+        public void onClick(View v) {
+            itemListener.recyclerViewListClicked(v, this.getLayoutPosition());
+            // Toast.makeText(context, "majid", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -74,6 +74,7 @@ public class CarSearch extends AppCompatActivity {
     private String rslt_NationalNumber;
     private String rslt_ChassiSerial;
     private String rslt_VinNumber;
+    private boolean allowBack=true;
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -477,7 +478,15 @@ public class CarSearch extends AppCompatActivity {
             Toast.makeText(this, "لطفا تمامی اطلاعات را کامل وارد کنید", Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    public void onBackPressed() {
+        if (!allowBack) {
 
+
+        } else {
+            super.onBackPressed();
+        }
+    }
     public void clk_pay(View view) {
         if (rslt_CanEPay.equals("1")) {
             fun.enableDisableView(lay_main, false);

@@ -114,9 +114,19 @@ public class SelectGhabzType extends AppCompatActivity   {
         set_size(R.id.img_back,.06,.035,"line");
         set_size(R.id.img_next,.06,.035,"line");
         set_size_txt(R.id.lbl_title,.05,"line");
-        set_size_txt(R.id.lbl_car_avarez,.04,"line");
 
 
+
+        set_size_txt(R.id.lbl_car_avarez,.045,"line");
+        set_size_txt(R.id.lbl_water,.045,"line");
+        set_size_txt(R.id.lbl_electric,.045,"line");
+        set_size_txt(R.id.lbl_tel,.045,"line");
+
+
+        set_size(R.id.img_gas,.15,.15,"line");
+        set_size(R.id.img_electric,.15,.15,"line");
+        set_size(R.id.img_water,.15,.15,"line");
+        set_size(R.id.img_tel,.15,.15,"line");
         typ = getIntent().getStringExtra("typ");
         // Toast.makeText(this, typ, Toast.LENGTH_SHORT).show();
     }
@@ -133,5 +143,9 @@ public class SelectGhabzType extends AppCompatActivity   {
 
     public void clk_back(View view) {
         finish();
+    }
+
+    public void clk_under_cunstruct(View view) {
+        Toast.makeText(this, "در دست طراحی", Toast.LENGTH_SHORT).show();
     }
 }

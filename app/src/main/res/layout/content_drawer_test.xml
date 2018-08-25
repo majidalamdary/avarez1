@@ -28,14 +28,14 @@
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.94"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/billing" />
 
         <com.sputa.avarez.my_views.MyTextView
             android:id="@+id/txt_gas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="پرداخت قبوض خدماتی"
+            android:text=" قبوض خدماتی"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -64,7 +64,7 @@
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.94"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/profile" />
 
         <com.sputa.avarez.my_views.MyTextView
@@ -88,7 +88,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="210dp"
         android:layout_marginTop="255dp"
-        android:onClick="clk_about_us"
+        android:onClick="clk_my_eshterak"
         android:background="@drawable/btn_about_us">
 
         <ImageView
@@ -100,14 +100,14 @@
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.94"
-            app:srcCompat="@drawable/aboutus" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/abone" />
 
         <com.sputa.avarez.my_views.MyTextView
             android:id="@+id/txt_aboutus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="درباره ما"
+            android:text="اشتراک های من"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -160,7 +160,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="210dp"
         android:layout_marginTop="150dp"
-        android:onClick="clk_news"
+        android:onClick="clk_my_cars"
         android:background="@drawable/btn_news">
 
         <ImageView
@@ -172,14 +172,14 @@
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.94"
-            app:srcCompat="@drawable/message" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/car" />
 
         <com.sputa.avarez.my_views.MyTextView
             android:id="@+id/txt_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="تازه ها"
+            android:text="خودروهای من"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -191,13 +191,50 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/lay_driving_offense"
+        android:layout_width="187dp"
+        android:layout_height="101dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="255dp"
+        android:background="@drawable/btn_driving_ofence"
+        android:onClick="clk_driving">
+
+        <ImageView
+            android:id="@+id/img_driving_offense"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/driving" />
+
+        <com.sputa.avarez.my_views.MyTextView
+            android:id="@+id/txt_driving_offense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="جرائم راهنمایی و رانندگی"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.21"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.100000024" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/lay_avarez"
         android:layout_width="187dp"
-        android:layout_height="202dp"
+        android:layout_height="101dp"
         android:layout_marginStart="10dp"
-        android:onClick="clk_avarez"
         android:layout_marginTop="150dp"
-        android:background="@drawable/btn_avarez">
+        android:background="@drawable/btn_avarez"
+        android:onClick="clk_avarez">
+
 
         <ImageView
             android:id="@+id/img_car"
@@ -208,14 +245,14 @@
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.94"
-            app:srcCompat="@drawable/car" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/council" />
 
         <com.sputa.avarez.my_views.MyTextView
             android:id="@+id/txt_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="پرداخت عوارض"
+            android:text=" عوارض شهرداری"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

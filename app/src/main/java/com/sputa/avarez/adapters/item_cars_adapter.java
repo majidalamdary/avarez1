@@ -7,11 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sputa.avarez.Functions;
 import com.sputa.avarez.R;
+import com.sputa.avarez.RecyclerViewClickListener;
 import com.sputa.avarez.model.items;
 import com.sputa.avarez.model.items_cars;
 
@@ -19,7 +22,9 @@ import java.util.List;
 
 
 public class item_cars_adapter extends RecyclerView.Adapter<item_cars_adapter.my_view_holder> {
+
     private Context context;
+    private static RecyclerViewClickListener itemListener;
     private List<items_cars> item;
 
     private boolean is_requested;
@@ -27,7 +32,8 @@ public class item_cars_adapter extends RecyclerView.Adapter<item_cars_adapter.my
     String
             font_name = "";
     Typeface tf;
-    public item_cars_adapter(Context context, List<items_cars> item) {
+    public item_cars_adapter(Context context, List<items_cars> item, RecyclerViewClickListener itemListener) {
+        this.itemListener = itemListener;
         this.context = context;
         this.item=item;
         fun = new Functions();
@@ -53,15 +59,7 @@ public class item_cars_adapter extends RecyclerView.Adapter<item_cars_adapter.my
 
 
 
-        holder.crd1.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                //if(view.getId()==R.id.crd1) {
-                  //  Toast.makeText(context, item.get(position).getRadif(), Toast.LENGTH_SHORT).show();
-                //}
-            }
-        });
 
     }
 
@@ -73,12 +71,14 @@ public class item_cars_adapter extends RecyclerView.Adapter<item_cars_adapter.my
     }
 
 
-    class my_view_holder extends RecyclerView.ViewHolder
+    class my_view_holder extends RecyclerView.ViewHolder  implements View.OnClickListener
     {
 
         private TextView txt_radif;
         private TextView txt_avarez;
         private TextView txt_name;
+        private ImageView img_del;
+        private ImageView img_detail;
         private TextView txt_pelak;
 
         private CardView crd1;
@@ -89,12 +89,20 @@ public class item_cars_adapter extends RecyclerView.Adapter<item_cars_adapter.my
             txt_pelak = itemView.findViewById(R.id.txt_pelak);
             txt_avarez = itemView.findViewById(R.id.txt_avarez);
             txt_radif = itemView.findViewById(R.id.txt_radif);
+            img_del = itemView.findViewById(R.id.img_delete_icon);
+            img_detail = itemView.findViewById(R.id.img_detail);
 
 
             crd1 = itemView.findViewById(R.id.crd1);
+            img_del.setOnClickListener(this);
+            img_detail.setOnClickListener(this);
 
 
-
+        }
+        @Override
+        public void onClick(View v) {
+            itemListener.recyclerViewListClicked(v, this.getLayoutPosition());
+           // Toast.makeText(context, "majid", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -256,7 +256,8 @@ public class DrawerTest extends AppCompatActivity
     private void set_content() {
         set_size(R.id.lay_profile,.373,.225,"rel");
         set_size(R.id.lay_gas,.53,.225,"rel");
-        set_size(R.id.lay_avarez,.53,.39,"rel");
+        set_size(R.id.lay_avarez,.53,.19,"rel");
+        set_size(R.id.lay_driving_offense,.53,.19,"rel");
         set_size(R.id.lay_news,.37,.19,"rel");
         set_size(R.id.lay_about_us,.37,.19,"rel");
         set_size(R.id.lay_exit,.92,.115,"rel");
@@ -276,6 +277,11 @@ public class DrawerTest extends AppCompatActivity
         lp_lay_avarez.setMarginStart((int)(screenWidth*.04));
         lp_lay_avarez.topMargin =(int)(screenHeight*.25);
 
+        ConstraintLayout lay_driving_offense = findViewById(R.id.lay_driving_offense);
+        RelativeLayout.LayoutParams lp_lay_driving_offense = (RelativeLayout.LayoutParams) lay_driving_offense.getLayoutParams();
+        lp_lay_driving_offense.setMarginStart((int)(screenWidth*.04));
+        lp_lay_driving_offense.topMargin =(int)(screenHeight*.452);
+
         ConstraintLayout lay_news = findViewById(R.id.lay_news);
         RelativeLayout.LayoutParams lp_lay_news = (RelativeLayout.LayoutParams) lay_news.getLayoutParams();
         lp_lay_news.setMarginStart((int)(screenWidth*.59));
@@ -294,12 +300,14 @@ public class DrawerTest extends AppCompatActivity
         set_size(R.id.img_profile,.14,.14,"cons");
         set_size(R.id.img_gas,.14,.14,"cons");
         set_size(R.id.img_car,.14,.14,"cons");
+        set_size(R.id.img_driving_offense,.14,.14,"cons");
         set_size(R.id.img_news,.14,.14,"cons");
         set_size(R.id.img_aboutus,.14,.14,"cons");
         set_size(R.id.img_exit,.14,.14,"cons");
 
         set_size_txt(R.id.txt_profile,0.055,"cons");
         set_size_txt(R.id.txt_car,0.055,"cons");
+        set_size_txt(R.id.txt_driving_offense,0.049,"cons");
         set_size_txt(R.id.txt_gas,0.055,"cons");
         set_size_txt(R.id.txt_aboutus,0.055,"cons");
         set_size_txt(R.id.txt_news,0.055,"cons");
@@ -442,6 +450,18 @@ public class DrawerTest extends AppCompatActivity
         startActivity(new Intent(this,NewsList.class));
     }
 
+    public void clk_driving(View view) {
+        Toast.makeText(this, "در دست طراحی", Toast.LENGTH_SHORT).show();
+    }
+
+    public void clk_my_cars(View view) {
+        startActivity(new Intent(this,MyCarList.class));
+    }
+
+    public void clk_my_eshterak(View view) {
+        startActivity(new Intent(this,MyEshterakList.class));
+    }
+
     private class MyAsyncTask extends AsyncTask<String, Integer, Double> {
 
 
@@ -489,18 +509,24 @@ public class DrawerTest extends AppCompatActivity
                     String rslt = ss.substring(start1 + 8, end1);
                     if (!rslt.equals("0")) {
                         is_requested = false;
-                        start1 = ss.indexOf("<name>");
-                        end1 = ss.indexOf("</name>");
-                         rslt_name = ss.substring(start1 + 6, end1);
-                         start1 = ss.indexOf("<family>");
-                        end1 = ss.indexOf("</family>");
-                         rslt_family = ss.substring(start1 + 8, end1);
-                         start1 = ss.indexOf("<mobile>");
-                        end1 = ss.indexOf("</mobile>");
-                         rslt_mobile = ss.substring(start1 + 8, end1);
+                        try {
+                            start1 = ss.indexOf("<name>");
+                            end1 = ss.indexOf("</name>");
+                            rslt_name = ss.substring(start1 + 6, end1);
+                            start1 = ss.indexOf("<family>");
+                            end1 = ss.indexOf("</family>");
+                            rslt_family = ss.substring(start1 + 8, end1);
+                            start1 = ss.indexOf("<mobile>");
+                            end1 = ss.indexOf("</mobile>");
+                            rslt_mobile = ss.substring(start1 + 8, end1);
 
-                        navMobile.setText(rslt_mobile);
-                        navname.setText(rslt_name+" "+rslt_family);
+                            navMobile.setText(rslt_mobile);
+                            navname.setText(rslt_name + " " + rslt_family);
+                        }
+                        catch (Exception e1)
+                        {
+
+                        }
                       //  Toast.makeText(DrawerTest.this, rslt_name, Toast.LENGTH_SHORT).show();
                     }
 

@@ -64,6 +64,7 @@ public class GhabzSearch extends AppCompatActivity {
     private String public_eshterak;
     private String public_shenase;
     private String ghabz_id;
+    private boolean allowBack=true;
 
 
     private void set_size(int vid,Double width,Double height,String typ)
@@ -300,7 +301,7 @@ public class GhabzSearch extends AppCompatActivity {
         lay_message.setVisibility(View.VISIBLE);
         lay_more_detail.setVisibility(View.VISIBLE);
 
-
+        allowBack=false;
 
 
 
@@ -511,6 +512,7 @@ public class GhabzSearch extends AppCompatActivity {
         webview.setWebViewClient(new myWebClient());
         webview.getSettings().setJavaScriptEnabled(true);
         //rslt_price="1000";
+        allowBack=true;
         String
                 price="18000";
         if(ghabz_id.equals(StaticGasGhabz.ghabz1_ID))
@@ -519,6 +521,33 @@ public class GhabzSearch extends AppCompatActivity {
             price = StaticGasGhabz.ghabz2_price_number_simple;
 
         webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount="+price+"&AdditionalInfo=10000089-CTSCar&MerchantID=118088384&TerminalId=17995091&TransactionKey=AZ24JJ95SS&OrderId=10000089235123552");
+    }
+
+    public void clk_back_complete(View view) {
+//        fun.enableDisableView(lay_main, true);
+////        RelativeLayout lay_message = findViewById(R.id.lay_message);
+////        LinearLayout lay_more_detail = findViewById(R.id.lay_more_detail);
+////        lay_message.setVisibility(View.GONE);
+////        lay_more_detail.setVisibility(View.GONE);
+     //   Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    public void onBackPressed() {
+        if (!allowBack) {
+
+
+        } else {
+            super.onBackPressed();
+        }
+    }
+    public void clk_back_more_info(View view) {
+       // Toast.makeText(this, "321", Toast.LENGTH_SHORT).show();
+        fun.enableDisableView(lay_main, true);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        ConstraintLayout lay_more_detail = findViewById(R.id.lay_more_detail);
+        lay_message.setVisibility(View.GONE);
+        lay_more_detail.setVisibility(View.GONE);
+        allowBack=true;
     }
 
 

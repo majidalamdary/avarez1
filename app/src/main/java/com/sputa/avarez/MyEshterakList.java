@@ -1,8 +1,11 @@
 package com.sputa.avarez;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sputa.avarez.adapters.item_adapter;
 import com.sputa.avarez.adapters.item_eshterak_adapter;
@@ -27,8 +31,9 @@ import com.sputa.avarez.model.items_eshterak;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class MyEshterakList extends AppCompatActivity {
+public class MyEshterakList extends AppCompatActivity  implements RecyclerViewClickListener{
     List<items_eshterak> item =     new ArrayList<>();
     List<items> item1 =     new ArrayList<>();
     LinearLayout lay_main;
@@ -41,8 +46,62 @@ public class MyEshterakList extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private int screenWidth;
     private int screenHeight;
+    private int pos;
+    private boolean allowBack=true;
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        if(v.getId()==R.id.img_delete_eshterak)
+        {
+            pos=position;
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("حذف؟")
+                    .setMessage("آیا مطمئن هستید؟")
+                    .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                            if(pos==0)
+                            {
+                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
+                                editor.putString("ghabz_id1", null);
+                                editor.apply();
+                              //  Toast.makeText(MyEshterakList.this, "1", Toast.LENGTH_SHORT).show();
+                            }
+                            if(pos==1)
+                            {
+                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
+                                editor.putString("ghabz_id2", null);
+                                editor.apply();
+                             //   Toast.makeText(MyEshterakList.this, "2", Toast.LENGTH_SHORT).show();
+                            }
+                            load_my_eshterak();
+
+                        }
+                    }).setNegativeButton("خیر", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue with delete
+
+                }
+            })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
 
 
+
+        }
+        if(v.getId()==R.id.img_detail)
+        {
+            //Toast.makeText(this, "11", Toast.LENGTH_SHORT).show();
+            show_detail(item.get(position));
+
+
+        }
+    }
     private void set_size(int vid,Double width,Double height,String typ)
     {
         View v =findViewById(vid);
@@ -109,9 +168,7 @@ public class MyEshterakList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_eshterak_list);
-        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
-        String ghabz1 = prefs.getString("ghabz_id1", null);
-        String ghabz2 = prefs.getString("ghabz_id2", null);
+        load_my_eshterak();
         lay_main= findViewById(R.id.lay_main);
         fun=new Functions();
 
@@ -128,43 +185,41 @@ public class MyEshterakList extends AppCompatActivity {
         set_size_txt(R.id.lbl_more_detail_title,.045,"cons");
         set_size_txt(R.id.lbl_msg_right_detail,.04,"line");
         set_size_txt(R.id.lbl_msg_left_detail,.04,"line");
+
+
+
+
+
+    }
+
+    private void load_my_eshterak() {
+        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
+        String ghabz1 = prefs.getString("ghabz_id1", null);
+        String ghabz2 = prefs.getString("ghabz_id2", null);
         item.clear();
-
+        //Toast.makeText(this, "-"+ghabz1+"-", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "-"+ghabz2+"-", Toast.LENGTH_SHORT).show();
         if(ghabz1!=null)
-            item.add(new items_eshterak(StaticGasGhabz.ghabz1_eshteraak,StaticGasGhabz.ghabz1_name,StaticGasGhabz.ghabz1_price_number,StaticGasGhabz.ghabz1_ID));
+            if(!ghabz1.equals("")) {
+                item.add(new items_eshterak(StaticGasGhabz.ghabz1_eshteraak, StaticGasGhabz.ghabz1_name, StaticGasGhabz.ghabz1_price_number, StaticGasGhabz.ghabz1_ID));
+        //        Toast.makeText(this, "1212312", Toast.LENGTH_SHORT).show();
+            }
         if(ghabz2!=null)
-            item.add(new items_eshterak(StaticGasGhabz.ghabz2_eshteraak,StaticGasGhabz.ghabz2_name,StaticGasGhabz.ghabz2_price_number,StaticGasGhabz.ghabz2_ID));
+            if(!ghabz2.equals(""))
+                 item.add(new items_eshterak(StaticGasGhabz.ghabz2_eshteraak,StaticGasGhabz.ghabz2_name,StaticGasGhabz.ghabz2_price_number,StaticGasGhabz.ghabz2_ID));
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-            mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
-            mRecyclerView.setHasFixedSize(true);
-            mLayoutManager = new LinearLayoutManager(this);
-            mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-            mAdapter = new item_eshterak_adapter(this,item);
-            mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, mRecyclerView_cars ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        //    Toast.makeText(MainActivity.this, "click", Toast.LENGTH_SHORT).show();
-                        // do whatever
-
-                        show_detail(item.get(position));
-
-                    }
-
-                    @Override public void onLongItemClick(View view, int position) {
-                        // Toast.makeText(NewItem.this, "long Click", Toast.LENGTH_SHORT).show();
-                        // do whatever
-                    }
-                })
-        );
+        mAdapter = new item_eshterak_adapter(this,item,MyEshterakList.this);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
     private void show_detail(items_eshterak s) {
-
+        allowBack=false;
         fun.enableDisableView(lay_main, false);
         RelativeLayout lay_message = findViewById(R.id.lay_message);
         ConstraintLayout lay_more_detail = findViewById(R.id.lay_more_detail);
@@ -197,11 +252,27 @@ public class MyEshterakList extends AppCompatActivity {
     }
 
     public void clk_msg(View view) {
+//        fun.enableDisableView(lay_main, true);
+//        RelativeLayout lay_message = findViewById(R.id.lay_message);
+//        ConstraintLayout lay_more_detail = findViewById(R.id.lay_more_detail);
+//        lay_message.setVisibility(View.GONE);
+//        lay_more_detail.setVisibility(View.GONE);
+    }
+    @Override
+    public void onBackPressed() {
+        if (!allowBack) {
+
+
+        } else {
+            super.onBackPressed();
+        }
+    }
+    public void clk_back(View view) {
+        allowBack = true;
         fun.enableDisableView(lay_main, true);
         RelativeLayout lay_message = findViewById(R.id.lay_message);
         ConstraintLayout lay_more_detail = findViewById(R.id.lay_more_detail);
         lay_message.setVisibility(View.GONE);
         lay_more_detail.setVisibility(View.GONE);
     }
-
 }

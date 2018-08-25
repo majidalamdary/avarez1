@@ -25,26 +25,26 @@ public class AboutUs extends AppCompatActivity {
         if(typ.equals("cons")) {
             ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) v.getLayoutParams();
             lp.width=(int)(screenWidth* width);
-            lp.height=(int)(screenHeight* height);;
+            lp.height=(int)(screenHeight* height);
             v.setLayoutParams(lp);
         }
         if(typ.equals("line")) {
             LinearLayout.LayoutParams lp= (LinearLayout.LayoutParams) v.getLayoutParams();
             lp.width=(int)(screenWidth* width);
-            lp.height=(int)(screenHeight* height);;
+            lp.height=(int)(screenHeight* height);
             v.setLayoutParams(lp);
         }
         if(typ.equals("rel")) {
             RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) v.getLayoutParams();
             lp.width=(int)(screenWidth* width);
-            lp.height=(int)(screenHeight* height);;
+            lp.height=(int)(screenHeight* height);
             v.setLayoutParams(lp);
         }
     }
 
     private void set_size_txt(int vid,Double size,String typ)
     {
-        TextView v =(TextView) findViewById(vid);
+        TextView v = findViewById(vid);
         if(typ.equals("cons")) {
             ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) v.getLayoutParams();
             v.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));

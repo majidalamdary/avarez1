@@ -18,8 +18,7 @@ import com.sputa.avarez.model.items_eshterak;
 
 import java.util.List;
 
-//
-//
+
 
 public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_adapter.my_view_holder> {
     private Context context;

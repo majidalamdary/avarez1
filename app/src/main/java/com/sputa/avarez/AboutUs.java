@@ -19,6 +19,9 @@ public class AboutUs extends AppCompatActivity {
     private int screenWidth;
     private int screenHeight;
 
+
+
+////////////
     private void set_size(int vid,Double width,Double height,String typ)
     {
         View v =findViewById(vid);

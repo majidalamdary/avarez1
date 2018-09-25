@@ -2,7 +2,7 @@ package com.sputa.avarez.model;
 
 /**
  * Created by diego on 03/05/2018.
- */
+ *////
 
 public class items_eshterak {
     public items_eshterak(String txt_eshterak, String txt_name, String txt_price, String radif, String type) {

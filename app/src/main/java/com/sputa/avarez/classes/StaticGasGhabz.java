@@ -4,6 +4,7 @@ public class StaticGasGhabz {
 
     //
     //
+    ///
     public static String ghabz1_eshteraak = "123";
     public static String ghabz1_shenase = "321";
 

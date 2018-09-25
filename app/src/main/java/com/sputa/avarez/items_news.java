@@ -5,6 +5,9 @@ package com.sputa.avarez;
  */
 
 public class items_news {
+
+    //
+    //
     private String txt_title;
     private String radif;
 

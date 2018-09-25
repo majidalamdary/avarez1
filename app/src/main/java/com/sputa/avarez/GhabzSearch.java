@@ -38,6 +38,9 @@ import java.util.Random;
 
 public class GhabzSearch extends AppCompatActivity {
 
+
+
+    //
     private int screenWidth;
     private int screenHeight;
     private boolean is_requested;

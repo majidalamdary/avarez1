@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.sputa.avarez.classes.customFont;
 
+//
+//
 public class SelectGhabzType extends AppCompatActivity   {
     private int screenWidth;
     private int screenHeight;

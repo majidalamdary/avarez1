@@ -44,6 +44,8 @@ public class NewsList extends AppCompatActivity {
     LinearLayout lay_main;
     private Functions fun;
 
+    //
+    //
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;

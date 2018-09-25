@@ -16,6 +16,8 @@ import com.sputa.avarez.model.items_cars;
 
 import java.util.List;
 
+//
+//
 
 public class item_news_adapter extends RecyclerView.Adapter<item_news_adapter.my_view_holder> {
     private Context context;

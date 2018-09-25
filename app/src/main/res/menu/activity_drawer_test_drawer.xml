@@ -17,6 +17,11 @@
             android:icon="@drawable/abone"
             android:title="اشتراک های من" />
         <item
+            android:id="@+id/nav_pay_history"
+            android:icon="@drawable/abone"
+            android:title="سوابق پرداخت" />
+
+        <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/message"
             android:title="تازه ها" />

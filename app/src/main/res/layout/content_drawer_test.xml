@@ -91,6 +91,28 @@
         android:onClick="clk_my_eshterak"
         android:background="@drawable/btn_about_us">
 
+        <LinearLayout
+            android:id="@+id/lay_my_eshterak_count"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:background="@drawable/btn_orange"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.96"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.01999998">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_my_eshterak_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/img_aboutus"
             android:layout_width="50dp"
@@ -188,6 +210,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.100000024" />
+
+        <LinearLayout
+            android:id="@+id/lay_my_car_count"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:background="@drawable/btn_orange"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.96"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.01999998">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_my_car_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout

@@ -6,6 +6,38 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" />
+
+    <!-- for htc -->
+    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" />
+
+    <!-- for sony -->
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" />
+
+    <!-- for apex -->
+    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" />
+
+    <!-- for solid -->
+    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" />
+
+    <!-- for huawei -->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
+
+    <!-- for ZUK -->
+    <uses-permission android:name="android.permission.READ_APP_BADGE" />
+
+    <!-- for OPPO -->
+    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" />
+
+    <!-- for EvMe -->
+    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
+    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
 
     <application
         android:allowBackup="true"
@@ -26,27 +58,43 @@
         </service>
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".Splash">
+        <activity android:name=".Splash"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CarSearch" />
-        <activity android:name=".Tracking" />
-        <activity android:name=".Test" />
-        <activity android:name=".SelectAvarezType" />
+        <activity android:name=".CarSearch"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Tracking"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Test"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SelectAvarezType"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".DrawerTest"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".MyCarList" />
-        <activity android:name=".SelectGhabzType" />
-        <activity android:name=".GhabzSearch" />
-        <activity android:name=".MyEshterakList" />
-        <activity android:name=".AboutUs" />
-        <activity android:name=".NewsList"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MyCarList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SelectGhabzType"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GhabzSearch"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MyEshterakList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AboutUs"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NewsList"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PayHistoryActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

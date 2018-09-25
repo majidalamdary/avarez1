@@ -134,11 +134,10 @@ public class SelectGhabzType extends AppCompatActivity   {
     public void clk_gas_ghabz(View view) {
         if(typ.equals("search")) {
             Intent I = new Intent(this, GhabzSearch.class);
+            I.putExtra("type","gas");
             startActivity(I);
             finish();
         }
-
-
     }
 
     public void clk_back(View view) {
@@ -147,5 +146,14 @@ public class SelectGhabzType extends AppCompatActivity   {
 
     public void clk_under_cunstruct(View view) {
         Toast.makeText(this, "در دست طراحی", Toast.LENGTH_SHORT).show();
+    }
+
+    public void clk_water(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, GhabzSearch.class);
+            I.putExtra("type","water");
+            startActivity(I);
+            finish();
+        }
     }
 }

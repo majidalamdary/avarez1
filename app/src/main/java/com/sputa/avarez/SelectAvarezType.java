@@ -121,12 +121,14 @@ public class SelectAvarezType extends AppCompatActivity   {
         set_size_txt(R.id.lbl_panel,.045,"line");
         set_size_txt(R.id.lbl_waste,.045,"line");
         set_size_txt(R.id.lbl_renovation,.045,"line");
+        set_size_txt(R.id.lbl_jame,.045,"line");
 
         set_size(R.id.img_car,.15,.15,"line");
         set_size(R.id.img_busssiness,.15,.15,"line");
         set_size(R.id.img_panel,.15,.15,"line");
         set_size(R.id.img_waste,.15,.15,"line");
         set_size(R.id.img_renovation,.15,.15,"line");
+        set_size(R.id.img_jame,.15,.15,"line");
 
         typ = getIntent().getStringExtra("typ");
        // Toast.makeText(this, typ, Toast.LENGTH_SHORT).show();

@@ -1,32 +1,32 @@
 package com.sputa.avarez.classes;
 
-public class StaticGasGhabz {
+public class StaticWaterGhabz {
 
     public static String ghabz1_eshteraak = "123";
     public static String ghabz1_shenase = "321";
 
 
-    public static String ghabz1_name = "احمد رضایی";
-    public static String ghabz2_name = "جواد رضازاده";
+    public static String ghabz1_name = "رحمان احمدی";
+    public static String ghabz2_name = "یاسر ولی زاده";
 
 
-    public static String ghabz1_price_number = "47,563";
-    public static String ghabz2_price_number = "62,563";
+    public static String ghabz1_price_number = "295,000";
+    public static String ghabz2_price_number = "320,000";
 
-    public static String ghabz1_price_number_simple = "47563";
-    public static String ghabz2_price_number_simple = "62563";
+    public static String ghabz1_price_number_simple = "295000";
+    public static String ghabz2_price_number_simple = "320000";
 
-    public static String ghabz1_ID = "1";
-    public static String ghabz2_ID = "2";
+    public static String ghabz1_ID = "3";
+    public static String ghabz2_ID = "4";
 
-    public     static String ghabz1_price = "  :  احمد رضایی"+ "\n"+ "  :  47,563" + "\n" + "  :  15,000" + "\n" + "  :  47 مترمکعب";
-    public static String ghabz1_detail =" :  97/03/24"+"\n"+" :  97/04/26"+"\n"+" :  81424"+"\n"+" :  81468"+"\n"+" :  47"+"\n"+" :  47,563"+"\n"+" :  2";
+    public static String ghabz1_price = "  :  رحمان احمدی"+ "\n"+ "  :  295,000" + "\n" + "  :  170,000" + "\n" + "  :  3400 لیتر";
+    public static String ghabz1_detail =" :  97/03/24"+"\n"+" :  97/04/26"+"\n"+" :  389"+"\n"+" :  423"+"\n"+" :  166,655"+"\n"+" :  110,588"+"\n"+" :  21,889"+"\n"+" :  5,100"+"\n"+" :  295,000";
 
 
     public static String ghabz2_eshteraak = "456";
     public static String ghabz2_shenase = "654";
-    public static String ghabz2_price = "  :  جواد رضازاده"+ "\n"+ "  :  62,563" + "\n" + "  :  0" + "\n" + "  :  47 مترمکعب";
-    public static String ghabz2_detail =" :  97/03/24"+"\n"+" :  97/04/26"+"\n"+" :  76324"+"\n"+" :  76368"+"\n"+" :  47"+"\n"+" :  62,563"+"\n"+" :  2";
+    public static String ghabz2_price = "  :  یاسر ولی زاده"+ "\n"+ "  :  320,000" + "\n" + "  :  170,000" + "\n" + "  :  4200 لیتر";
+    public static String ghabz2_detail =" :  97/03/24"+"\n"+" :  97/04/26"+"\n"+" :  845"+"\n"+" :  960"+"\n"+" :  254,655"+"\n"+" :  260,588"+"\n"+" :  21,889"+"\n"+" :  5,100"+"\n"+" :  320,000";
 
 
     public static String get_ghabz_ID_eshterak(String eshterak)

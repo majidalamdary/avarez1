@@ -179,7 +179,6 @@ public class MyCarList extends AppCompatActivity implements RecyclerViewClickLis
     public void clk_pay(View view) {
 
 
-       // Toast.makeText(this, String.valueOf(pos), Toast.LENGTH_SHORT).show();
 
         mm = new MyAsyncTask();
         last_requested_query = getResources().getString(R.string.site_url) + "do?param=get_pay_info&CarID="+item.get(pos).getRadif()+"&rdn="+String.valueOf(new Random().nextInt());
@@ -243,6 +242,7 @@ public class MyCarList extends AppCompatActivity implements RecyclerViewClickLis
             txt.setText(view.getUrl());
         }
     }
+
     private class MyAsyncTask extends AsyncTask<String, Integer, Double> {
 
 

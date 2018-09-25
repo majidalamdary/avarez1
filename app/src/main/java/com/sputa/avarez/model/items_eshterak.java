@@ -5,11 +5,20 @@ package com.sputa.avarez.model;
  */
 
 public class items_eshterak {
-    public items_eshterak(String txt_eshterak, String txt_name, String txt_price, String radif) {
+    public items_eshterak(String txt_eshterak, String txt_name, String txt_price, String radif, String type) {
         this.txt_eshterak = txt_eshterak;
         this.txt_name = txt_name;
         this.txt_price = txt_price;
         this.radif = radif;
+        this.type=type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void setTxt_eshterak(String txt_eshterak) {
@@ -45,6 +54,7 @@ public class items_eshterak {
     }
 
     private String txt_eshterak;
+    private String type;
     private String txt_name;
     private String txt_price;
     private String radif;

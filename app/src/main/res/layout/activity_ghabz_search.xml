@@ -446,7 +446,7 @@
         android:layout_height="match_parent"
         android:background="#8e333333"
         android:gravity="center"
-        android:onClick="clk_message"
+
         android:visibility="gone">
 
         <android.support.constraint.ConstraintLayout
@@ -456,10 +456,36 @@
             android:background="@drawable/btn_white"
             android:visibility="gone">
 
+            <LinearLayout
+                android:id="@+id/btn_back_gate"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_grey"
+                android:gravity="center"
+                android:onClick="clk_back_gate"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.97">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_back_gate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="برگشت"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
             <WebView
                 android:id="@+id/web_view"
                 android:layout_width="302dp"
-                android:layout_height="480dp"
+                android:layout_height="442dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
@@ -469,7 +495,7 @@
                 app:layout_constraintHorizontal_bias="0.918"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.86" />
+                app:layout_constraintVertical_bias="0.45" />
 
             <TextView
                 android:id="@+id/textView2"

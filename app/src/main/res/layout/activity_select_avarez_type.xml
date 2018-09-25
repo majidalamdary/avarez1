@@ -430,6 +430,79 @@
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:orientation="vertical"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lay_bussiness"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:background="#a1a1a1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="clk_under_cunstruct"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/img_jame"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:src="@drawable/jame" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:gravity="center_vertical|start"
+                            android:orientation="horizontal"
+                            android:paddingStart="10dp">
+
+                            <com.sputa.avarez.my_views.MyTextView
+                                android:id="@+id/lbl_jame"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="عوارض جامع شهرداری"
+                                android:textColor="@android:color/black"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/img_next"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@drawable/left_arrow_grey" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

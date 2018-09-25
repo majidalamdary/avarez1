@@ -1,5 +1,6 @@
 package com.sputa.avarez;
 
+import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -39,9 +42,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.sputa.avarez.adapters.item_cars_adapter;
 import com.sputa.avarez.app.Config;
 import com.sputa.avarez.app.NotificationUtils;
+import com.sputa.avarez.classes.StaticGasGhabz;
+import com.sputa.avarez.classes.StaticWaterGhabz;
 import com.sputa.avarez.classes.customFont;
+import com.sputa.avarez.model.items_cars;
+import com.sputa.avarez.model.items_eshterak;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -56,6 +64,8 @@ import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.Base64;
 import java.util.Random;
+
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class DrawerTest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,7 +82,9 @@ public class DrawerTest extends AppCompatActivity
     TextView navMobile;
     TextView navname;
     private int tim=1;
+    private int cnt_eshterak=1;
     private Timer timer;
+    private int not_zero_cnt=0;
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -137,7 +149,14 @@ public class DrawerTest extends AppCompatActivity
     }
 
 
+    private void load_my_cars() {
+        mm = new MyAsyncTask();
+        last_requested_query = getResources().getString(R.string.site_url) + "do?param=get_my_cars&ID="+Functions.u_id+ "&rdn="+String.valueOf(new Random().nextInt());
+        // Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
 
+        mm.url = (last_requested_query);
+        mm.execute("");
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,6 +176,7 @@ public class DrawerTest extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -170,6 +190,7 @@ public class DrawerTest extends AppCompatActivity
         navMobile = (TextView) headerView.findViewById(R.id.txt_phone);
         navname = (TextView) headerView.findViewById(R.id.txt_name);
       //  navUsername.setText("Your Text Here");
+
 
 
         Menu m = navigationView.getMenu();
@@ -219,6 +240,47 @@ public class DrawerTest extends AppCompatActivity
         timer = new Timer("timeout");
         timer.start();
       get_info();
+        load_my_cars();
+        load_eshterak_count();
+    }
+
+    private void load_eshterak_count() {
+        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
+        String ghabz1 = prefs.getString("ghabz_id1", null);
+        String ghabz2 = prefs.getString("ghabz_id2", null);
+        String ghabz3 = prefs.getString("ghabz_id3", null);
+        String ghabz4 = prefs.getString("ghabz_id4", null);
+        cnt_eshterak=0;
+        if(ghabz1!=null)
+            if(!ghabz1.equals("")) {
+                //        Toast.makeText(this, "1212312", Toast.LENGTH_SHORT).show();
+                cnt_eshterak++;
+            }
+        if(ghabz2!=null)
+            if(!ghabz2.equals(""))
+                cnt_eshterak++;
+        if(ghabz3!=null)
+            if(!ghabz3.equals(""))
+                cnt_eshterak++;
+        if(ghabz4!=null)
+            if(!ghabz4.equals(""))
+                cnt_eshterak++;
+        if(cnt_eshterak>0)
+        {
+            LinearLayout lay_my_car_count= findViewById(R.id.lay_my_eshterak_count);
+            TextView lbl_my_car_count=findViewById(R.id.lbl_my_eshterak_count);
+            lay_my_car_count.setVisibility(View.VISIBLE);
+            lbl_my_car_count.setText(String.valueOf(cnt_eshterak));
+        }
+        else
+        {
+            LinearLayout lay_my_car_count= findViewById(R.id.lay_my_eshterak_count);
+            TextView lbl_my_car_count=findViewById(R.id.lbl_my_eshterak_count);
+            lay_my_car_count.setVisibility(View.GONE);
+            lbl_my_car_count.setText(String.valueOf(0));
+        }
+        int badgeCount = cnt_eshterak+not_zero_cnt;
+        ShortcutBadger.applyCount(getApplicationContext(), badgeCount); //for 1.1.4+
 
     }
 
@@ -309,10 +371,13 @@ public class DrawerTest extends AppCompatActivity
         set_size_txt(R.id.txt_car,0.055,"cons");
         set_size_txt(R.id.txt_driving_offense,0.049,"cons");
         set_size_txt(R.id.txt_gas,0.055,"cons");
-        set_size_txt(R.id.txt_aboutus,0.055,"cons");
-        set_size_txt(R.id.txt_news,0.055,"cons");
+        set_size_txt(R.id.txt_aboutus,0.046,"cons");
+        set_size_txt(R.id.txt_news,0.050,"cons");
+        set_size_txt(R.id.lbl_my_car_count,0.0420,"line");
+        set_size_txt(R.id.lbl_my_eshterak_count,0.0420,"line");
         set_size_txt(R.id.txt_exit,0.055,"cons");
-
+        set_size(R.id.lay_my_car_count,.07,.04,"cons");
+        set_size(R.id.lay_my_eshterak_count,.07,.04,"cons");
     }
 
     @Override
@@ -328,6 +393,8 @@ public class DrawerTest extends AppCompatActivity
 
         // clear the notification area when the app is opened
         NotificationUtils.clearNotifications(getApplicationContext());
+        load_eshterak_count();
+        load_my_cars();
     }
 
     @Override
@@ -364,8 +431,12 @@ public class DrawerTest extends AppCompatActivity
 
         } else if (id == R.id.nav_abone) {
             startActivity(new Intent(this,MyEshterakList.class));
+        }
+        else if (id == R.id.nav_pay_history) {
+            startActivity(new Intent(this,PayHistoryActivity.class));
+        }
 
-        } else if (id == R.id.nav_messages) {
+         else if (id == R.id.nav_messages) {
             startActivity(new Intent(this,NewsList.class));
 
         } else if (id == R.id.nav_contact_us) {
@@ -545,7 +616,56 @@ public class DrawerTest extends AppCompatActivity
                     }
 
                 }
+                if (param_str.equals("get_my_cars") ) {
+                    start1 = ss.indexOf("<result>");
+                    end1 = ss.indexOf("</result>");
 
+                    String rslt = ss.substring(start1 + 8, end1);
+
+                    if (!rslt.equals("0")) {
+
+                        start1 = ss.indexOf("<carCount>");
+                        end1 = ss.indexOf("</carCount>");
+                        rslt = ss.substring(start1 + 10, end1);
+                        if (!rslt.equals("0")) {
+                            int cnt = Integer.valueOf(rslt);
+                            not_zero_cnt=0;
+
+                            for (int i = 1; i <= cnt; i++) {
+                                start1 = ss.indexOf("<car" + String.valueOf(i) + ">");
+                                end1 = ss.indexOf("</car" + String.valueOf(i) + ">");
+                                rslt = ss.substring(start1 + 6, end1);
+                                start1 = rslt.indexOf("<avarez>");
+                                end1 = rslt.indexOf("</avarez>");
+                                String avarez = rslt.substring(start1 + 8, end1);
+                                if(!avarez.equals("0"))
+                                {
+                                    not_zero_cnt++;
+                                }
+
+                            }
+                            if(not_zero_cnt>0)
+                            {
+                                LinearLayout lay_my_car_count= findViewById(R.id.lay_my_car_count);
+                                TextView lbl_my_car_count=findViewById(R.id.lbl_my_car_count);
+                                lay_my_car_count.setVisibility(View.VISIBLE);
+                                lbl_my_car_count.setText(String.valueOf(not_zero_cnt));
+                            }
+                            else
+                            {
+                                LinearLayout lay_my_car_count= findViewById(R.id.lay_my_car_count);
+                                TextView lbl_my_car_count=findViewById(R.id.lbl_my_car_count);
+                                lay_my_car_count.setVisibility(View.GONE);
+                                lbl_my_car_count.setText(String.valueOf(0));
+                            }
+                            int badgeCount = cnt_eshterak+not_zero_cnt;
+                            ShortcutBadger.applyCount(getApplicationContext(), badgeCount); //for 1.1.4+
+
+                        }
+
+
+                    }
+                }
 
             }
         }

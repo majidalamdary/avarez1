@@ -115,7 +115,7 @@ public class SelectAvarezType extends AppCompatActivity   {
         set_size(R.id.img_next,.06,.035,"line");
         set_size_txt(R.id.lbl_title,.054,"line");
 
-        
+
 
         set_size_txt(R.id.lbl_car_avarez,.045,"line");
         set_size_txt(R.id.lbl_bussienss,.045,"line");

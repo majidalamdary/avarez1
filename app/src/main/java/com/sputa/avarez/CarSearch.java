@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sputa.avarez.adapters.item_adapter;
+import com.sputa.avarez.adapters.item_detail_parvandeh_adapter;
 import com.sputa.avarez.model.items;
 
 import org.apache.http.HttpEntity;
@@ -75,9 +77,17 @@ public class CarSearch extends AppCompatActivity {
     private String rslt_ChassiSerial;
     private String rslt_VinNumber;
     private boolean allowBack=true;
+    private int avarez_Type;
+    private int at_car =1;
+    private int at_bussiness =2;
+    private int at_tablo =3;
+    private int at_pasmand =4;
+    private int at_jame =5;
+
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
+
         View v =findViewById(vid);
         if(typ.equals("cons")) {
             ConstraintLayout.LayoutParams lp= (ConstraintLayout.LayoutParams) v.getLayoutParams();
@@ -85,18 +95,21 @@ public class CarSearch extends AppCompatActivity {
             lp.height=(int)(screenHeight* height);;
             v.setLayoutParams(lp);
         }
+
         if(typ.equals("line")) {
             LinearLayout.LayoutParams lp= (LinearLayout.LayoutParams) v.getLayoutParams();
             lp.width=(int)(screenWidth* width);
             lp.height=(int)(screenHeight* height);;
             v.setLayoutParams(lp);
         }
+
         if(typ.equals("rel")) {
             RelativeLayout.LayoutParams lp= (RelativeLayout.LayoutParams) v.getLayoutParams();
             lp.width=(int)(screenWidth* width);
             lp.height=(int)(screenHeight* height);;
             v.setLayoutParams(lp);
         }
+
     }
 
     private void set_size_txt(int vid,Double size,String typ)
@@ -143,9 +156,60 @@ public class CarSearch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_search);
         lay_main= findViewById(R.id.lay_main);
-        String[] arraySpinner = new String[] {
+
+
+        String str=getIntent().getStringExtra("typ");
+      //  Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+        if(str.equals("car"))
+            avarez_Type = at_car;
+        if(str.equals("bussiness"))
+            avarez_Type = at_bussiness;
+        if(str.equals("tablo"))
+            avarez_Type = at_tablo;
+        if(str.equals("pasmand"))
+            avarez_Type = at_pasmand;
+        if(str.equals("jame"))
+            avarez_Type = at_jame;
+
+        TextView lbl_title = findViewById(R.id.lbl_title);
+        ImageView img_title = findViewById(R.id.img_title);
+        String[] arraySpinner;
+        arraySpinner = new String[] {
                 "شماره موتور", "شماره شاسی", "شماره VIN"
         };
+        if(avarez_Type==at_car)
+        {
+            arraySpinner = new String[] {
+                    "شماره موتور", "شماره شاسی", "شماره VIN"
+            };
+            lbl_title.setText("جستجو و پرداخت عوارض خودرو");
+             img_title.setBackgroundResource(R.drawable.car);
+        }
+        if(avarez_Type==at_bussiness)
+        {
+            arraySpinner = new String[] {
+                    "شماره پرونده","کد ملی",
+            };
+            lbl_title.setText("جستجو و پرداخت عوارض کسب  و کار");
+             img_title.setBackgroundResource(R.drawable.store);
+        }
+        if(avarez_Type==at_tablo)
+        {
+            arraySpinner = new String[] {
+                    "شماره پرونده","کد ملی",
+            };
+            lbl_title.setText("جستجو و پرداخت عوارض تابلو");
+             img_title.setBackgroundResource(R.drawable.panel);
+        }
+        if(avarez_Type==at_pasmand)
+        {
+            arraySpinner = new String[] {
+                    "شماره پرونده","کد ملی",
+            };
+            lbl_title.setText("جستجو و پرداخت عوارض پسماند");
+            img_title.setBackgroundResource(R.drawable.waste);
+        }
+
         Spinner s = (Spinner) findViewById(R.id.spn_search_type);
         ArrayAdapter<String> adapter;
         adapter = new ArrayAdapter<String>(this,
@@ -153,6 +217,22 @@ public class CarSearch extends AppCompatActivity {
         s.setAdapter(adapter);
 
 
+
+        if(avarez_Type==at_car) {
+            ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+            lay_motor_search.setVisibility(View.VISIBLE);
+            ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+            lay_parvandeh_search.setVisibility(View.GONE);
+
+        }
+        else
+        {
+            ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+            lay_motor_search.setVisibility(View.GONE);
+            ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+            lay_parvandeh_search.setVisibility(View.VISIBLE);
+
+        }
 
         fun=new Functions();
 
@@ -166,60 +246,75 @@ public class CarSearch extends AppCompatActivity {
         screenHeight = displayMetrics.heightPixels;
 
         set_size(R.id.txt_motor,.52,.07,"cons");
-        set_size_txt(R.id.lbl_title,.065,"cons");
+
+        set_size_txt(R.id.lbl_title,.058,"cons");
+
         set_size_txt(R.id.lbl_motor,.05,"cons");
         set_size_edit(R.id.txt_motor,.06,"cons");
         set_size_txt(R.id.lbl_search_type,.05,"cons");
         set_size_txt(R.id.lbl_msg,.039,"cons");
         set_size(R.id.lbl_msg,.9,.18,"cons");
+        if(avarez_Type==at_bussiness)
+            set_size(R.id.img_title,.14,.08,"cons");
+        else
+            set_size(R.id.img_title,.14,.09,"cons");
         Spinner spn= findViewById(R.id.spn_search_type);
         set_size(R.id.spn_search_type,.52,.07,"cons");
+
         spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // your code here
                 EditText txt_motor = findViewById(R.id.txt_motor);
-                EditText txt_parvande = findViewById(R.id.txt_parvande);
+                EditText txt_shasi = findViewById(R.id.txt_shasi);
                 EditText txt_vin = findViewById(R.id.txt_vin);
 
                 txt_motor.setText("");
-                txt_parvande.setText("");
+                txt_shasi.setText("");
                 txt_vin.setText("");
-                if(position==0)
-                {
-                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
-                    lay_motor_search.setVisibility(View.VISIBLE);
-                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
-                    lay_parvandeh_search.setVisibility(View.GONE);
-                    ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
-                    lay_vin_search.setVisibility(View.GONE);
 
+                if(avarez_Type==at_car) {
+                    if (position == 0) {
+                        ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                        lay_motor_search.setVisibility(View.VISIBLE);
+                        ConstraintLayout lay_shasi_search = findViewById(R.id.lay_shasi_search);
+                        lay_shasi_search.setVisibility(View.GONE);
+                        ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
+                        lay_vin_search.setVisibility(View.GONE);
+                    }
+                    if (position == 1) {
+                        ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                        lay_motor_search.setVisibility(View.GONE);
+                        ConstraintLayout lay_shasi_search = findViewById(R.id.lay_shasi_search);
+                        lay_shasi_search.setVisibility(View.VISIBLE);
+                        ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
+                        lay_vin_search.setVisibility(View.GONE);
+                    }
+                    if (position == 2) {
+                        ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+                        lay_motor_search.setVisibility(View.GONE);
+                        ConstraintLayout lay_shasi_search = findViewById(R.id.lay_shasi_search);
+                        lay_shasi_search.setVisibility(View.GONE);
+                        ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
+                        lay_vin_search.setVisibility(View.VISIBLE);
+                    }
                 }
-                if(position==1)
+                else
                 {
-                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
-                    lay_motor_search.setVisibility(View.GONE);
-                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
-                    lay_parvandeh_search.setVisibility(View.VISIBLE);
-                    ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
-                    lay_vin_search.setVisibility(View.GONE);
+                    if (position == 0) {
+                        ConstraintLayout lay_motor_search = findViewById(R.id.lay_parvandeh_search);
+                        lay_motor_search.setVisibility(View.VISIBLE);
+                        ConstraintLayout lay_melli_search = findViewById(R.id.lay_melli_search);
+                        lay_melli_search.setVisibility(View.GONE);
 
+                    }
+                    if (position == 1) {
+                        ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
+                        lay_parvandeh_search.setVisibility(View.GONE);
+                        ConstraintLayout lay_melli_search = findViewById(R.id.lay_melli_search);
+                        lay_melli_search.setVisibility(View.VISIBLE);
+                    }
                 }
-                if(position==2)
-                {
-                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
-                    lay_motor_search.setVisibility(View.GONE);
-                    ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
-                    lay_parvandeh_search.setVisibility(View.GONE);
-                    ConstraintLayout lay_vin_search = findViewById(R.id.lay_vin_search);
-                    lay_vin_search.setVisibility(View.VISIBLE);
-
-                }
-
-
-
-
-
             }
 
             @Override
@@ -232,10 +327,14 @@ public class CarSearch extends AppCompatActivity {
 //        spn.sette setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (screenWidth * size));
 //        spn.setLayoutParams(lp);
 
-        set_size(R.id.txt_parvande,.52,.07,"cons");
+        set_size(R.id.txt_shasi,.52,.07,"cons");
         set_size_txt(R.id.lbl_shasi,.04,"cons");
-        set_size_edit(R.id.txt_parvande,.04,"cons");
+        set_size_txt(R.id.lbl_parvandeh,.04,"cons");
+        set_size_txt(R.id.lbl_melli,.042,"cons");
+        set_size_edit(R.id.txt_shasi,.04,"cons");
         set_size_edit(R.id.txt_motor,.04,"cons");
+        set_size_edit(R.id.txt_parvndeh,.04,"cons");
+        set_size_edit(R.id.txt_melli,.04,"cons");
 
 
         set_size(R.id.btn_search,.3,.065,"cons");
@@ -247,7 +346,8 @@ public class CarSearch extends AppCompatActivity {
 
         set_size_txt(R.id.lbl_help,.033,"cons");
         set_size(R.id.img_help_motor,.08,.06,"cons");
-        set_size(R.id.img_help_parvandeh,.08,.06,"cons");
+        set_size(R.id.img_help_shasi,.08,.06,"cons");
+        set_size(R.id.img_help_shasi,.08,.06,"cons");
 
 
 
@@ -279,17 +379,79 @@ public class CarSearch extends AppCompatActivity {
         set_size(R.id.txt_shasi_complete,.44,.07,"cons");
 
         set_size_txt(R.id.lbl_VIN_complete,.04,"cons");
-        set_size_edit(R.id.txt_VIN_complete,.044,"cons");
+        set_size_edit(R.id.txt_VIN_complete,.042,"cons");
         set_size(R.id.txt_VIN_complete,.44,.07,"cons");
-
         set_size_txt(R.id.lbl_complete_title,.051,"cons");
+
+
+
+
 
 
     }
 
     public void clk_search(View view) {
+        if(avarez_Type==at_car)
+            search_car();
+        if(avarez_Type==at_bussiness)
+            search_bussiness();
+
+
+    }
+
+    private void search_bussiness() {
+        EditText txt_parvndeh=findViewById(R.id.txt_parvndeh);
+        EditText txt_melli=findViewById(R.id.txt_melli);
+
+        String
+                search_type="none";
+        if(txt_parvndeh.getText().toString().length()>0)
+        {
+            search_type="ok";
+        }
+        else if(txt_melli.getText().toString().length()>0)
+        {
+            search_type="ok";
+        }
+
+        if(search_type.equals("ok"))
+        {
+
+            if(txt_parvndeh.getText().toString().length()>0)
+            {
+                if(txt_parvndeh.getText().toString().equals("123"))
+                {
+                    LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                    LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                    TextView lbl_msg = findViewById(R.id.lbl_msg);
+                    btn_pay.setVisibility(View.VISIBLE);
+                    btn_detail.setVisibility(View.VISIBLE);
+                    String
+                            msg="";
+                        msg += " شهرداری ارومیه "  + "\n";
+                        msg += "نام مالک : " + "علی" +" "+ "جاودانی" + "\n";
+                        //msg += "نام خودرو : " + "" + "\n";
+                    msg+= " مبلغ عوارض شما " + "450,000" + " ریال می باشد.";
+                    lbl_msg.setText(msg);
+                }
+                else
+                {
+                    TextView lbl_msg = findViewById(R.id.lbl_msg);
+                    String
+                            msg="اطلاعات وارد شده صحیح نمی باشد";
+                    lbl_msg.setText(msg);
+                }
+            }
+        }
+        else
+        {
+            Toast.makeText(this, "لطفا اطلاعات درخواستی را وارد کنید", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void search_car() {
         EditText txt_motor=findViewById(R.id.txt_motor);
-        EditText txt_parvande=findViewById(R.id.txt_parvande);
+        EditText txt_shasi=findViewById(R.id.txt_shasi);
         EditText txt_vin=findViewById(R.id.txt_vin);
         String
                 search_type="none";
@@ -297,18 +459,18 @@ public class CarSearch extends AppCompatActivity {
         {
             search_type="ok";
         }
-        else if(txt_parvande.getText().toString().length()>0)
+        else if(txt_shasi.getText().toString().length()>0)
         {
             search_type="ok";
-        } 
+        }
         else if(txt_vin.getText().toString().length()>0)
         {
             search_type="ok";
         }
         if(search_type.equals("ok"))
         {
-                last_query = getResources().getString(R.string.site_url) + "do.aspx?param=get_avarez_motor&key_motor="+txt_motor.getText().toString()+"&key_shasi="+txt_parvande.getText().toString()+ "&key_vin="+txt_vin.getText().toString()+ "&u_id="+Functions.u_id+"&rnd=" + String.valueOf(new Random().nextInt());
-       //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
+            last_query = getResources().getString(R.string.site_url) + "do.aspx?param=get_avarez_motor&key_motor="+txt_motor.getText().toString()+"&key_shasi="+txt_shasi.getText().toString()+ "&key_vin="+txt_vin.getText().toString()+ "&u_id="+Functions.u_id+"&rnd=" + String.valueOf(new Random().nextInt());
+            //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
             mm=new MyAsyncTask();
             mm.url = (last_query);
             mm.execute("");
@@ -330,9 +492,8 @@ public class CarSearch extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "لطفا اطلاعات خودرو خود را وارد کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "لطفا اطلاعات درخواستی را وارد کنید", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void clk_back(View view) {
@@ -363,22 +524,22 @@ public class CarSearch extends AppCompatActivity {
         if(lay_wait.getVisibility()==(View.GONE) && lay_complete_info.getVisibility()==(View.GONE))  {
             RelativeLayout lay_message = findViewById(R.id.lay_message);
             RelativeLayout lay_help_motor = findViewById(R.id.lay_help_motor);
-            RelativeLayout lay_help_parvandeh = findViewById(R.id.lay_help_parvandeh);
+            RelativeLayout lay_help_shasi = findViewById(R.id.lay_help_shasi);
             ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
 
             fun.enableDisableView(lay_main, true);
             lay_message.setVisibility(View.GONE);
             lay_help_motor.setVisibility(View.GONE);
-            lay_help_parvandeh.setVisibility(View.GONE);
+            lay_help_shasi.setVisibility(View.GONE);
             lay_detail.setVisibility(View.GONE);
         }
     }
 
     public void clk_help_shasi(View view) {
         RelativeLayout lay_message = findViewById(R.id.lay_message);
-        RelativeLayout lay_help_motor = findViewById(R.id.lay_help_parvandeh);
-        set_size(R.id.lbl_help_parvandeh,.6,.3,"rel");
-        set_size_txt(R.id.lbl_help_parvandeh,.042,"rel");
+        RelativeLayout lay_help_motor = findViewById(R.id.lay_help_shasi);
+        set_size(R.id.lbl_help_shasi,.6,.3,"rel");
+        set_size_txt(R.id.lbl_help_shasi,.042,"rel");
         fun.enableDisableView(lay_main,false);
         lay_message.setVisibility(View.VISIBLE);
         lay_help_motor.setVisibility(View.VISIBLE);
@@ -423,6 +584,7 @@ public class CarSearch extends AppCompatActivity {
         lay_wait.setVisibility(View.GONE);
         ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
         lay_detail.setVisibility(View.GONE);
+
     }
 
     public void clk_save_complete(View view) {
@@ -517,8 +679,34 @@ public class CarSearch extends AppCompatActivity {
         fun.enableDisableView(lay_main, false);
         RelativeLayout lay_message = findViewById(R.id.lay_message);
         lay_message.setVisibility(View.VISIBLE);
-        ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
-        lay_detail.setVisibility(View.VISIBLE);
+        if(avarez_Type == at_car) {
+            ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
+            lay_detail.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            item.add(new items("1397","450,000","","0","0","1"));
+            mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_parvandeh);
+                                            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(CarSearch.this);
+                                            mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+            mAdapter = new item_detail_parvandeh_adapter(CarSearch.this,item);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+            ConstraintLayout lay_detail_parvandeh = findViewById(R.id.lay_detail_parvandeh);
+            lay_detail_parvandeh.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void clk_back_detail_parvandeh(View view) {
+        fun.enableDisableView(lay_main, true);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        lay_message.setVisibility(View.GONE);
+        ConstraintLayout lay_detail_parvandeh = findViewById(R.id.lay_detail_parvandeh);
+        lay_detail_parvandeh.setVisibility(View.GONE);
+
     }
 
     public class myWebClient extends WebViewClient
@@ -666,8 +854,6 @@ public class CarSearch extends AppCompatActivity {
                                 start1 = rslt.indexOf("<price>");
                                 end1 = rslt.indexOf("</price>");
                                 rslt_price = rslt.substring(start1 + 7, end1);
-//                            Toast.makeText(CarSearch.this, rslt_price, Toast.LENGTH_SHORT).show();
-
                                 avarez_price = -1;
                                 try {
                                     avarez_price = Integer.valueOf(rslt_price);

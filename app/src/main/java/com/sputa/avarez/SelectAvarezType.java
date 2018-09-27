@@ -138,15 +138,34 @@ public class SelectAvarezType extends AppCompatActivity   {
     public void clk_car_avarez(View view) {
         if(typ.equals("search")) {
             Intent I = new Intent(this, CarSearch.class);
+            I.putExtra("typ","car");
             startActivity(I);
             finish();
         }
-        else if(typ.equals("tracking")) {
-            Intent I = new Intent(this, Tracking.class);
+    }
+    public void clk_bussiness_avarez(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, CarSearch.class);
+            I.putExtra("typ","bussiness");
             startActivity(I);
             finish();
         }
-
+    }
+    public void clk_tablo_avarez(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, CarSearch.class);
+            I.putExtra("typ","tablo");
+            startActivity(I);
+            finish();
+        }
+    }
+    public void clk_pasmand_avarez(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, CarSearch.class);
+            I.putExtra("typ","pasmand");
+            startActivity(I);
+            finish();
+        }
     }
 
     public void clk_back(View view) {

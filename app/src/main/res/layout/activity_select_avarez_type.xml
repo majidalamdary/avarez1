@@ -151,7 +151,7 @@
                     android:background="#a1a1a1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="clk_under_cunstruct"
+                    android:onClick="clk_bussiness_avarez"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp">
 
@@ -222,7 +222,7 @@
                     android:background="#a1a1a1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="clk_under_cunstruct"
+                    android:onClick="clk_tablo_avarez"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp">
 
@@ -296,7 +296,7 @@
                     android:background="#a1a1a1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="clk_under_cunstruct"
+                    android:onClick="clk_pasmand_avarez"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp">
 

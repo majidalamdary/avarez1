@@ -65,6 +65,10 @@ public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_ad
 
 
 
+
+
+
+
     }
 
 

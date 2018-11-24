@@ -56,6 +56,10 @@ public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_ad
             holder.img_icon.setBackgroundResource(R.drawable.gas);
         if(item.get(position).getType().equals("water"))
             holder.img_icon.setBackgroundResource(R.drawable.water);
+        if(item.get(position).getType().equals("electric"))
+            holder.img_icon.setBackgroundResource(R.drawable.electric);
+        if(item.get(position).getType().equals("telphone"))
+            holder.img_icon.setBackgroundResource(R.drawable.tephone);
 
 
 

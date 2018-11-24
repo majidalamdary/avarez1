@@ -20,6 +20,59 @@
             android:layout_height="match_parent"
             android:background="@drawable/btn_white">
 
+            <LinearLayout
+                android:id="@+id/btn_taghsit"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_blue"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.41"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.98">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_taghsit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="اقساط"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_detail"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_main_color"
+                android:gravity="center"
+                android:onClick="clk_detail"
+                android:orientation="horizontal"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.98">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="جزئیات"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/lay_confirm"
                 android:layout_width="match_parent"
@@ -480,7 +533,7 @@
                 app:layout_constraintHorizontal_bias="0.092"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.904" />
+                app:layout_constraintVertical_bias="0.88" />
 
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_help"
@@ -952,11 +1005,12 @@
             android:visibility="gone">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/lay_header_car"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:orientation="horizontal"
                 android:padding="1dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1070,9 +1124,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
                 android:id="@+id/btn_back_detail"
@@ -1116,6 +1168,74 @@
                 app:layout_constraintVertical_bias="0.052" />
 
         </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/lay_avarez_jame"
+            android:layout_width="320dp"
+            android:layout_height="350dp"
+            android:background="@drawable/btn_white"
+            android:visibility="gone">
+
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_msg_jame"
+                android:layout_width="333dp"
+                android:layout_height="231dp"
+                android:background="@android:color/white"
+                android:lineSpacingExtra="5dp"
+                android:textAlignment="viewStart"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.58"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.45" />
+
+            <LinearLayout
+                android:id="@+id/btn_back_detail_jame"
+                android:layout_width="110dp"
+                android:layout_height="41dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/btn_grey"
+                android:gravity="center"
+                android:onClick="clk_back_detail_jame"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.91"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.95">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_back_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="برگشت"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/lbl_complete_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="جزئیات مبلغ عوارض خودرو"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.01999998" />
+
+        </android.support.constraint.ConstraintLayout>
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/lay_detail_parvandeh"
             android:layout_width="320dp"
@@ -1124,7 +1244,7 @@
             android:visibility="gone">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/lay_header_bussiness"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:orientation="horizontal"
@@ -1145,7 +1265,91 @@
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
-                    android:text="سال عوارض"
+                    android:text="آخرین  پرداخت"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="از سال"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="تا سال"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="مالیات"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="مبلغ جریمه"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
@@ -1170,48 +1374,6 @@
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="12sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".02"
-                    android:orientation="horizontal"></LinearLayout>
-
-                <com.sputa.avarez.my_views.MyTextView
-                    android:id="@+id/textView3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:background="#009ed7"
-                    android:padding="0dp"
-                    android:text="نرخ جریمه"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".02"
-                    android:orientation="horizontal"></LinearLayout>
-
-                <com.sputa.avarez.my_views.MyTextView
-                    android:id="@+id/textView33"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:background="#009ed7"
-                    android:padding="0dp"
-                    android:text="جریمه دیرکرد"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -1222,7 +1384,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintTop_toBottomOf="@+id/lay_header_bussiness"
                 app:layout_constraintVertical_bias="0.0" />
 
             <LinearLayout

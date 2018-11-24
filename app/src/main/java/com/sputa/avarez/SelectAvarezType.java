@@ -140,7 +140,7 @@ public class SelectAvarezType extends AppCompatActivity   {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","car");
             startActivity(I);
-            finish();
+      //      finish();
         }
     }
     public void clk_bussiness_avarez(View view) {
@@ -148,7 +148,7 @@ public class SelectAvarezType extends AppCompatActivity   {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","bussiness");
             startActivity(I);
-            finish();
+      //      finish();
         }
     }
     public void clk_tablo_avarez(View view) {
@@ -156,7 +156,7 @@ public class SelectAvarezType extends AppCompatActivity   {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","tablo");
             startActivity(I);
-            finish();
+      //      finish();
         }
     }
     public void clk_pasmand_avarez(View view) {
@@ -164,7 +164,7 @@ public class SelectAvarezType extends AppCompatActivity   {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","pasmand");
             startActivity(I);
-            finish();
+       //     finish();
         }
     }
 
@@ -174,5 +174,14 @@ public class SelectAvarezType extends AppCompatActivity   {
 
     public void clk_under_cunstruct(View view) {
         Toast.makeText(this, "در دست طراحی", Toast.LENGTH_SHORT).show();
+    }
+
+    public void clk_jame_avarez(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, CarSearch.class);
+            I.putExtra("typ","jame");
+            startActivity(I);
+          //  finish();
+        }
     }
 }

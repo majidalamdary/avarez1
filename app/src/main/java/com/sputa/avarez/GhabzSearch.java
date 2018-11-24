@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -71,6 +74,8 @@ public class GhabzSearch extends AppCompatActivity {
     private String ghabz_id;
     private boolean allowBack=true;
     private String ghabz_type="electric";
+    private SQLiteDatabase myDB;
+    private String price_all="0";
 
 
     private void set_size(int vid,Double width,Double height,String typ)
@@ -145,10 +150,18 @@ public class GhabzSearch extends AppCompatActivity {
 
         Intent I = getIntent();
         ghabz_type = I.getStringExtra("type");
-
+        TextView lbl_title = findViewById(R.id.lbl_title);
+        if (ghabz_type.equals("gas"))
+            lbl_title.setText("جستجوی قبض"+" گاز ");
+        if (ghabz_type.equals("water"))
+            lbl_title.setText("جستجوی قبض"+" آب ");
+        if (ghabz_type.equals("electric"))
+            lbl_title.setText("جستجوی قبض"+" برق ");
+        if (ghabz_type.equals("telphone"))
+            lbl_title.setText("جستجوی قبض"+" تلفن ");
 
         String[] arraySpinner = new String[] {
-                "شماره اشتراک", "شناسه قبض"
+                "کد ملی","شماره اشتراک"
         };
         Spinner s = (Spinner) findViewById(R.id.spn_search_type);
         ArrayAdapter<String> adapter;
@@ -187,15 +200,15 @@ public class GhabzSearch extends AppCompatActivity {
                 txt_parvande.setText("");
                 if (position == 0) {
                     ConstraintLayout lay_motor_search = findViewById(R.id.lay_eshterak_search);
-                    lay_motor_search.setVisibility(View.VISIBLE);
-                    ConstraintLayout lay_ghabz_search = findViewById(R.id.lay_ghabz_search);
-                    lay_ghabz_search.setVisibility(View.GONE);
-                }
-                if (position == 1) {
-                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_eshterak_search);
                     lay_motor_search.setVisibility(View.GONE);
                     ConstraintLayout lay_ghabz_search = findViewById(R.id.lay_ghabz_search);
                     lay_ghabz_search.setVisibility(View.VISIBLE);
+                }
+                if (position == 1) {
+                    ConstraintLayout lay_motor_search = findViewById(R.id.lay_eshterak_search);
+                    lay_motor_search.setVisibility(View.VISIBLE);
+                    ConstraintLayout lay_ghabz_search = findViewById(R.id.lay_ghabz_search);
+                    lay_ghabz_search.setVisibility(View.GONE);
                  }
             }
 
@@ -270,6 +283,18 @@ public class GhabzSearch extends AppCompatActivity {
         set_size_txt(R.id.lbl_msg_left_detail,.04,"line");
 
 
+        myDB = this.openOrCreateDatabase(getString(R.string.DB_name), MODE_PRIVATE, null);
+
+
+
+        Cursor cr = myDB.rawQuery("select * from water", null);
+        if(cr.getCount()>0)
+        {
+//            cr.moveToFirst();
+//            Toast.makeText(this, cr.getString(0), Toast.LENGTH_SHORT).show();
+//            cr.moveToNext();
+//            Toast.makeText(this, cr.getString(0), Toast.LENGTH_SHORT).show();
+        }
 
     }
     public void clk_search(View view) {
@@ -289,17 +314,351 @@ public class GhabzSearch extends AppCompatActivity {
         if (search_type.equals("ok")) {
 
 
-            if(txt_eshterak.length()>0) {
-                search_ghabz_eshterak(txt_eshterak.getText().toString(), txt_ghabz.getText().toString());
-            }else {
-                search_ghabz_shenase(txt_ghabz.getText().toString(), txt_ghabz.getText().toString());
+            if(txt_eshterak.length()>0 || txt_ghabz.length()>0) {
+                search_ghabz_melli(txt_eshterak.getText().toString(), txt_ghabz.getText().toString(),"eshterak");
             }
 
 
         } else {
-            Toast.makeText(this, "لطفا اطلاعات قبض خود را وارد کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "لطفا اطلاعات موردنظر را وارد کنید", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void search_ghabz_melli(String s, String s1, String typ) {
+            if(ghabz_type.equals("gas"))
+            {
+                search_gas_ghabz(s,  s1);
+            }
+            if(ghabz_type.equals("water"))
+            {
+                search_water_ghabz(s,  s1);
+            }
+        if(ghabz_type.equals("electric"))
+            {
+                search_electric_ghabz(s,  s1);
+            }
+            if(ghabz_type.equals("telphone"))
+            {
+                search_telphone_ghabz(s,  s1);
+            }
+
+    }
+
+    private void search_gas_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from Gas where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+             cr = myDB.rawQuery("select * from Gas where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+             cr = myDB.rawQuery("select * from Gas where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+                msg += " نام مالک"+ "\n" ;
+                msg += " مبلغ قابل پرداخت قبض" + "\n" ;
+                msg += " مبلغ بدهی قبض" + "\n" ;
+                msg += " کارکرد دوره" + "\n" ;
+
+                TextView lbl_msg = findViewById(R.id.lbl_msg_right);
+                lbl_msg.setText(msg);
+                price_all = cr.getString(12);
+
+                msg =" :   "+ cr.getString(2)+" "+cr.getString(3)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(12))+ " ریال \n" ;
+                msg +=" :   "+ cr.getString(11)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+
+                TextView lbl_msg1 = findViewById(R.id.lbl_msg_left);
+                lbl_msg1.setText(msg);
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                    msg = "";
+                    msg += "تاریخ قرائت پیشین" + "\n";
+                    msg += "تاریخ قرائت فعلی" + "\n";
+                    msg += "رقم پیشین شمارشگر" + "\n";
+                    msg += "رقم فعلی شمارشگر" + "\n";
+                    msg += "مصرف به متر مکعب" + "\n";
+                    msg += "تعداد واحد" + "\n";
+                    msg += "بهای گاز مصرفی" + "\n";
+
+                    lbl_msg_right_detail.setText(msg);
+                    msg = "";
+                    msg =" :   "+ cr.getString(5) + "\n" ;
+                    msg +=" :   "+ cr.getString(6)+ "\n" ;
+                    msg +=" :   "+ cr.getString(7)+ "\n" ;
+                    msg +=" :   "+ cr.getString(8)+ "\n" ;
+                    msg +=" :   "+ cr.getString(9)+ "\n" ;
+                    msg +=" :   "+ cr.getString(10)+ "  \n" ;
+
+                    msg +=" :   "+ digiting(cr.getString(12))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+                LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                btn_detail.setVisibility(View.VISIBLE);
+
+
+
+
+                bookmark_ghabz(ID,"gas");
+            }
+        }
+    }
+    private void search_water_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from water where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+            cr = myDB.rawQuery("select * from water where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+            cr = myDB.rawQuery("select * from water where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+                msg += " نام مالک"+ "\n" ;
+                msg += " مبلغ قابل پرداخت قبض" + "\n" ;
+                msg += " مبلغ بدهی قبض" + "\n" ;
+                msg += " کارکرد دوره" + "\n" ;
+
+                TextView lbl_msg = findViewById(R.id.lbl_msg_right);
+                lbl_msg.setText(msg);
+                price_all = String.valueOf((int)(cr.getFloat(14)));
+
+                msg =" :   "+ cr.getString(2)+" "+cr.getString(3)+ "\n" ;
+                msg +=" :   "+ digiting(String.valueOf((int)(cr.getFloat(14))))+ " ریال \n" ;
+                msg +=" :   "+ cr.getString(13)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+
+                TextView lbl_msg1 = findViewById(R.id.lbl_msg_left);
+                lbl_msg1.setText(msg);
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                msg = "";
+                msg += "تاریخ قرائت پیشین" + "\n";
+                msg += "تاریخ قرائت فعلی" + "\n";
+                msg += "رقم پیشین شمارشگر" + "\n";
+                msg += "رقم فعلی شمارشگر" + "\n";
+                msg += "مصرف به متر مکعب" + "\n";
+                msg += "عوارض فاضلاب" + "\n";
+                msg += "مالیات" + "\n";
+                msg += "تبصره های قانونی" + "\n";
+                msg += "بهای آب مصرفی" + "\n";
+
+                lbl_msg_right_detail.setText(msg);
+                msg = "";
+                msg =" :   "+ cr.getString(5) + "\n" ;
+                msg +=" :   "+ cr.getString(6)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+                msg +=" :   "+ cr.getString(8)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(10))+ "\n" ;
+                msg +=" :   "+ cr.getString(11)+ "\n" ;
+                msg +=" :   "+ cr.getString(12)+ "\n" ;
+                msg +=" :   "+ digiting(String.valueOf((int)(cr.getFloat(14))))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+                LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                btn_detail.setVisibility(View.VISIBLE);
+
+
+
+
+                bookmark_ghabz(ID,"water");
+            }
+        }
+    }
+    private void search_electric_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from power where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+            cr = myDB.rawQuery("select * from power where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+            cr = myDB.rawQuery("select * from power where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+                msg += " نام مالک"+ "\n" ;
+                msg += " مبلغ قابل پرداخت قبض" + "\n" ;
+                msg += " مبلغ بدهی قبض" + "\n" ;
+                msg += " کارکرد دوره" + "\n" ;
+
+                TextView lbl_msg = findViewById(R.id.lbl_msg_right);
+                lbl_msg.setText(msg);
+                price_all = cr.getString(11);
+
+                msg =" :   "+ cr.getString(2)+" "+cr.getString(3)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(11))+ " ریال \n" ;
+                msg +=" :   "+ cr.getString(10)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+
+                TextView lbl_msg1 = findViewById(R.id.lbl_msg_left);
+                lbl_msg1.setText(msg);
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                msg = "";
+                msg += "تاریخ قرائت پیشین" + "\n";
+                msg += "تاریخ قرائت فعلی" + "\n";
+                msg += "رقم پیشین شمارشگر" + "\n";
+                msg += "رقم فعلی شمارشگر" + "\n";
+                msg += "مصرف به کیلو وات" + "\n";
+                msg += "بهای برق مصرفی" + "\n";
+
+                lbl_msg_right_detail.setText(msg);
+                msg = "";
+                msg =" :   "+ cr.getString(5) + "\n" ;
+                msg +=" :   "+ cr.getString(6)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+                msg +=" :   "+ cr.getString(8)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(11))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+                LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                btn_detail.setVisibility(View.VISIBLE);
+
+
+
+
+                bookmark_ghabz(ID,"electric");
+            }
+        }
+        else
+            Toast.makeText(this, "اشتراک پیدا نشد", Toast.LENGTH_SHORT).show();
+    }
+   private void search_telphone_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from CellPhone where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+            cr = myDB.rawQuery("select * from CellPhone where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+            cr = myDB.rawQuery("select * from CellPhone where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+                msg += " نام مالک"+ "\n" ;
+                msg += " مبلغ قابل پرداخت قبض" + "\n" ;
+                msg += " مبلغ بدهی قبض" + "\n" ;
+                msg += " کارکرد دوره" + "\n" ;
+
+                TextView lbl_msg = findViewById(R.id.lbl_msg_right);
+                lbl_msg.setText(msg);
+                price_all = cr.getString(9);
+
+                msg =" :   "+ cr.getString(2)+" "+cr.getString(3)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(9))+ " ریال \n" ;
+                msg +=" :   "+ cr.getString(8)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+
+                TextView lbl_msg1 = findViewById(R.id.lbl_msg_left);
+                lbl_msg1.setText(msg);
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                msg = "";
+                msg += "تاریخ پیشین" + "\n";
+                msg += "تاریخ فعلی" + "\n";
+
+                msg += "مصرف به دقیقه" + "\n";
+                msg += "بهای مکالمه با تلفن" + "\n";
+
+                lbl_msg_right_detail.setText(msg);
+                msg = "";
+                msg =" :   "+ cr.getString(5) + "\n" ;
+                msg +=" :   "+ cr.getString(6)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(9))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+                LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                btn_detail.setVisibility(View.VISIBLE);
+
+
+
+
+                bookmark_ghabz(ID,"telphone");
+            }
+        }
+    }
+
+    private String digiting(String string) {
+        String new_str = "";
+        int j = 0;
+        for (int ii = string.length() - 1; ii >= 0; ii--) {
+            j++;
+            if (j != string.length() && j % 3 == 0)
+                new_str = "," + string.charAt(ii) + new_str;
+            else
+                new_str = string.charAt(ii) + new_str;
+        }
+        return new_str;
+    }
+
+
     public void clk_detail(View view) {
         fun.enableDisableView(lay_main, false);
         RelativeLayout lay_message = findViewById(R.id.lay_message);
@@ -391,7 +750,7 @@ public class GhabzSearch extends AppCompatActivity {
 
 
 
-            bookmark_ghabz();
+       //     bookmark_ghabz();
 
         }
         else
@@ -481,7 +840,7 @@ public class GhabzSearch extends AppCompatActivity {
 
 
 
-            bookmark_ghabz();
+//            bookmark_ghabz();
 
         }
         else
@@ -491,19 +850,17 @@ public class GhabzSearch extends AppCompatActivity {
 
     }
 
-    private void bookmark_ghabz() {
-       // Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
-        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
-        String ghabz1 = prefs.getString("ghabz_id1", null);
-        String ghabz2 = prefs.getString("ghabz_id2", null);
-        String ghabz3 = prefs.getString("ghabz_id3", null);
-        String ghabz4 = prefs.getString("ghabz_id4", null);
-        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
-        if(ghabz_id.equals(StaticGasGhabz.ghabz1_ID))
+    private void bookmark_ghabz(String Id,String type) {
+
+
+        final String id=Id;
+        final String type1=type;
+
+        Cursor cr = myDB.rawQuery("select * from MyGhabz where AboneID='"+Id+"' and Type='"+type+"'",null);
+        if(cr.getCount()==0)
         {
-            if(ghabz1 ==null )
-            {
-                AlertDialog.Builder builder;
+
+            AlertDialog.Builder builder;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
                 } else {
@@ -513,115 +870,152 @@ public class GhabzSearch extends AppCompatActivity {
                         .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
                         .setPositiveButton("بله", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id1", ghabz_id);
-                                editor.apply();
-
+                                myDB.execSQL("insert into MyGhabz (AboneID,Type) values('"+id+"','"+type1+"')");
                             }
                         }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
 
                     }
-                })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                }).setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-            }
-        }
-        if(ghabz_id.equals(StaticGasGhabz.ghabz2_ID))
-        {
-            if(ghabz2 == null)
-            {
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(GhabzSearch.this);
-                }
-                builder.setTitle("ذخیره اشتراک؟")
-                        .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
-                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id2", ghabz_id);
-                                editor.apply();
 
-                            }
-                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
 
-                    }
-                })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        }
-       // Toast.makeText(this, ghabz_id+"--"+StaticWaterGhabz.ghabz1_ID, Toast.LENGTH_SHORT).show();
-        if(ghabz_id.equals(StaticWaterGhabz.ghabz1_ID))
-        {
-
-            if(ghabz3 == null)
-            {
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(GhabzSearch.this);
-                }
-                builder.setTitle("ذخیره اشتراک؟")
-                        .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
-                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id3", ghabz_id);
-                                editor.apply();
-
-                            }
-                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-
-                    }
-                })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        }
-
-        if(ghabz_id.equals(StaticWaterGhabz.ghabz2_ID))
-        {
-            if(ghabz4 == null)
-            {
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(GhabzSearch.this);
-                }
-                builder.setTitle("ذخیره اشتراک؟")
-                        .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
-                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id4", ghabz_id);
-                                editor.apply();
-
-                            }
-                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-
-                    }
-                })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
         }
 
 
 
 
+//       // Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+//        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
+//        String ghabz1 = prefs.getString("ghabz_id1", null);
+//        String ghabz2 = prefs.getString("ghabz_id2", null);
+//        String ghabz3 = prefs.getString("ghabz_id3", null);
+//        String ghabz4 = prefs.getString("ghabz_id4", null);
+//        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+//        if(ghabz_id.equals(StaticGasGhabz.ghabz1_ID))
+//        {
+//            if(ghabz1 ==null )
+//            {
+//                AlertDialog.Builder builder;
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
+//                } else {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this);
+//                }
+//                builder.setTitle("ذخیره اشتراک؟")
+//                        .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
+//                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
+//                                editor.putString("ghabz_id1", ghabz_id);
+//                                editor.apply();
+//
+//                            }
+//                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // continue with delete
+//
+//                    }
+//                })
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .show();
+//            }
+//        }
+//        if(ghabz_id.equals(StaticGasGhabz.ghabz2_ID))
+//        {
+//            if(ghabz2 == null)
+//            {
+//                AlertDialog.Builder builder;
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
+//                } else {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this);
+//                }
+//                builder.setTitle("ذخیره اشتراک؟")
+//                        .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
+//                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
+//                                editor.putString("ghabz_id2", ghabz_id);
+//                                editor.apply();
+//
+//                            }
+//                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // continue with delete
+//
+//                    }
+//                })
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .show();
+//            }
+//        }
+//       // Toast.makeText(this, ghabz_id+"--"+StaticWaterGhabz.ghabz1_ID, Toast.LENGTH_SHORT).show();
+//        if(ghabz_id.equals(StaticWaterGhabz.ghabz1_ID))
+//        {
+//
+//            if(ghabz3 == null)
+//            {
+//                AlertDialog.Builder builder;
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
+//                } else {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this);
+//                }
+//                builder.setTitle("ذخیره اشتراک؟")
+//                        .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
+//                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
+//                                editor.putString("ghabz_id3", ghabz_id);
+//                                editor.apply();
+//
+//                            }
+//                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // continue with delete
+//
+//                    }
+//                })
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .show();
+//            }
+//        }
+//
+//        if(ghabz_id.equals(StaticWaterGhabz.ghabz2_ID))
+//        {
+//            if(ghabz4 == null)
+//            {
+//                AlertDialog.Builder builder;
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this, android.R.style.Theme_Material_Dialog_Alert);
+//                } else {
+//                    builder = new AlertDialog.Builder(GhabzSearch.this);
+//                }
+//                builder.setTitle("ذخیره اشتراک؟")
+//                        .setMessage("آیا می خواهید این اشتراک به لیست اشتراک های من اضافه شود؟")
+//                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
+//                                editor.putString("ghabz_id4", ghabz_id);
+//                                editor.apply();
+//
+//                            }
+//                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // continue with delete
+//
+//                    }
+//                })
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .show();
+//            }
+//        }
+//
+//
+//
+//
 
 
 
@@ -655,16 +1049,10 @@ public class GhabzSearch extends AppCompatActivity {
         allowBack=true;
         String
                 price="18000";
-        if(ghabz_id.equals(StaticGasGhabz.ghabz1_ID))
-            price = StaticGasGhabz.ghabz1_price_number_simple;
-        if(ghabz_id.equals(StaticGasGhabz.ghabz2_ID))
-            price = StaticGasGhabz.ghabz2_price_number_simple;
-        if(ghabz_id.equals(StaticWaterGhabz.ghabz1_ID))
-            price = StaticWaterGhabz.ghabz1_price_number_simple;
-        if(ghabz_id.equals(StaticWaterGhabz.ghabz2_ID))
-            price = StaticWaterGhabz.ghabz2_price_number_simple;
+        price = (price_all);
 
         webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount="+price+"&AdditionalInfo=10000089-CTSCar&MerchantID=118088384&TerminalId=17995091&TransactionKey=AZ24JJ95SS&OrderId=10000089235123552");
+
     }
 
     public void clk_back_complete(View view) {

@@ -223,7 +223,7 @@
                     android:background="#a1a1a1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="clk_under_cunstruct"
+                    android:onClick="clk_electric"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp">
 
@@ -295,7 +295,7 @@
                     android:background="#a1a1a1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="clk_under_cunstruct"
+                    android:onClick="clk_telphone"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp">
 

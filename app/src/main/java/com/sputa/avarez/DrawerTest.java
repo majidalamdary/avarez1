@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -48,6 +50,7 @@ import com.sputa.avarez.app.NotificationUtils;
 import com.sputa.avarez.classes.StaticGasGhabz;
 import com.sputa.avarez.classes.StaticWaterGhabz;
 import com.sputa.avarez.classes.customFont;
+import com.sputa.avarez.model.DB;
 import com.sputa.avarez.model.items_cars;
 import com.sputa.avarez.model.items_eshterak;
 
@@ -85,6 +88,7 @@ public class DrawerTest extends AppCompatActivity
     private int cnt_eshterak=1;
     private Timer timer;
     private int not_zero_cnt=0;
+    private SQLiteDatabase myDB;
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -212,6 +216,37 @@ public class DrawerTest extends AppCompatActivity
 
         set_content();
 
+
+        myDB = this.openOrCreateDatabase(getString(R.string.DB_name), MODE_PRIVATE, null);
+
+        myDB.execSQL("drop table IF EXISTS water");
+        myDB.execSQL("drop table IF EXISTS waste");
+        myDB.execSQL("drop table IF EXISTS power");
+        myDB.execSQL("drop table IF EXISTS Panel");
+        myDB.execSQL("drop table IF EXISTS Nosazi");
+        myDB.execSQL("drop table IF EXISTS Gas");
+        myDB.execSQL("drop table IF EXISTS CellPhone");
+        myDB.execSQL("drop table IF EXISTS Business");
+        myDB.execSQL("drop table IF EXISTS MyGhabz");
+
+        Cursor cr = myDB.rawQuery("select DISTINCT tbl_name  from sqlite_master where tbl_name = 'water'", null);
+        if(cr!=null)
+        {
+            if(cr.getCount()==0) {
+                set_database();
+            }
+        }
+        cr = myDB.rawQuery("select * from water", null);
+        if(cr.getCount()>0)
+        {
+//            cr.moveToFirst();
+//            Toast.makeText(this, cr.getString(0), Toast.LENGTH_SHORT).show();
+//            cr.moveToNext();
+//            Toast.makeText(this, cr.getString(0), Toast.LENGTH_SHORT).show();
+        }
+
+        //
+
         displayFirebaseRegId();
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -244,27 +279,45 @@ public class DrawerTest extends AppCompatActivity
         load_eshterak_count();
     }
 
-    private void load_eshterak_count() {
-        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
-        String ghabz1 = prefs.getString("ghabz_id1", null);
-        String ghabz2 = prefs.getString("ghabz_id2", null);
-        String ghabz3 = prefs.getString("ghabz_id3", null);
-        String ghabz4 = prefs.getString("ghabz_id4", null);
-        cnt_eshterak=0;
-        if(ghabz1!=null)
-            if(!ghabz1.equals("")) {
-                //        Toast.makeText(this, "1212312", Toast.LENGTH_SHORT).show();
-                cnt_eshterak++;
+    private void set_database() {
+
+        Toast.makeText(this, "start", Toast.LENGTH_SHORT).show();
+        String
+                query =  DB.query;
+        String
+                cmd="";
+        for(int i=0;i<query.length();i++)
+        {
+            if(query.charAt(i) != ';') {
+                cmd += query.charAt(i);
             }
-        if(ghabz2!=null)
-            if(!ghabz2.equals(""))
-                cnt_eshterak++;
-        if(ghabz3!=null)
-            if(!ghabz3.equals(""))
-                cnt_eshterak++;
-        if(ghabz4!=null)
-            if(!ghabz4.equals(""))
-                cnt_eshterak++;
+            else
+            {
+                //cmd += ";";
+                myDB.execSQL(cmd);
+                Log.d("majid",cmd);
+                cmd="";
+            }
+        }
+
+        String sql= "CREATE TABLE  IF NOT EXISTS MyGhabz(" +
+                "AboneID varchar(255) NULL," +
+                "Type varchar(255) NULL" +
+                ");" ;
+        myDB.execSQL(sql);
+
+
+
+
+
+
+    }
+
+    private void load_eshterak_count() {
+
+        cnt_eshterak=0;
+        Cursor cr = myDB.rawQuery("select * from MyGhabz ",null);
+        if(cr.getCount()>0) cnt_eshterak = cr.getCount();
         if(cnt_eshterak>0)
         {
             LinearLayout lay_my_car_count= findViewById(R.id.lay_my_eshterak_count);

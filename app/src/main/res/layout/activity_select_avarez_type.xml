@@ -442,7 +442,7 @@
                     android:background="#a1a1a1"
                     android:clickable="true"
                     android:gravity="center"
-                    android:onClick="clk_under_cunstruct"
+                    android:onClick="clk_jame_avarez"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp">
 

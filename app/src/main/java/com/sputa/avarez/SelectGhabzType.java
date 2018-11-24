@@ -158,4 +158,21 @@ public class SelectGhabzType extends AppCompatActivity   {
             finish();
         }
     }
+    public void clk_electric(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, GhabzSearch.class);
+            I.putExtra("type","electric");
+            startActivity(I);
+            finish();
+        }
+    }
+    public void clk_telphone(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, GhabzSearch.class);
+            I.putExtra("type","telphone");
+            startActivity(I);
+            finish();
+        }
+    }
+
 }

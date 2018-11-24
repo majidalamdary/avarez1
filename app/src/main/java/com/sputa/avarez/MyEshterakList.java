@@ -3,6 +3,8 @@ package com.sputa.avarez;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -52,14 +55,11 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
     private int screenHeight;
     private int pos;
     private boolean allowBack=true;
+    private SQLiteDatabase myDB;
 
     @Override
     public void recyclerViewListClicked(View v, final int position) {
-        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
-        final String ghabz1 = prefs.getString("ghabz_id1", null);
-        final String ghabz2 = prefs.getString("ghabz_id2", null);
-        final String ghabz3 = prefs.getString("ghabz_id3", null);
-        final String ghabz4 = prefs.getString("ghabz_id4", null);
+
         if(v.getId()==R.id.img_delete_eshterak)
         {
             pos=position;
@@ -74,36 +74,13 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                     .setPositiveButton("بله", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
+                            items_eshterak itm = (item.get(position));
 
-                            if(item.get(position).getRadif().equals(ghabz1))
-                            {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id1", null);
-                                editor.apply();
-                              //  Toast.makeText(MyEshterakList.this, String.valueOf("1"), Toast.LENGTH_SHORT).show();
-                            }
-                            if(item.get(position).getRadif().equals(ghabz2))
-                            {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id2", null);
-                                editor.apply();
-                               // Toast.makeText(MyEshterakList.this, String.valueOf("2"), Toast.LENGTH_SHORT).show();
-                            }
-                            if(item.get(position).getRadif().equals(ghabz3))
-                            {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id3", null);
-                                editor.apply();
-                                //Toast.makeText(MyEshterakList.this, String.valueOf("3"), Toast.LENGTH_SHORT).show();
-                            }
-                            if(item.get(position).getRadif().equals(ghabz4))
-                            {
-                                SharedPreferences.Editor editor = getSharedPreferences("ghabz", MODE_PRIVATE).edit();
-                                editor.putString("ghabz_id4", null);
-                                editor.apply();
-                                //Toast.makeText(MyEshterakList.this, String.valueOf("4"), Toast.LENGTH_SHORT).show();
-                            }
+                            myDB.execSQL("delete from MyGhabz where AboneID='"+itm.getTxt_eshterak()+"'");
 
+
+
+                            item.clear();
 
                             load_my_eshterak();
 
@@ -207,6 +184,7 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
 //
 //        editor.putString("ghabz_id4", null);
 //        editor.apply();
+        myDB = openOrCreateDatabase(getString(R.string.DB_name), MODE_PRIVATE, null);
 
         load_my_eshterak();
         lay_main= findViewById(R.id.lay_main);
@@ -231,31 +209,56 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
 
 
     }
-
+    private String digiting(String string) {
+        String new_str = "";
+        int j = 0;
+        for (int ii = string.length() - 1; ii >= 0; ii--) {
+            j++;
+            if (j != string.length() && j % 3 == 0)
+                new_str = "," + string.charAt(ii) + new_str;
+            else
+                new_str = string.charAt(ii) + new_str;
+        }
+        return new_str;
+    }
     private void load_my_eshterak() {
-        SharedPreferences prefs = this.getSharedPreferences("ghabz", Context.MODE_PRIVATE);
-        String ghabz1 = prefs.getString("ghabz_id1", null);
-        String ghabz2 = prefs.getString("ghabz_id2", null);
-        String ghabz3 = prefs.getString("ghabz_id3", null);
-        String ghabz4 = prefs.getString("ghabz_id4", null);
-        item.clear();
-        //Toast.makeText(this, "-"+ghabz1+"-", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, "-"+ghabz2+"-", Toast.LENGTH_SHORT).show();
-        if(ghabz1!=null)
-            if(!ghabz1.equals("")) {
-                item.add(new items_eshterak(StaticGasGhabz.ghabz1_eshteraak, StaticGasGhabz.ghabz1_name, StaticGasGhabz.ghabz1_price_number, StaticGasGhabz.ghabz1_ID,"gas"));
-        //        Toast.makeText(this, "1212312", Toast.LENGTH_SHORT).show();
-            }
-        if(ghabz2!=null)
-            if(!ghabz2.equals(""))
-                 item.add(new items_eshterak(StaticGasGhabz.ghabz2_eshteraak,StaticGasGhabz.ghabz2_name,StaticGasGhabz.ghabz2_price_number,StaticGasGhabz.ghabz2_ID,"gas"));
-        if(ghabz3!=null)
-            if(!ghabz3.equals(""))
-                 item.add(new items_eshterak(StaticWaterGhabz.ghabz1_eshteraak,StaticWaterGhabz.ghabz1_name,StaticWaterGhabz.ghabz1_price_number,StaticWaterGhabz.ghabz1_ID,"water"));
-        if(ghabz4!=null)
-            if(!ghabz4.equals(""))
-                 item.add(new items_eshterak(StaticWaterGhabz.ghabz2_eshteraak,StaticWaterGhabz.ghabz2_name,StaticWaterGhabz.ghabz2_price_number,StaticWaterGhabz.ghabz2_ID,"water"));
 
+
+
+        Cursor cr = myDB.rawQuery("select * from MyGhabz ",null);
+        if(cr.getCount()>0) cr.moveToFirst();
+        while(!cr.isAfterLast()) {
+//            Toast.makeText(this, String.valueOf(cr.getCount()), Toast.LENGTH_SHORT).show();
+            if(cr.getString(1).equals("gas")) {
+                Cursor cr1 = myDB.rawQuery("select * from Gas where AboneID='"+cr.getString(0)+"'", null);
+                if(cr1.getCount()>0) {
+                    cr1.moveToFirst();
+                    item.add(new items_eshterak(cr.getString(0), cr1.getString(2) + " " + cr1.getString(3), digiting(cr1.getString(12)), cr1.getString(0), "gas"));
+                }
+            }
+            if(cr.getString(1).equals("water")) {
+                Cursor cr1 = myDB.rawQuery("select * from water where AboneID='"+cr.getString(0)+"'", null);
+                if(cr1.getCount()>0) {
+                    cr1.moveToFirst();
+                    item.add(new items_eshterak(cr.getString(0), cr1.getString(2) + " " + cr1.getString(3), digiting(String.valueOf((int)(cr1.getFloat(14)))), cr1.getString(0), "water"));
+                }
+            }
+            if(cr.getString(1).equals("electric")) {
+                    Cursor cr1 = myDB.rawQuery("select * from power where AboneID='"+cr.getString(0)+"'", null);
+                if(cr1.getCount()>0) {
+                    cr1.moveToFirst();
+                    item.add(new items_eshterak(cr.getString(0), cr1.getString(2) + " " + cr1.getString(3), digiting(cr1.getString(11)), cr1.getString(0), "electric"));
+                }
+            }
+            if(cr.getString(1).equals("telphone")) {
+                Cursor cr1 = myDB.rawQuery("select * from CellPhone where AboneID='"+cr.getString(0)+"'", null);
+                if(cr1.getCount()>0) {
+                    cr1.moveToFirst();
+                    item.add(new items_eshterak(cr.getString(0), cr1.getString(2) + " " + cr1.getString(3), digiting(cr1.getString(9)), cr1.getString(0), "telphone"));
+                }
+            }
+            cr.moveToNext();
+        }
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -276,74 +279,255 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
         lay_message.setVisibility(View.VISIBLE);
         lay_more_detail.setVisibility(View.VISIBLE);
 
-        TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
-        TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
-        String msg="";
-
-
-
-        if((s.getRadif().equals(StaticGasGhabz.ghabz1_ID))) {
-            msg="";
-            msg+="تاریخ قرائت پیشین"+"\n";
-            msg+="تاریخ قرائت فعلی"+"\n";
-            msg+="رقم پیشین شمارشگر"+"\n";
-            msg+="رقم فعلی شمارشگر"+"\n";
-            msg+="مصرف به متر مکعب"+"\n";
-            msg+="بهای گاز مصرفی"+"\n";
-            msg+="تعداد واحد"+"\n";
-            lbl_msg_right_detail.setText(msg);
-            msg = StaticGasGhabz.get_ghabz_detail_shenase(StaticGasGhabz.ghabz1_shenase);
-            lbl_msg_left_detail.setText(msg);
+        if(s.getType().equals("gas"))
+        {
+            search_gas_ghabz(s.getTxt_eshterak(),"111");
         }
-        if((s.getRadif().equals(StaticGasGhabz.ghabz2_ID))) {
-            msg="";
-            msg+="تاریخ قرائت پیشین"+"\n";
-            msg+="تاریخ قرائت فعلی"+"\n";
-            msg+="رقم پیشین شمارشگر"+"\n";
-            msg+="رقم فعلی شمارشگر"+"\n";
-            msg+="مصرف به متر مکعب"+"\n";
-            msg+="بهای گاز مصرفی"+"\n";
-            msg+="تعداد واحد"+"\n";
-            lbl_msg_right_detail.setText(msg);
-            msg = StaticGasGhabz.get_ghabz_detail_shenase(StaticGasGhabz.ghabz2_shenase);
-            lbl_msg_left_detail.setText(msg);
+        if(s.getType().equals("water"))
+        {
+            search_water_ghabz(s.getTxt_eshterak(),"111");
         }
-        if((s.getRadif().equals(StaticWaterGhabz.ghabz1_ID))) {
-            msg="";
-            msg+="تاریخ قرائت پیشین"+"\n";
-            msg+="تاریخ قرائت فعلی"+"\n";
-            msg+="رقم پیشین کنتور"+"\n";
-            msg+="رقم فعلی کنتور"+"\n";
-            msg+="بهای آب مصرفی"+"\n";
-            msg+="بهای خدمات فاضلاب"+"\n";
-            msg+="مالیات بر ارزش افزوده"+"\n";
-            msg+="تکالیف قانون بودجه"+"\n";
-            msg+="قابل پرداخت"+"\n";
-
-            lbl_msg_right_detail.setText(msg);
-            msg = StaticWaterGhabz.get_ghabz_detail_shenase(StaticWaterGhabz.ghabz1_shenase);
-        //    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-            lbl_msg_left_detail.setText(msg);
+        if(s.getType().equals("electric"))
+        {
+            search_electric_ghabz(s.getTxt_eshterak(),"111");
         }
-        if((s.getRadif().equals(StaticWaterGhabz.ghabz2_ID))) {
-            msg="";
-            msg+="تاریخ قرائت پیشین"+"\n";
-            msg+="تاریخ قرائت فعلی"+"\n";
-            msg+="رقم پیشین کنتور"+"\n";
-            msg+="رقم فعلی کنتور"+"\n";
-            msg+="بهای آب مصرفی"+"\n";
-            msg+="بهای خدمات فاضلاب"+"\n";
-            msg+="مالیات بر ارزش افزوده"+"\n";
-            msg+="تکالیف قانون بودجه"+"\n";
-            msg+="قابل پرداخت"+"\n";
-            lbl_msg_right_detail.setText(msg);
-            msg = StaticWaterGhabz.get_ghabz_detail_shenase(StaticWaterGhabz.ghabz2_shenase);
-            lbl_msg_left_detail.setText(msg);
+        if(s.getType().equals("telphone"))
+        {
+            search_telphone_ghabz(s.getTxt_eshterak(),"111");
         }
 
 
 
     }
+
+
+    private void search_gas_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from Gas where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+            cr = myDB.rawQuery("select * from Gas where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+            cr = myDB.rawQuery("select * from Gas where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                msg = "";
+                msg += "تاریخ قرائت پیشین" + "\n";
+                msg += "تاریخ قرائت فعلی" + "\n";
+                msg += "رقم پیشین شمارشگر" + "\n";
+                msg += "رقم فعلی شمارشگر" + "\n";
+                msg += "مصرف به متر مکعب" + "\n";
+                msg += "تعداد واحد" + "\n";
+                msg += "بهای گاز مصرفی" + "\n";
+
+                lbl_msg_right_detail.setText(msg);
+                msg = "";
+                msg =" :   "+ cr.getString(5) + "\n" ;
+                msg +=" :   "+ cr.getString(6)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+                msg +=" :   "+ cr.getString(8)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+                msg +=" :   "+ cr.getString(10)+ "  \n" ;
+
+                msg +=" :   "+ digiting(cr.getString(12))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+//                LinearLayout btn_detail = findViewById(R.id.btn_detail);
+//                btn_detail.setVisibility(View.VISIBLE);
+
+
+
+            }
+        }
+    }
+    private void search_water_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from water where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+            cr = myDB.rawQuery("select * from water where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+            cr = myDB.rawQuery("select * from water where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                msg = "";
+                msg += "تاریخ قرائت پیشین" + "\n";
+                msg += "تاریخ قرائت فعلی" + "\n";
+                msg += "رقم پیشین شمارشگر" + "\n";
+                msg += "رقم فعلی شمارشگر" + "\n";
+                msg += "مصرف به متر مکعب" + "\n";
+                msg += "عوارض فاضلاب" + "\n";
+                msg += "مالیات" + "\n";
+                msg += "تبصره های قانونی" + "\n";
+                msg += "بهای آب مصرفی" + "\n";
+
+                lbl_msg_right_detail.setText(msg);
+                msg = "";
+                msg =" :   "+ cr.getString(5) + "\n" ;
+                msg +=" :   "+ cr.getString(6)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+                msg +=" :   "+ cr.getString(8)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(10))+ "\n" ;
+                msg +=" :   "+ cr.getString(11)+ "\n" ;
+                msg +=" :   "+ cr.getString(12)+ "\n" ;
+                msg +=" :   "+ digiting(String.valueOf((int)(cr.getFloat(14))))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+
+
+
+
+            }
+        }
+    }
+    private void search_electric_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from power where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+            cr = myDB.rawQuery("select * from power where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+            cr = myDB.rawQuery("select * from power where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                msg = "";
+                msg += "تاریخ قرائت پیشین" + "\n";
+                msg += "تاریخ قرائت فعلی" + "\n";
+                msg += "رقم پیشین شمارشگر" + "\n";
+                msg += "رقم فعلی شمارشگر" + "\n";
+                msg += "مصرف به کیلو وات" + "\n";
+                msg += "بهای برق مصرفی" + "\n";
+
+                lbl_msg_right_detail.setText(msg);
+                msg = "";
+                msg =" :   "+ cr.getString(5) + "\n" ;
+                msg +=" :   "+ cr.getString(6)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+                msg +=" :   "+ cr.getString(8)+ "\n" ;
+                msg +=" :   "+ cr.getString(9)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(11))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+
+
+
+
+            }
+        }
+    }
+    private void search_telphone_ghabz(String eshterak, String ghabz) {
+        //Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        Cursor cr= myDB.rawQuery("select * from CellPhone where AboneID='"+eshterak+"'", null);
+        if(eshterak.length()>0) {
+            cr = myDB.rawQuery("select * from CellPhone where AboneID='"+eshterak+"'", null);
+            Log.d("majid","esht=");
+        }
+        else if(ghabz.length()>0) {
+            cr = myDB.rawQuery("select * from CellPhone where ID='"+ghabz+"'", null);
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                Log.d("majid","ghabz=");
+            }
+        }
+        if(cr!=null) {
+            if (cr.getCount() > 0) {
+                cr.moveToFirst();
+                String ID= cr.getString(0);
+                Log.d("majid","ok");
+                cr.moveToFirst();
+                String
+                        msg = "";
+
+                TextView lbl_msg_right_detail=findViewById(R.id.lbl_msg_right_detail);
+                TextView lbl_msg_left_detail=findViewById(R.id.lbl_msg_left_detail);
+
+                msg = "";
+                msg += "تاریخ پیشین" + "\n";
+                msg += "تاریخ فعلی" + "\n";
+
+                msg += "مصرف به دقیقه" + "\n";
+                msg += "بهای مکالمه با تلفن" + "\n";
+
+                lbl_msg_right_detail.setText(msg);
+                msg = "";
+                msg =" :   "+ cr.getString(5) + "\n" ;
+                msg +=" :   "+ cr.getString(6)+ "\n" ;
+                msg +=" :   "+ cr.getString(7)+ "\n" ;
+                msg +=" :   "+ digiting(cr.getString(9))+ " ریال \n" ;
+
+                lbl_msg_left_detail.setText(msg);
+
+                LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                btn_pay.setVisibility(View.VISIBLE);
+
+
+            }
+        }
+    }
+
+
+
+
+
     public void clk_pay(View view) {
 
 

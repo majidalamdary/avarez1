@@ -2,6 +2,8 @@ package com.sputa.avarez;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -29,8 +31,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sputa.avarez.adapters.adapter_bussiness;
 import com.sputa.avarez.adapters.item_adapter;
 import com.sputa.avarez.adapters.item_detail_parvandeh_adapter;
+import com.sputa.avarez.classes.StaticGasGhabz;
+import com.sputa.avarez.classes.StaticWaterGhabz;
+import com.sputa.avarez.model.item_bussiness;
 import com.sputa.avarez.model.items;
 
 import org.apache.http.HttpEntity;
@@ -70,6 +76,7 @@ public class CarSearch extends AppCompatActivity {
     private String rslt_name;
     private String rslt_family;
     List<items> item =     new ArrayList<>();
+    List<item_bussiness> item_bussinesses =     new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
@@ -83,6 +90,8 @@ public class CarSearch extends AppCompatActivity {
     private int at_tablo =3;
     private int at_pasmand =4;
     private int at_jame =5;
+    private String price_avarez;
+    private SQLiteDatabase myDB;
 
 
     private void set_size(int vid,Double width,Double height,String typ)
@@ -209,6 +218,15 @@ public class CarSearch extends AppCompatActivity {
             lbl_title.setText("جستجو و پرداخت عوارض پسماند");
             img_title.setBackgroundResource(R.drawable.waste);
         }
+        if(avarez_Type==at_jame)
+        {
+            arraySpinner = new String[] {
+                    "کد ملی",
+            };
+            lbl_title.setText("جستجو و پرداخت عوارض جامع");
+            img_title.setBackgroundResource(R.drawable.jame);
+        }
+        myDB = this.openOrCreateDatabase(getString(R.string.DB_name), MODE_PRIVATE, null);
 
         Spinner s = (Spinner) findViewById(R.id.spn_search_type);
         ArrayAdapter<String> adapter;
@@ -225,13 +243,20 @@ public class CarSearch extends AppCompatActivity {
             lay_parvandeh_search.setVisibility(View.GONE);
 
         }
-        else
+        else if(avarez_Type != at_jame)
         {
             ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
             lay_motor_search.setVisibility(View.GONE);
             ConstraintLayout lay_parvandeh_search = findViewById(R.id.lay_parvandeh_search);
             lay_parvandeh_search.setVisibility(View.VISIBLE);
 
+        }
+        else
+        {
+            ConstraintLayout lay_motor_search = findViewById(R.id.lay_motor_search);
+            lay_motor_search.setVisibility(View.GONE);
+            ConstraintLayout lay_melli_search = findViewById(R.id.lay_melli_search);
+            lay_melli_search.setVisibility(View.VISIBLE);
         }
 
         fun=new Functions();
@@ -253,7 +278,9 @@ public class CarSearch extends AppCompatActivity {
         set_size_edit(R.id.txt_motor,.06,"cons");
         set_size_txt(R.id.lbl_search_type,.05,"cons");
         set_size_txt(R.id.lbl_msg,.039,"cons");
+        set_size_txt(R.id.lbl_msg_jame,.039,"cons");
         set_size(R.id.lbl_msg,.9,.18,"cons");
+        set_size(R.id.lbl_msg_jame,.8,.37,"cons");
         if(avarez_Type==at_bussiness)
             set_size(R.id.img_title,.14,.08,"cons");
         else
@@ -299,7 +326,7 @@ public class CarSearch extends AppCompatActivity {
                         lay_vin_search.setVisibility(View.VISIBLE);
                     }
                 }
-                else
+                else if(avarez_Type != at_jame)
                 {
                     if (position == 0) {
                         ConstraintLayout lay_motor_search = findViewById(R.id.lay_parvandeh_search);
@@ -314,6 +341,16 @@ public class CarSearch extends AppCompatActivity {
                         ConstraintLayout lay_melli_search = findViewById(R.id.lay_melli_search);
                         lay_melli_search.setVisibility(View.VISIBLE);
                     }
+                }
+                else
+                {
+//                    if (position == 0) {
+//                        ConstraintLayout lay_motor_search = findViewById(R.id.lay_parvandeh_search);
+//                        lay_motor_search.setVisibility(View.VISIBLE);
+//                        ConstraintLayout lay_melli_search = findViewById(R.id.lay_melli_search);
+//                        lay_melli_search.setVisibility(View.GONE);
+//
+//                    }
                 }
             }
 
@@ -343,6 +380,7 @@ public class CarSearch extends AppCompatActivity {
         set_size_txt(R.id.lbl_back,.054,"line");
         set_size(R.id.btn_pay,.3,.065,"cons");
         set_size(R.id.btn_detail,.3,.065,"cons");
+        set_size(R.id.btn_taghsit,.3,.065,"cons");
 
         set_size_txt(R.id.lbl_help,.033,"cons");
         set_size(R.id.img_help_motor,.08,.06,"cons");
@@ -393,13 +431,81 @@ public class CarSearch extends AppCompatActivity {
     public void clk_search(View view) {
         if(avarez_Type==at_car)
             search_car();
-        if(avarez_Type==at_bussiness)
-            search_bussiness();
+        else if(avarez_Type!=at_jame)
+            search_bussinessAndOthers();
+        else
+            search_jame();
 
 
     }
 
-    private void search_bussiness() {
+    private void search_jame() {
+        EditText txt_melli=findViewById(R.id.txt_melli);
+
+        String
+                search_type="none";
+        if(txt_melli.getText().toString().length()>0)
+        {
+            search_type="ok";
+        }
+
+        if(search_type.equals("ok"))
+        {
+
+            if(txt_melli.getText().toString().length()>0)
+            {
+                if(txt_melli.getText().toString().equals("1111111111"))
+                {
+                    LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                    LinearLayout btn_taghsit = findViewById(R.id.btn_taghsit);
+                    LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                    TextView lbl_msg = findViewById(R.id.lbl_msg);
+                    TextView lbl_msg_jame = findViewById(R.id.lbl_msg_jame);
+                    btn_pay.setVisibility(View.VISIBLE);
+                    btn_detail.setVisibility(View.VISIBLE);
+                    btn_taghsit.setVisibility(View.VISIBLE);
+                    String
+                            msg="";
+                    String
+                            msg_jame="";
+
+                    if(avarez_Type == at_jame) {
+                        msg = " شهرداری ارومیه " + "\n" + "نام مالک : " + "علی" + " " + "جاودانی" + "\n" + " مبلغ سرجمع عوارض جامع شما " + "1,500,000" + " ریال می باشد.";
+                        msg_jame = " عوارض خودرو به شماره پلاک 352ب17 ایران 17  750,000 ریال می باشد" + "\n";
+                        msg_jame += " عوارض کسب و کار به شماره پرونده 123  400,000 ریال می باشد" + "\n";
+                        msg_jame += " عوارض تابلو به شماره پرونده 321  150,000 ریال می باشد" + "\n";
+                        msg_jame += " عوارض پسماند به شماره پرونده 123  200,000 ریال می باشد" + "\n";
+                        price_avarez = "1500000";
+
+
+
+                    }
+
+
+                    lbl_msg.setText(msg);
+                    lbl_msg_jame.setText(msg_jame);
+                }
+
+            }
+        }
+        else
+        {
+            Toast.makeText(this, "لطفا اطلاعات درخواستی را وارد کنید", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private String digiting(String string) {
+        String new_str = "";
+        int j = 0;
+        for (int ii = string.length() - 1; ii >= 0; ii--) {
+            j++;
+            if (j != string.length() && j % 3 == 0)
+                new_str = "," + string.charAt(ii) + new_str;
+            else
+                new_str = string.charAt(ii) + new_str;
+        }
+        return new_str;
+    }
+    private void search_bussinessAndOthers() {
         EditText txt_parvndeh=findViewById(R.id.txt_parvndeh);
         EditText txt_melli=findViewById(R.id.txt_melli);
 
@@ -417,31 +523,71 @@ public class CarSearch extends AppCompatActivity {
         if(search_type.equals("ok"))
         {
 
-            if(txt_parvndeh.getText().toString().length()>0)
-            {
-                if(txt_parvndeh.getText().toString().equals("123"))
-                {
-                    LinearLayout btn_pay = findViewById(R.id.btn_pay);
-                    LinearLayout btn_detail = findViewById(R.id.btn_detail);
-                    TextView lbl_msg = findViewById(R.id.lbl_msg);
-                    btn_pay.setVisibility(View.VISIBLE);
-                    btn_detail.setVisibility(View.VISIBLE);
-                    String
-                            msg="";
-                        msg += " شهرداری ارومیه "  + "\n";
-                        msg += "نام مالک : " + "علی" +" "+ "جاودانی" + "\n";
-                        //msg += "نام خودرو : " + "" + "\n";
-                    msg+= " مبلغ عوارض شما " + "450,000" + " ریال می باشد.";
-                    lbl_msg.setText(msg);
-                }
-                else
-                {
-                    TextView lbl_msg = findViewById(R.id.lbl_msg);
-                    String
-                            msg="اطلاعات وارد شده صحیح نمی باشد";
-                    lbl_msg.setText(msg);
-                }
+
+
+
+
+                if(avarez_Type ==at_bussiness) {
+                    Cursor cr = myDB.rawQuery("select * from Business where parvandeh='"+txt_parvndeh.getText().toString()+"'", null);
+                    if(txt_parvndeh.getText().toString().length()>0) {
+                        cr = myDB.rawQuery("select * from Business where parvandeh='"+txt_parvndeh.getText().toString()+"'", null);
+                    }
+                    if(txt_melli.getText().toString().length()>0) {
+                        cr = myDB.rawQuery("select * from Business where ID='"+txt_melli.getText().toString()+"'", null);
+                    }
+
+                        if(cr.getCount()>0)
+                    {
+                        LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                        LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                        TextView lbl_msg = findViewById(R.id.lbl_msg);
+                        btn_pay.setVisibility(View.VISIBLE);
+                        btn_detail.setVisibility(View.VISIBLE);
+                        String
+                                msg = "";
+                        cr.moveToFirst();
+                        if(cr.getFloat(10)!=0) {
+                            msg = " شهرداری ارومیه " + "\n" + "نام مالک : " + "علی" + " " + "جاودانی" + "\n" + " مبلغ عوارض شما " + digiting(String.valueOf((int)cr.getFloat(10))) + " ریال می باشد.";
+                            Toast.makeText(this, cr.getString(5), Toast.LENGTH_SHORT).show();
+                            item_bussinesses.add(new item_bussiness(cr.getString(5), cr.getString(6), cr.getString(7), cr.getString(8), cr.getString(9), cr.getString(10)));
+                            price_avarez = String.valueOf((int)cr.getFloat(10));
+                            mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_parvandeh);
+                            mRecyclerView.setHasFixedSize(true);
+                            mLayoutManager = new LinearLayoutManager(CarSearch.this);
+                            mRecyclerView.setLayoutManager(mLayoutManager);
+                            mAdapter = new adapter_bussiness(CarSearch.this, item_bussinesses);
+                            mRecyclerView.setAdapter(mAdapter);
+                            lbl_msg.setText(msg);
+                        }else
+                        {
+                            msg = "";
+                            lbl_msg.setText(msg);
+                            btn_pay.setVisibility(View.GONE);
+                            btn_detail.setVisibility(View.GONE);
+                            Toast.makeText(this, "موردی پیدا نشد", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    else
+                    {
+                        LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                        LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                        TextView lbl_msg = findViewById(R.id.lbl_msg);
+                        btn_pay.setVisibility(View.GONE);
+                        btn_detail.setVisibility(View.GONE);
+                        String
+                                msg = "";
+                        msg = "";
+                        lbl_msg.setText(msg);
+                        Toast.makeText(this, "موردی پیدا نشد", Toast.LENGTH_SHORT).show();
+                    }
+
+
+
+
             }
+
+
         }
         else
         {
@@ -650,26 +796,44 @@ public class CarSearch extends AppCompatActivity {
         }
     }
     public void clk_pay(View view) {
-        if (rslt_CanEPay.equals("1")) {
+        if(avarez_Type == at_car) {
+            if (rslt_CanEPay.equals("1")) {
+                fun.enableDisableView(lay_main, false);
+                RelativeLayout lay_message = findViewById(R.id.lay_message);
+                lay_message.setVisibility(View.VISIBLE);
+                ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
+                lay_gate.setVisibility(View.VISIBLE);
+                WebView webview = (WebView) findViewById(R.id.web_view);
+                webview.setWebViewClient(new CarSearch.myWebClient());
+                webview.getSettings().setJavaScriptEnabled(true);
+                //rslt_price="1000";
+                webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
+//            EditText txt=findViewById(R.id.txt_motor);
+//            txt.setText("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
+                //http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=187000&AdditionalInfo=10000089-CTSCar&MerchantID=118088384&TerminalId=17995091&TransactionKey=AZ24JJ95SS&OrderId=10000089235123552
+            } else {
+                Toast.makeText(this, "متاسفانه شهرداری شهر شما فاقد امکان پرداخت الکترونیک می باشد", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else
+        {
             fun.enableDisableView(lay_main, false);
             RelativeLayout lay_message = findViewById(R.id.lay_message);
             lay_message.setVisibility(View.VISIBLE);
             ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
             lay_gate.setVisibility(View.VISIBLE);
             WebView webview = (WebView) findViewById(R.id.web_view);
-            webview.setWebViewClient(new CarSearch.myWebClient());
+            webview.setWebViewClient(new myWebClient());
             webview.getSettings().setJavaScriptEnabled(true);
             //rslt_price="1000";
-            webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
-//            EditText txt=findViewById(R.id.txt_motor);
-//            txt.setText("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
-            //http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=187000&AdditionalInfo=10000089-CTSCar&MerchantID=118088384&TerminalId=17995091&TransactionKey=AZ24JJ95SS&OrderId=10000089235123552
-        }
-        else
-        {
-            Toast.makeText(this, "متاسفانه شهرداری شهر شما فاقد امکان پرداخت الکترونیک می باشد", Toast.LENGTH_SHORT).show();
-        }
+            allowBack=true;
+            String
+                    price=price_avarez;
 
+
+            webview.loadUrl("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount="+price+"&AdditionalInfo=10000089-CTSCar&MerchantID=118088384&TerminalId=17995091&TransactionKey=AZ24JJ95SS&OrderId=10000089235123552");
+
+        }
 
 
 
@@ -683,20 +847,16 @@ public class CarSearch extends AppCompatActivity {
             ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
             lay_detail.setVisibility(View.VISIBLE);
         }
-        else
+        else if(avarez_Type != at_jame)
         {
-            item.add(new items("1397","450,000","","0","0","1"));
-            mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_parvandeh);
-                                            mRecyclerView.setHasFixedSize(true);
-            mLayoutManager = new LinearLayoutManager(CarSearch.this);
-                                            mRecyclerView.setLayoutManager(mLayoutManager);
-
-
-            mAdapter = new item_detail_parvandeh_adapter(CarSearch.this,item);
-                                    mRecyclerView.setAdapter(mAdapter);
 
             ConstraintLayout lay_detail_parvandeh = findViewById(R.id.lay_detail_parvandeh);
             lay_detail_parvandeh.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            ConstraintLayout lay_avarez_jame = findViewById(R.id.lay_avarez_jame);
+            lay_avarez_jame.setVisibility(View.VISIBLE);
         }
     }
 
@@ -707,6 +867,14 @@ public class CarSearch extends AppCompatActivity {
         ConstraintLayout lay_detail_parvandeh = findViewById(R.id.lay_detail_parvandeh);
         lay_detail_parvandeh.setVisibility(View.GONE);
 
+    }
+
+    public void clk_back_detail_jame(View view) {
+        fun.enableDisableView(lay_main, true);
+        RelativeLayout lay_message = findViewById(R.id.lay_message);
+        lay_message.setVisibility(View.GONE);
+        ConstraintLayout lay_avarez_jame = findViewById(R.id.lay_avarez_jame);
+        lay_avarez_jame.setVisibility(View.GONE);
     }
 
     public class myWebClient extends WebViewClient

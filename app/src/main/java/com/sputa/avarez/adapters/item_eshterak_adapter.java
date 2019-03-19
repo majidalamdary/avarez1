@@ -60,6 +60,10 @@ public class item_eshterak_adapter extends RecyclerView.Adapter<item_eshterak_ad
             holder.img_icon.setBackgroundResource(R.drawable.electric);
         if(item.get(position).getType().equals("telphone"))
             holder.img_icon.setBackgroundResource(R.drawable.tephone);
+        if(item.get(position).getType().equals("nosazi"))
+            holder.img_icon.setBackgroundResource(R.drawable.renovation);
+        if(item.get(position).getType().equals("car"))
+            holder.img_icon.setBackgroundResource(R.drawable.car);
 
 
 

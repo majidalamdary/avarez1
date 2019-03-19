@@ -98,6 +98,7 @@
             android:background="@drawable/btn_orange"
             android:gravity="center"
             android:orientation="horizontal"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.96"
@@ -123,13 +124,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/abone" />
+            app:srcCompat="@drawable/message" />
 
         <com.sputa.avarez.my_views.MyTextView
             android:id="@+id/txt_aboutus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="اشتراک های من"
+            android:text="تازه ها"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -195,13 +196,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/car" />
+            app:srcCompat="@drawable/abone" />
 
         <com.sputa.avarez.my_views.MyTextView
             android:id="@+id/txt_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="خودروهای من"
+            android:text="اشتراک های من"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -209,7 +210,7 @@
             app:layout_constraintHorizontal_bias="0.11"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.100000024" />
+            app:layout_constraintVertical_bias="0.17000002" />
 
         <LinearLayout
             android:id="@+id/lay_my_car_count"
@@ -304,7 +305,7 @@
             app:layout_constraintHorizontal_bias="0.11"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.100000024" />
+            app:layout_constraintVertical_bias="0.13" />
     </android.support.constraint.ConstraintLayout>
 
     <EditText

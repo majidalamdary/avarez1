@@ -2,6 +2,7 @@ package com.sputa.avarez;
 
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,13 +26,17 @@ public class Functions {
             font_name_iiranSens = "fonts/iransans.ttf";
     public static String
             font_name_vazir = "fonts/Vazir.ttf";
+    public static String
+                TAG = "tg1";
+    public static boolean
+                TAGisEnabled = true;
 
     public static int
             Time_out_limit = 10;
 
     public static String u_id = "0";
     public static String u_mobile = "";
-
+    public static String key = "46794E7F-1612-46A7-B16B-7414BCC25FDE";
     public static int    user_normal =1;
     public Functions() {
 
@@ -47,7 +52,11 @@ public class Functions {
             }
         }
     }
-
+    public static void  Lag(String val)
+    {
+        if(TAGisEnabled)
+            Log.d(TAG,val);
+    }
     public Typeface get_font_pens(AssetManager context)
     {
         Typeface tf_items =  Typeface.createFromAsset(context,font_name_pens );

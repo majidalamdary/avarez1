@@ -48,16 +48,16 @@ public class DB
             "Amount float NULL" +
             ") ;" +
             "" +
-            "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('54639', '0872026337', 'جواد ', 'هشیار', 9151885012, NULL, 1397, 1397, NULL, 1, 0, 360000);" +
+            "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('54639', '0872026337', 'جواد ', 'هشیار', 9151885012, '1396/05/25', 1397, 1397, 'تجاری', 1, 0, 360000);" +
             "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('51135', '3820757430', 'حسین', 'پروین', 9188788205, 0, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('52785', '6409955669', 'حجت ', 'قربانی ', 9144628878, 0, 0, 0, 0, 0, 0, 0);" +
-            "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('50788', '3810412996', 'حمید', 'نورافکن', 9388333686, NULL, 1397, 1397, NULL, 1, 0, 360000);" +
+            "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('50788', '3810412996', 'حمید', 'نورافکن', 9388333686, '1396/05/25', 1397, 1397, 'تجاری', 1, 0, 360000);" +
             "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('55622', '2899789082', 'سامان ', 'استحکام', 9143448721, 0, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('58334', '4172349420', 'فتح اله ', 'رادفر', 9141490359, 0, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('53400', '6469166261', 'شهرام', 'نصری', 9128687817, 0, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('57410', '3820636374', 'جمال', 'کریمی', 9188762795, 0, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('58658', '2889951782', 'خضر', 'خضری', 9141672311, 0, 0, 0, 0, 0, 0, 0);" +
-            "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('54315', '5230043814', 'مجتبی ', 'کمالی', 9159250971, NULL, 1397, 1397, NULL, 1, 0, 360000);" +
+            "INSERT INTO  waste (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, GroupName, Unit, Debit, Amount) VALUES ('54315', '5230043814', 'مجتبی ', 'کمالی', 9159250971, '1396/05/25', 1397, 1397, 'تجاری', 1, 0, 360000);" +
             "" +
             "CREATE TABLE  IF NOT EXISTS power(" +
             "AboneID varchar(255) NULL," +
@@ -100,13 +100,13 @@ public class DB
             ");" +
             "" +
             "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('10774', '0872026337', 'جواد ', 'هشیار', 9151885012, 0, 0, 0, 0, 0, 0);" +
-            "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('11752', '3820757430', 'حسین', 'پروین', 9188788205, NULL, 1396, 1397, 1250000, 250000, 1500000);" +
+            "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('11752', '3820757430', 'حسین', 'پروین', 9188788205, '1395/03/03', 1396, 1397, 1250000, 250000, 1500000);" +
             "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('19989', '6409955669', 'حجت ', 'قربانی ', 9144628878, 0, 0, 0, 0, 0, 0);" +
-            "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('11703', '3810412996', 'حمید', 'نورافکن', 9388333686, NULL, 1396, 1397, 1250000, 250000, 1500000);" +
+            "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('11703', '3810412996', 'حمید', 'نورافکن', 9388333686, '1395/03/03', 1396, 1397, 1250000, 250000, 1500000);" +
             "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('15339', '2899789082', 'سامان ', 'استحکام', 9143448721, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('18672', '4172349420', 'فتح اله ', 'رادفر', 9141490359, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('17732', '6469166261', 'شهرام', 'نصری', 9128687817, 0, 0, 0, 0, 0, 0);" +
-            "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('17563', '3820636374', 'جمال', 'کریمی', 9188762795, NULL, 1396, 1397, 1250000, 250000, 1500000);" +
+            "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('17563', '3820636374', 'جمال', 'کریمی', 9188762795, '1395/03/03', 1396, 1397, 1250000, 250000, 1500000);" +
             "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('18383', '2889951782', 'خضر', 'خضری', 9141672311, 0, 0, 0, 0, 0, 0);" +
             "INSERT INTO  Panel (Parvandeh, ID, FirstName, LastName, CellPhoneNumber, LastPayDate, StartYear, EndYear, Tax, Penalty, Amount) VALUES ('16924', '5230043814', 'مجتبی ', 'کمالی', 9159250971, 0, 0, 0, 0, 0, 0);" +
             "" +

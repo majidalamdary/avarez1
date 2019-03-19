@@ -42,7 +42,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo_red"
-        android:label="نرم افزار پرداخت الکترونیک"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -58,43 +58,63 @@
         </service>
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".Splash"
-            android:screenOrientation="portrait"
-            >
+        <activity
+            android:name=".Splash"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CarSearch"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Tracking"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Test"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SelectAvarezType"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CarSearch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Tracking"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Test"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SelectAvarezType"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DrawerTest"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".RegisterActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MyCarList"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SelectGhabzType"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".GhabzSearch"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MyEshterakList"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AboutUs"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".NewsList"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PayHistoryActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+
+        </activity>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" >
+
+        </activity>
+        <activity
+            android:name=".MyCarList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SelectGhabzType"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GhabzSearch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyEshterakList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AboutUs"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewsList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PayHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".TextService">
+
+        </activity>
     </application>
 
 </manifest>

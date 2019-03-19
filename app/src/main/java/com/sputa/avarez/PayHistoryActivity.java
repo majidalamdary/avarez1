@@ -142,6 +142,9 @@ public class PayHistoryActivity extends AppCompatActivity implements RecyclerVie
                                     start1 = rslt.indexOf("<carID>");
                                     end1 = rslt.indexOf("</carID>");
                                     String carID = rslt.substring(start1 + 7, end1);
+                                    start1 = rslt.indexOf("<type>");
+                                    end1 = rslt.indexOf("</type>");
+                                    String type = rslt.substring(start1 + 6, end1);
                                     start1 = rslt.indexOf("<pelak>");
                                     end1 = rslt.indexOf("</pelak>");
                                     String pelak = rslt.substring(start1 + 7, end1);
@@ -165,7 +168,7 @@ public class PayHistoryActivity extends AppCompatActivity implements RecyclerVie
                                     //itms_avarez_number.add(Integer.valueOf(avarez));
                                     avarez = new_str;
                                     //Toast.makeText(MyCarList.this, avarez, Toast.LENGTH_SHORT).show();
-                                    item.add(new item_pay_history("تاریخ :"+date, pelak, carID, "مبلغ عوارض :" + avarez, name));
+                                    item.add(new item_pay_history("تاریخ :"+date, pelak, carID, "مبلغ عوارض :" + avarez, name,type));
                                     //itms.add(carID);
 
 

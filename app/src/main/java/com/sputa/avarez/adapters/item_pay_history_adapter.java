@@ -52,7 +52,14 @@ public class item_pay_history_adapter extends RecyclerView.Adapter<item_pay_hist
         holder.txt_name.setText(item.get(position).getName());
         holder.txt_pelak.setText(item.get(position).getPelak());
         holder.txt_date.setText(item.get(position).getDate());
-
+        if(item.get(position).getType().equals("car"))
+        {
+            holder.img_icon.setBackgroundResource(R.drawable.car);
+        }
+        if(item.get(position).getType().equals("nosazi"))
+        {
+            holder.img_icon.setBackgroundResource(R.drawable.renovation);
+        }
     }
 
 
@@ -72,6 +79,7 @@ public class item_pay_history_adapter extends RecyclerView.Adapter<item_pay_hist
         private TextView txt_pelak;
         private TextView txt_date;
         private ImageView img_delete;
+        private ImageView img_icon;
 
         private CardView crd1;
 
@@ -82,6 +90,7 @@ public class item_pay_history_adapter extends RecyclerView.Adapter<item_pay_hist
             txt_price = itemView.findViewById(R.id.txt_price);
             txt_date = itemView.findViewById(R.id.txt_date);
             img_delete = itemView.findViewById(R.id.img_delete_eshterak);
+            img_icon = itemView.findViewById(R.id.img_icon);
             //txt_radif = itemView.findViewById(R.id.txt_radif);
 //            img_delete.setOnClickListener(this);
 //

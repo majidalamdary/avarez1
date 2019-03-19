@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -63,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
     private int screenWidth;
     private int screenHeight;
     private String mother_activity="";
+    private SQLiteDatabase myDB;
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -130,6 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        myDB = this.openOrCreateDatabase(getString(R.string.DB_name), MODE_PRIVATE, null);
 
         fun = new Functions();
         Intent inten=getIntent();
@@ -222,6 +226,7 @@ public class RegisterActivity extends AppCompatActivity {
                 is_requested = true;
                 mm = new MyAsyncTask();
                 last_requested_query = getResources().getString(R.string.site_url) + "do?param=save_user&name=" + URLEncoder.encode(txt_name.getText().toString()) + "&family=" + URLEncoder.encode(txt_family.getText().toString()) + "&email=" + URLEncoder.encode(txt_email.getText().toString()) + "&NationalID=" + URLEncoder.encode(txt_national_id.getText().toString()) + "&PostalID=" + URLEncoder.encode(txt_posti_id.getText().toString()) + "&ID=" + Functions.u_id+"&rdn="+String.valueOf(new Random().nextInt());
+                Log.d("tg1",last_requested_query);
                 // Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
                 mm.url = (last_requested_query);
                 mm.execute("");
@@ -246,11 +251,18 @@ public class RegisterActivity extends AppCompatActivity {
             TextView txt_tel = findViewById(R.id.txt_tel);
             if(txt_tel.getText().toString().equals(random_code))
             {
+                try {
+                    myDB.execSQL("delete from MyNosazi ");
+                }catch (Exception e1){}
+                SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.MyBills), MODE_PRIVATE).edit();
+                editor.putString("CountCar", "0");
+                editor.apply();
                 if(!is_requested) {
                     //  Toast.makeText(this, "majid", Toast.LENGTH_SHORT).show();
                     is_requested = true;
                     mm = new MyAsyncTask();
                     last_requested_query = getResources().getString(R.string.site_url) + "do?param=create_user&code="+txt_tel.getText().toString()+ "&tel=" + URLEncoder.encode(tel_number)+"&rdn="+String.valueOf(new Random().nextInt());
+                    Log.d("tg1",last_requested_query);
                     // Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
                     lay_wait.setVisibility(View.VISIBLE);
                     fun.enableDisableView(lay_payamak,false);
@@ -392,7 +404,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     fun.enableDisableView(lay_register,true);
                                     is_requested=false;
                                     lay_wait.setVisibility(View.GONE);
-                                    Toast.makeText(RegisterActivity.this, "خطا در ارتباط", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(RegisterActivity.this, "خطا در ارتباط", Toast.LENGTH_SHORT).show();
                                     tim=0;
                                 }
                             }
@@ -459,6 +471,7 @@ public class RegisterActivity extends AppCompatActivity {
                         start1 = ss.indexOf("<param>");
                 int
                         end1 = ss.indexOf("</param>");
+                Log.d("tg1",ss);
                 if(end1>0) {
                     param_str = ss.substring(start1 + 7, end1);
                     //Toast.makeText(RegisterActivity.this, param_str, Toast.LENGTH_SHORT).show();
@@ -587,7 +600,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (param_str.equals("create_user") && is_requested)
                 {
-
+                    Log.d("tg1",ss);
                     start = ss.indexOf("<result>");
                     end = ss.indexOf("</result>");
                     is_requested = false;
@@ -650,6 +663,7 @@ public class RegisterActivity extends AppCompatActivity {
         is_requested = true;
         mm = new MyAsyncTask();
         last_requested_query = getResources().getString(R.string.site_url) + "do?param=get_user&ID="+Functions.u_id+ "&rdn="+String.valueOf(new Random().nextInt());
+        Log.d("tg1",last_requested_query);
         //Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
         lay_wait.setVisibility(View.VISIBLE);
         fun.enableDisableView(lay_register,false);

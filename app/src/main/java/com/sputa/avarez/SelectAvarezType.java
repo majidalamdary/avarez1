@@ -167,6 +167,14 @@ public class SelectAvarezType extends AppCompatActivity   {
        //     finish();
         }
     }
+    public void clk_nosazi_avarez(View view) {
+        if(typ.equals("search")) {
+            Intent I = new Intent(this, CarSearch.class);
+            I.putExtra("typ","nosazi");
+            startActivity(I);
+       //     finish();
+        }
+    }
 
     public void clk_back(View view) {
         finish();

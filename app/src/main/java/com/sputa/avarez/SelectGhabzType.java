@@ -138,7 +138,7 @@ public class SelectGhabzType extends AppCompatActivity   {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","gas");
             startActivity(I);
-            finish();
+//            finish();
         }
     }
 
@@ -155,7 +155,7 @@ public class SelectGhabzType extends AppCompatActivity   {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","water");
             startActivity(I);
-            finish();
+//            finish();
         }
     }
     public void clk_electric(View view) {
@@ -163,7 +163,7 @@ public class SelectGhabzType extends AppCompatActivity   {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","electric");
             startActivity(I);
-            finish();
+//            finish();
         }
     }
     public void clk_telphone(View view) {
@@ -171,7 +171,7 @@ public class SelectGhabzType extends AppCompatActivity   {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","telphone");
             startActivity(I);
-            finish();
+//            finish();
         }
     }
 

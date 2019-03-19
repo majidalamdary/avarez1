@@ -170,7 +170,7 @@
                 android:id="@+id/lay_motor_search"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -229,7 +229,7 @@
                 android:id="@+id/lay_parvandeh_search"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -245,7 +245,7 @@
                     android:background="@drawable/style_editview"
                     android:gravity="center_vertical|start"
                     android:hint="شماره پرونده را وارد کنید"
-                    android:inputType="number"
+                    android:inputType="number|numberSigned|numberDecimal|phone"
                     android:paddingStart="10dp"
                     android:text=""
                     android:textAlignment="viewStart"
@@ -287,10 +287,199 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/lay_nosazi_search"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35000002">
+
+                <LinearLayout
+                    android:id="@+id/lay_nosazi_holder"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.972">
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_nosazi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center"
+                        android:text="کد نوسازی :"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="10sp"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/txt_nosazi-code7"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+
+                        android:background="@drawable/style_editview"
+                        android:gravity="center"
+                        android:inputType="number|numberSigned|numberDecimal|phone"
+                        android:text="" />
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_nosazi_code5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".75"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/txt_nosazi-code6"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/style_editview"
+                        android:gravity="center"
+                        android:inputType="number|numberSigned|numberDecimal|phone"
+                        android:nextFocusForward="@id/txt_nosazi-code7"
+                        android:text="" />
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_nosazi_code6"
+
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".75"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/txt_nosazi-code5"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/style_editview"
+                        android:gravity="center"
+                        android:inputType="number|numberSigned|numberDecimal|phone"
+                        android:nextFocusForward="@id/txt_nosazi-code6"
+                        android:text="" />
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_nosazi_code4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".75"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/txt_nosazi-code4"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/style_editview"
+                        android:gravity="center"
+                        android:inputType="number|numberSigned|numberDecimal|phone"
+                        android:nextFocusForward="@id/txt_nosazi-code5"
+                        android:text="" />
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_nosazi_code3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".75"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/txt_nosazi-code3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/style_editview"
+                        android:gravity="center"
+                        android:inputType="number|numberSigned|numberDecimal|phone"
+                        android:nextFocusForward="@id/txt_nosazi-code4"
+                        android:text="" />
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_nosazi_code2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".75"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/txt_nosazi-code2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/style_editview"
+                        android:gravity="center"
+                        android:inputType="number|numberSigned|numberDecimal|phone"
+                        android:nextFocusForward="@id/txt_nosazi-code3"
+                        android:text="" />
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_nosazi_code1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".75"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        android:visibility="visible" />
+
+                    <EditText
+                        android:id="@+id/txt_nosazi-code1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@drawable/style_editview"
+                        android:gravity="center"
+                        android:inputType="number|numberSigned|numberDecimal|phone"
+                        android:nextFocusRight="@id/txt_nosazi-code2" />
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/lay_melli_search"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -305,7 +494,6 @@
                     android:height="35dp"
                     android:background="@drawable/style_editview"
                     android:gravity="center_vertical|start"
-                    android:hint="کدملی خود را وارد کنید"
                     android:inputType="number"
                     android:paddingStart="10dp"
                     android:text=""
@@ -483,7 +671,7 @@
                 app:layout_constraintHorizontal_bias="0.9"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.88">
+                app:layout_constraintVertical_bias="0.9">
 
                 <com.sputa.avarez.my_views.MyTextView
                     android:id="@+id/lbl_pay"
@@ -510,7 +698,7 @@
                 app:layout_constraintHorizontal_bias="0.9"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.98">
+                app:layout_constraintVertical_bias="0.99">
 
                 <com.sputa.avarez.my_views.MyTextView
                     android:id="@+id/lbl_detail"
@@ -523,10 +711,10 @@
 
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_price"
-                android:layout_width="167dp"
+                android:layout_width="208dp"
                 android:layout_height="33dp"
                 android:textAlignment="viewStart"
-                android:textColor="@android:color/black"
+                android:textColor="#af2d2d"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -554,9 +742,9 @@
             <com.sputa.avarez.my_views.MyTextView
                 android:id="@+id/lbl_msg"
                 android:layout_width="333dp"
-                android:layout_height="101dp"
+                android:layout_height="136dp"
                 android:background="@android:color/white"
-                android:lineSpacingExtra="5dp"
+                android:lineSpacingExtra="3sp"
                 android:textAlignment="viewStart"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
@@ -648,10 +836,10 @@
                 android:id="@+id/img_title"
                 android:layout_width="45dp"
                 android:layout_height="40dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/car"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -684,10 +872,10 @@
                 android:id="@+id/web_view"
                 android:layout_width="302dp"
                 android:layout_height="480dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.918"
@@ -722,6 +910,114 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
         </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/lay_pay_message"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:background="@drawable/btn_white"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_pay_avarez_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="عوارض نوسازی"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_pay_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="پرداخت با موفقیت"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_rahgiri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="کد رهگیری : 321321"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/lbl_result_in_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="وضعیت تائید در مبدا : 1"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/btn_back_pay_message"
+                    android:layout_width="110dp"
+                    android:layout_height="41dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/btn_grey"
+                    android:gravity="center"
+                    android:onClick="clk_back_pay_message"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.91"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.88">
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_back_complete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="برگشت"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lay_wait"
@@ -1022,8 +1318,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1043,8 +1339,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1064,8 +1360,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1085,8 +1381,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1106,8 +1402,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1124,7 +1420,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lay_header_car"
+                app:layout_constraintVertical_bias="0.0" />
 
             <LinearLayout
                 android:id="@+id/btn_back_detail"
@@ -1177,21 +1475,59 @@
             android:visibility="gone">
 
 
-            <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/lbl_msg_jame"
-                android:layout_width="333dp"
-                android:layout_height="231dp"
-                android:background="@android:color/white"
-                android:lineSpacingExtra="5dp"
-                android:textAlignment="viewStart"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.58"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.45" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_msg_jame_right"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:lineSpacingExtra="5dp"
+                        android:textAlignment="viewStart"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.428" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <com.sputa.avarez.my_views.MyTextView
+                        android:id="@+id/lbl_msg_jame_left"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:lineSpacingExtra="5dp"
+                        android:textAlignment="viewStart"
+                        android:textColor="@android:color/black"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.445" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/btn_back_detail_jame"
@@ -1224,7 +1560,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="جزئیات مبلغ عوارض خودرو"
+                android:text="جزئیات مبلغ عوارض جامع "
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -1249,6 +1585,7 @@
                 android:layout_height="25dp"
                 android:orientation="horizontal"
                 android:padding="1dp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -1260,15 +1597,15 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
                     android:text="آخرین  پرداخت"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:textSize="8sp" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -1281,8 +1618,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1302,8 +1639,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1323,8 +1660,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1344,8 +1681,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -1365,15 +1702,305 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
                     android:text="مبلغ عوارض"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
+                    android:textSize="9sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_header_nosazi"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:padding="1dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.20999998">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="آخرین  پرداخت"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="8sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="از سال"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
                     android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="تا سال"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="خدمات"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="بدهی"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="مبلغ عوارض"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="9sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_header_pasmand"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:padding="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.20999998">
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="آخرین  پرداخت"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="8sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="از سال"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="تا سال"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="نوع واحد"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="تعداد واحد"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="بدهی"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="11sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="مبلغ عوارض"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="8sp" />
+
+
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView

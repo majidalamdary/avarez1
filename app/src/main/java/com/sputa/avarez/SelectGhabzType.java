@@ -34,6 +34,12 @@ public class SelectGhabzType extends AppCompatActivity   {
     private int screenWidth;
     private int screenHeight;
     private String typ;
+
+    LinearLayout lay_gas;
+    LinearLayout lay_water;
+    LinearLayout lay_electric;
+    LinearLayout lay_telephone;
+
     private void set_size(int vid,Double width,Double height,String typ)
     {
         View v =findViewById(vid);
@@ -112,6 +118,28 @@ public class SelectGhabzType extends AppCompatActivity   {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
+        lay_electric=findViewById(R.id.lay_electric_shade);
+        lay_water=findViewById(R.id.lay_water_shade);
+        lay_gas=findViewById(R.id.lay_gas_shade);
+        lay_telephone=findViewById(R.id.lay_telphone_shade);
+
+        lay_water.setVisibility(View.VISIBLE);
+        lay_gas.setVisibility(View.VISIBLE);
+        lay_electric.setVisibility(View.VISIBLE);
+        lay_telephone.setVisibility(View.VISIBLE);
+
+        if(Functions.pob_gas)
+            lay_gas.setVisibility(View.GONE);
+        if(Functions.pob_water)
+            lay_water.setVisibility(View.GONE);
+        if(Functions.pob_electric)
+            lay_electric.setVisibility(View.GONE);
+        if(Functions.pob_telphone) {
+            lay_telephone.setVisibility(View.GONE);
+//            Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+        }
+
+
 
         set_size(R.id.img_back,.06,.035,"line");
         set_size(R.id.img_next,.06,.035,"line");
@@ -134,7 +162,7 @@ public class SelectGhabzType extends AppCompatActivity   {
     }
 
     public void clk_gas_ghabz(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_gas) {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","gas");
             startActivity(I);
@@ -151,7 +179,7 @@ public class SelectGhabzType extends AppCompatActivity   {
     }
 
     public void clk_water(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_water) {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","water");
             startActivity(I);
@@ -159,7 +187,7 @@ public class SelectGhabzType extends AppCompatActivity   {
         }
     }
     public void clk_electric(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_electric) {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","electric");
             startActivity(I);
@@ -167,7 +195,7 @@ public class SelectGhabzType extends AppCompatActivity   {
         }
     }
     public void clk_telphone(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_telphone) {
             Intent I = new Intent(this, GhabzSearch.class);
             I.putExtra("type","telphone");
             startActivity(I);

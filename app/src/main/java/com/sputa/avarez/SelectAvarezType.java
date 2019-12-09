@@ -32,6 +32,13 @@ public class SelectAvarezType extends AppCompatActivity   {
     private int screenWidth;
     private int screenHeight;
     private String typ;
+
+    LinearLayout lay_car;
+    LinearLayout lay_pasmand;
+    LinearLayout lay_renew;
+    LinearLayout lay_bussiness;
+    LinearLayout lay_tabloo;
+    LinearLayout lay_jame;
     private void set_size(int vid,Double width,Double height,String typ)
     {
         View v =findViewById(vid);
@@ -110,6 +117,33 @@ public class SelectAvarezType extends AppCompatActivity   {
         screenWidth = displayMetrics.widthPixels;
         screenHeight = displayMetrics.heightPixels;
 
+        lay_car = findViewById(R.id.lay_chance_rival_shade);
+        lay_pasmand = findViewById(R.id.lay_pasmand_shade);
+        lay_renew = findViewById(R.id.lay_nosazi_shade);
+        lay_tabloo = findViewById(R.id.lay_tabloo_shade);
+        lay_bussiness = findViewById(R.id.lay_bussiness_shade);
+        lay_jame = findViewById(R.id.lay_jame_shade);
+
+        lay_car.setVisibility(View.VISIBLE);
+        lay_pasmand.setVisibility(View.VISIBLE);
+        lay_renew.setVisibility(View.VISIBLE);
+        lay_tabloo.setVisibility(View.VISIBLE);
+        lay_bussiness.setVisibility(View.VISIBLE);
+        lay_jame.setVisibility(View.VISIBLE);
+
+        if(Functions.pob_car)
+            lay_car.setVisibility(View.GONE);
+        if(Functions.pob_pasmand)
+            lay_pasmand.setVisibility(View.GONE);
+        if(Functions.pob_renew)
+            lay_renew.setVisibility(View.GONE);
+        if(Functions.pob_tabloo)
+            lay_tabloo.setVisibility(View.GONE);
+        if(Functions.pob_bussiness)
+            lay_bussiness.setVisibility(View.GONE);
+        if(Functions.pob_jameh)
+            lay_jame.setVisibility(View.GONE);
+
 
         set_size(R.id.img_back,.06,.035,"line");
         set_size(R.id.img_next,.06,.035,"line");
@@ -136,7 +170,7 @@ public class SelectAvarezType extends AppCompatActivity   {
     }
 
     public void clk_car_avarez(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_car) {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","car");
             startActivity(I);
@@ -144,7 +178,7 @@ public class SelectAvarezType extends AppCompatActivity   {
         }
     }
     public void clk_bussiness_avarez(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_bussiness) {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","bussiness");
             startActivity(I);
@@ -152,7 +186,7 @@ public class SelectAvarezType extends AppCompatActivity   {
         }
     }
     public void clk_tablo_avarez(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_tabloo) {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","tablo");
             startActivity(I);
@@ -160,7 +194,7 @@ public class SelectAvarezType extends AppCompatActivity   {
         }
     }
     public void clk_pasmand_avarez(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_pasmand) {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","pasmand");
             startActivity(I);
@@ -168,7 +202,7 @@ public class SelectAvarezType extends AppCompatActivity   {
         }
     }
     public void clk_nosazi_avarez(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_renew) {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","nosazi");
             startActivity(I);
@@ -185,7 +219,7 @@ public class SelectAvarezType extends AppCompatActivity   {
     }
 
     public void clk_jame_avarez(View view) {
-        if(typ.equals("search")) {
+        if(typ.equals("search") && Functions.pob_jameh) {
             Intent I = new Intent(this, CarSearch.class);
             I.putExtra("typ","jame");
             startActivity(I);

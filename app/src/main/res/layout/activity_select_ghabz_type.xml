@@ -71,8 +71,8 @@
                 android:orientation="vertical">
 
 
-                <LinearLayout
-                    android:id="@+id/lay_chance_rival"
+                <RelativeLayout
+                    android:id="@+id/lay_gas"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="#a1a1a1"
@@ -136,7 +136,16 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_gas_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,7 +153,7 @@
                     android:orientation="vertical"></LinearLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/lay_water"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
@@ -209,14 +218,23 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_water_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
                     android:orientation="vertical"></LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/lay_electric"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
@@ -281,14 +299,22 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_electric_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="5dp"
                     android:orientation="vertical"></LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/lay_telphone"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
@@ -353,12 +379,18 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:orientation="vertical"></LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lay_telphone_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+                </RelativeLayout>
+
+
 
 
             </LinearLayout>

@@ -84,7 +84,7 @@ public class TextService extends AppCompatActivity {
                 mm = new MyAsyncTask();
                 String[] qwe = new String[10];
                 qwe[0] = "123";
-                mm.execute(qwe);
+                mm.execute(  qwe);
             }
         });
     }

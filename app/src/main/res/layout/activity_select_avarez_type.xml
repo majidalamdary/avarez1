@@ -71,7 +71,7 @@
                 android:orientation="vertical">
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/lay_chance_rival"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
@@ -85,58 +85,74 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#ffffff"
+                        android:background="#6A8F9397"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.1"
-                            android:gravity="center"
+                            android:background="#ffffff"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/img_car"
-                                android:layout_width="match_parent"
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1.1"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/img_car"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:src="@drawable/car" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="4"
+                                android:gravity="center_vertical|start"
+                                android:orientation="horizontal"
+                                android:paddingStart="10dp">
+
+                                <com.sputa.avarez.my_views.MyTextView
+                                    android:id="@+id/lbl_car_avarez"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="عوارض خودرو"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="20sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:src="@drawable/car" />
+                                android:gravity="center"
+                                android:orientation="horizontal">
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4"
-                            android:gravity="center_vertical|start"
-                            android:orientation="horizontal"
-                            android:paddingStart="10dp">
-
-                            <com.sputa.avarez.my_views.MyTextView
-                                android:id="@+id/lbl_car_avarez"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="عوارض خودرو"
-                                android:textColor="@android:color/black"
-                                android:textSize="20sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:id="@+id/img_next"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@drawable/left_arrow_grey" />
+                                <ImageView
+                                    android:id="@+id/img_next"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:background="@drawable/left_arrow_grey" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_chance_rival_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,7 +160,7 @@
                     android:orientation="vertical"></LinearLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/lay_bussiness"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
@@ -208,15 +224,25 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_bussiness_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:orientation="vertical"></LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/lay_bussiness"
+                <RelativeLayout
+                    android:id="@+id/lay_tabloo"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="#a1a1a1"
@@ -280,7 +306,16 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_tabloo_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+                </RelativeLayout>
 
 
 
@@ -289,8 +324,8 @@
                     android:layout_height="1dp"
                     android:orientation="vertical"></LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/lay_bussiness"
+                <RelativeLayout
+                    android:id="@+id/lay_pasmand"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="#a1a1a1"
@@ -354,7 +389,15 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_pasmand_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+                </RelativeLayout>
 
 
                 <LinearLayout
@@ -362,8 +405,8 @@
                     android:layout_height="1dp"
                     android:orientation="vertical"></LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/lay_bussiness"
+                <RelativeLayout
+                    android:id="@+id/lay_nosazi"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="#a1a1a1"
@@ -427,7 +470,16 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_nosazi_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+                </RelativeLayout>
 
 
                 <LinearLayout
@@ -435,8 +487,8 @@
                     android:layout_height="1dp"
                     android:orientation="vertical"></LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/lay_bussiness"
+                <RelativeLayout
+                    android:id="@+id/lay_jame"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:background="#a1a1a1"
@@ -500,7 +552,16 @@
                                 android:background="@drawable/left_arrow_grey" />
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_jame_shade"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#63929292"
+                        android:orientation="horizontal"
+                        android:visibility="gone"></LinearLayout>
+
+                </RelativeLayout>
 
 
             </LinearLayout>

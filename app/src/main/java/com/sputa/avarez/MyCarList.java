@@ -204,6 +204,7 @@ public class MyCarList extends AppCompatActivity implements RecyclerViewClickLis
         String url ="http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount="+String.valueOf(itms_avarez_number.get(pos))+"&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId;
 
         //Toast.makeText(this, url, Toast.LENGTH_LONG).show();
+        fun.Lag(url);
         webview.loadUrl(url);
 
 
@@ -385,6 +386,9 @@ public class MyCarList extends AppCompatActivity implements RecyclerViewClickLis
                                 rslt_Punish = new_str;
                                 item1.add(new items(rslt_year, rslt_avarez, rslt_farsudegi, rslt_ratePunish, rslt_Punish, "11"));
                             }
+
+
+
                             mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
                             mRecyclerView.setHasFixedSize(true);
                             mLayoutManager = new LinearLayoutManager(MyCarList.this);

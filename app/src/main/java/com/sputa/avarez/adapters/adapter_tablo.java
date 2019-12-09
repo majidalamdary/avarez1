@@ -92,8 +92,8 @@ public class adapter_tablo extends RecyclerView.Adapter<adapter_tablo.my_view_ho
             txt_last_pay = itemView.findViewById(R.id.txt_last_pay);
             txt_from_year = itemView.findViewById(R.id.txt_from_year);
             txt_to_year = itemView.findViewById(R.id.txt_to_year);
-            txt_tax = itemView.findViewById(R.id.txt_tax);
-            txt_punishment = itemView.findViewById(R.id.txt_punishment);
+//            txt_tax = itemView.findViewById(R.id.txt_tax);
+//            txt_punishment = itemView.findViewById(R.id.txt_punishment);
             txt_avarez = itemView.findViewById(R.id.txt_avarez);
 
             crd1 = itemView.findViewById(R.id.crd1);

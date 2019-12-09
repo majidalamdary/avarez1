@@ -25,16 +25,16 @@
             android:orientation="horizontal">
 
             <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/txt_last_pay"
+                android:id="@+id/txt_avarez_year"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/border_back"
                 android:gravity="center"
                 android:padding="0dp"
-                android:text="آخرین  پرداخت"
+                android:text="سال عوارض"
                 android:textColor="@android:color/black"
                 android:textSize="9sp" />
         </LinearLayout>
@@ -46,16 +46,16 @@
             android:orientation="horizontal">
 
             <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/txt_from_year"
+                android:id="@+id/txt_penalty_rate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/border_back"
                 android:gravity="center"
                 android:padding="0dp"
-                android:text="از سال"
+                android:text="نرخ جریمه"
                 android:textColor="@android:color/black"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -67,82 +67,123 @@
             android:orientation="horizontal">
 
             <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/txt_to_year"
+                android:id="@+id/txt_avarez_price"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
-                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/border_back"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="تا سال"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/txt_tax"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="0dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/border_back"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="مالیات"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/txt_punishment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="0dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/border_back"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="مبلغ جریمه"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/txt_avarez"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="0dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:background="@drawable/border_back"
                 android:gravity="center"
                 android:padding="0dp"
                 android:text="مبلغ عوارض"
                 android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/txt_avarez_late"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/border_back"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="دیرکرد عوارض"
+                android:textColor="@android:color/black"
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/txt_service_price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_back"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="مبلغ خدمات"
+                android:textColor="@android:color/black"
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/txt_service_late"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_back"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="دیرکرد خدمات"
+                android:textColor="@android:color/black"
+                android:textSize="9sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/txt_local_service_price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_back"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="مبلغ خدمات منطقه ای"
+                android:textColor="@android:color/black"
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.sputa.avarez.my_views.MyTextView
+                android:id="@+id/txt_local_service_late"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/border_back"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="دیرکرد خدمات منطقه ای"
+                android:textColor="@android:color/black"
+                android:textSize="9sp" />
         </LinearLayout>
 
     </LinearLayout>

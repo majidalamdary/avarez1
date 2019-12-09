@@ -23,22 +23,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sputa.avarez.adapters.adapter_bussiness;
 import com.sputa.avarez.adapters.item_adapter;
-import com.sputa.avarez.adapters.item_cars_adapter;
 import com.sputa.avarez.adapters.item_eshterak_adapter;
 import com.sputa.avarez.classes.CallSoap;
-import com.sputa.avarez.classes.StaticGasGhabz;
-import com.sputa.avarez.classes.StaticWaterGhabz;
+import com.sputa.avarez.model.item_bussiness;
 import com.sputa.avarez.model.items;
-import com.sputa.avarez.model.items_cars;
 import com.sputa.avarez.model.items_eshterak;
 
 import org.apache.http.HttpEntity;
@@ -62,11 +58,18 @@ import java.util.UUID;
 import static com.sputa.avarez.Functions.Lag;
 
 public class MyEshterakList extends AppCompatActivity  implements RecyclerViewClickListener{
+
     List<items_eshterak> item =     new ArrayList<>();
+
     List<items> item1 =     new ArrayList<>();
+
     List<String> itms=     new ArrayList<>();
+
     List<String> itms_avarez=     new ArrayList<>();
+
     List<Integer> itms_avarez_number =     new ArrayList<>();
+    List<item_bussiness> item_bussinesses = new ArrayList<>();
+    String DetailType="";
     LinearLayout lay_main;
     private Functions fun;
     public int NosaziCount=0;
@@ -85,6 +88,7 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
     private MyAsyncTaskService Asy;
     private String pay_type="";
     private String URL="";
+    private String UrlForBussiness="";
     private String last_requested_query="";
     private String rslt_MerchantId="";
     private String rslt_TerMinalId="";
@@ -122,23 +126,22 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                                 String rad = item.get(position).getRadif();
                                 IsPaid=item.get(position).getIsPaid();
                                 delete_nosazi(NosaziListCode.get(Integer.valueOf(rad) - 1));
-
                             }
                             else if(item.get(position).getType().equals("car")) {
                                 IsPaid=item.get(position).getIsPaid();
-                                delete_car(itms.get(position));
+                                delete_car(item.get(position).getRadif());
+                            }
+                            else if(item.get(position).getType().equals("bussiness")) {
+                                IsPaid=item.get(position).getIsPaid();
+                                delete_bussiness(item.get(position).getRadif());
                             }
                             else
                             {
                                 items_eshterak itm = (item.get(position));
-
                                 myDB.execSQL("delete from MyGhabz where AboneID='"+itm.getTxt_eshterak()+"'");
                                 item.clear();
                                 load_all_eshterak();
                             }
-
-
-
                         }
                     }).setNegativeButton("خیر", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
@@ -163,7 +166,14 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                 show_detail_nosazi(NosaziList.get(Integer.valueOf(rad) - 1),NosaziListURL.get(Integer.valueOf(rad) - 1));
             }
             else if(item.get(position).getType().equals("car")) {
-                show_detail_car(itms.get(position));
+//                show_detail_car(itms.get(position));
+                show_detail_car(item.get(position).getRadif());
+                DetailType="car";
+            }
+            else if(item.get(position).getType().equals("bussiness")) {
+//                show_detail_car(itms.get(position));
+                show_detail_bussiness(item.get(position).getRadif());
+                DetailType="bussiness";
             }
             else
             {
@@ -188,21 +198,40 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
         mm.execute("");
     }
 
+    private void delete_bussiness(String s) {
+        Asy =new MyAsyncTaskService("DeleteBussiness",s);
+        Asy.execute();    }
+
     private void show_detail_car(String s) {
         fun.enableDisableView(lay_main, false);
         RelativeLayout lay_message = findViewById(R.id.lay_message);
         lay_message.setVisibility(View.VISIBLE);
-        ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
+        LinearLayout lay_detail = findViewById(R.id.lay_detail);
         lay_detail.setVisibility(View.VISIBLE);
         ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
         lay_gate.setVisibility(View.GONE);
-
+        LinearLayout lay_header_car = findViewById(R.id.lay_header_car);
+        lay_header_car.setVisibility(View.VISIBLE);
+        LinearLayout lay_header_bussiness = findViewById(R.id.lay_header_bussiness);
+        lay_header_bussiness.setVisibility(View.GONE);
+        TextView lbl_header_detail_avarez= findViewById(R.id.lbl_header_detail_avarez);
+        lbl_header_detail_avarez.setText("جزئیات مبلغ عوارض خودرو");
         mm = new MyAsyncTask();
         last_requested_query = getResources().getString(R.string.site_url) + "do?param=get_avarez_detail&carID="+s+ "&rdn="+String.valueOf(new Random().nextInt());
         // Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
-
+        Lag(last_requested_query);
         mm.url = (last_requested_query);
         mm.execute("");
+
+
+    }
+    private void show_detail_bussiness(String s) {
+
+
+        LinearLayout btn_pay_car=findViewById(R.id.btn_pay_car);
+        btn_pay_car.setVisibility(View.GONE);
+        Asy =new MyAsyncTaskService("ShowBussinessDetail",s);
+        Asy.execute();
 
 
     }
@@ -314,12 +343,17 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
 
     private void load_all_eshterak() {
         load_my_Nosazi();
+        load_my_Bussiness();
         load_my_cars();
         load_my_eshterak();
     }
 
     private void load_my_Nosazi() {
         Asy =new MyAsyncTaskService("GetNosaziList","");
+        Asy.execute();
+    }
+    private void load_my_Bussiness() {
+        Asy =new MyAsyncTaskService("GetBussinessList","");
         Asy.execute();
     }
 
@@ -347,7 +381,7 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                 Cursor cr1 = myDB.rawQuery("select * from Gas where AboneID='"+cr.getString(0)+"'", null);
                 if(cr1.getCount()>0) {
                     cr1.moveToFirst();
-                    item.add(new items_eshterak(cr.getString(0), cr1.getString(2) + " " + cr1.getString(3), digiting(cr1.getString(12)), cr1.getString(0), "gas","1"));
+                    item.add(new items_eshterak(cr.getString(0), cr1.getString(2) + " " + cr1.getString(3), digiting(String.format ("%.0f", (cr1.getFloat(12)))), cr1.getString(0), "gas","1"));
                 }
             }
             if(cr.getString(1).equals("water")) {
@@ -421,7 +455,7 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
         fun.enableDisableView(lay_main, true);
         RelativeLayout lay_message = findViewById(R.id.lay_message);
         lay_message.setVisibility(View.GONE);
-        ConstraintLayout lay_detail = findViewById(R.id.lay_detail);
+        LinearLayout lay_detail = findViewById(R.id.lay_detail);
         lay_detail.setVisibility(View.GONE);
         ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
         lay_gate.setVisibility(View.GONE);
@@ -429,13 +463,24 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
     public void clk_pay_car(View view) {
 
 
+        if(DetailType.equals("car")) {
+            mm = new MyAsyncTask();
+            last_requested_query = getResources().getString(R.string.site_url) + "do?param=get_pay_info&CarID=" + item.get(pos).getRadif() + "&rdn=" + String.valueOf(new Random().nextInt());
+            //  Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
+            Lag(last_requested_query);
+            mm.url = (last_requested_query);
+            mm.execute("");
+        }
+        if(DetailType.equals("bussiness"))
+        {
+            if(UrlForBussiness.length()>0) {
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(UrlForBussiness));
+                startActivity(i);
+                Lag("url=" + UrlForBussiness);
+            }
 
-        mm = new MyAsyncTask();
-        last_requested_query = getResources().getString(R.string.site_url) + "do?param=get_pay_info&CarID="+item.get(pos).getRadif()+"&rdn="+String.valueOf(new Random().nextInt());
-        //  Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
-        Lag(last_requested_query);
-        mm.url = (last_requested_query);
-        mm.execute("");
+        }
+
 
     }
     private void load_my_cars() {
@@ -550,7 +595,7 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                 msg +=" :   "+ cr.getString(9)+ "\n" ;
                 msg +=" :   "+ cr.getString(10)+ "  \n" ;
 
-                msg +=" :   "+ digiting(cr.getString(12))+ " ریال \n" ;
+                msg +=" :   "+ digiting(String.format ("%.0f", (cr.getFloat(12))))+ " ریال \n" ;
 
                 lbl_msg_left_detail.setText(msg);
 
@@ -765,7 +810,8 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
         webview.setWebViewClient(new myWebClient());
         webview.getSettings().setJavaScriptEnabled(true);
         //rslt_price="1000";
-        String tmp_price =item.get(pos).getTxt_price(),price=String.valueOf(itms_avarez_number.get(pos)) ;
+//        String tmp_price =item.get(pos).getTxt_price(),price=String.valueOf(itms_avarez_number.get(pos)) ;
+        String price=String.valueOf(itms_avarez_number.get(pos)) ;
         //Toast.makeText(this, String.valueOf(pos), Toast.LENGTH_SHORT).show();
 //        for(int i=0;i<tmp_price.length();i++)
 //        {
@@ -902,7 +948,7 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                         //Toast.makeText(CarSearch.this, String.valueOf(rslt_hisCount), Toast.LENGTH_SHORT).show();
                         item1.clear();
                         if(rslt_hisCount>0) {
-                            for (int i = 0; i < rslt_hisCount; i++) {
+                            for (int i = rslt_hisCount-1; i >=0 ; i--) {
                                 start1 = rslt.indexOf("<his" + String.valueOf(i) + ">");
                                 end1 = rslt.indexOf("</his" + String.valueOf(i) + ">");
                                 String rslt_hisItems = (rslt.substring(start1 + 6, end1));
@@ -1123,6 +1169,12 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
 
                 GetNosaziListResult();
             }
+            if(Type.equals("GetBussinessList")) {
+                GetBussinessListResult();
+            }
+            if(Type.equals("ShowBussinessDetail")) {
+                GetInfoBussinessByBussinessIdResult();
+            }
             if(Type.equals("GetInfoNosazi")) {
 
                 GetInfoNosaziResult();
@@ -1131,6 +1183,71 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
             {
                 DeleteNosaziResult();
             }
+            if(Type.equals("DeleteBussiness"))
+            {
+                DeleteBussinessResult();
+            }
+        }
+        private void GetBussinessListResult() {
+
+
+            if(resp.length()>0)
+            {
+                String
+                        nosaziCode="";
+
+                int start1 = resp.indexOf("<cnt>");
+                int end1 = resp.indexOf("</cnt>");
+                if(end1>0) {
+                    int
+                            cnt = Integer.valueOf(resp.substring(start1 + 5, end1));
+                    myDB.execSQL("delete from MyBussiness ");
+                    for (int i = 1; i <= cnt; i++) {
+                        start1 = resp.indexOf("<bussiness" + i + ">");
+                        end1 = resp.indexOf("</bussiness" + i + ">");
+                        String bussiness = resp.substring(start1 + 10 + String.valueOf(cnt).length(), end1);
+                        start1 = bussiness.indexOf("<bussinessId>");
+                        end1 = bussiness.indexOf("</bussinessId>");
+                        String bussinessId = bussiness.substring(start1 + 13, end1);
+                        start1 = bussiness.indexOf("<bussinessName>");
+                        end1 = bussiness.indexOf("</bussinessName>");
+                        String bussinessName = bussiness.substring(start1 + 15, end1);
+                        start1 = bussiness.indexOf("<AvarezPrice>");
+                        end1 = bussiness.indexOf("</AvarezPrice>");
+                        String avarezPrice = bussiness.substring(start1 + 13, end1);
+
+
+                        String paidType = "NotPaid";
+                        if (avarezPrice.length() > 1)
+                            paidType = "Paid";
+
+                        myDB.execSQL("insert into MyBussiness (BussinessId,Type) values ('" + bussiness + "','" + paidType + "') ");
+                        item.add(new items_eshterak(bussinessId, "" + bussinessName, Functions.Cur(avarezPrice), bussinessId, "bussiness", paidType));
+
+                    }
+
+
+                    NosaziListCode.add(Param);
+                    NosaziListURL.add(URL);
+                    mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
+                    mRecyclerView.setHasFixedSize(true);
+                    mLayoutManager = new LinearLayoutManager(MyEshterakList.this);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                }
+
+            }
+
+//            Toast.makeText(MyEshterakList.this, resp, Toast.LENGTH_SHORT).show();
+//            item.add(new items_eshterak("1024", "123", "456","1",  "nosazi"));
+//
+//            mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
+//            mRecyclerView.setHasFixedSize(true);
+//            mLayoutManager = new LinearLayoutManager(MyEshterakList.this);
+//            mRecyclerView.setLayoutManager(mLayoutManager);
+//
+//
+//            mAdapter = new item_eshterak_adapter(MyEshterakList.this,item,MyEshterakList.this);
+//            mRecyclerView.setAdapter(mAdapter);
         }
         private void DeleteNosaziResult() {
             if (resp.equals("error")) {
@@ -1279,6 +1396,9 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
             if(Type.equals("GetNosaziList")) {
                 GetNosaziList();
             }
+            if(Type.equals("ShowBussinessDetail")) {
+                GetInfoBussinessByBussinessId(Param);
+            }
             if(Type.equals("GetInfoNosazi"))
             {
                 GetInfoNosazi(Param);
@@ -1287,6 +1407,14 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
             {
                 DeleteNosazi(Param);
             }
+            if(Type.equals("GetBussinessList")) {
+                GetBussinessList();
+            }
+            if(Type.equals("DeleteBussiness"))
+            {
+                DeleteBussiness(Param);
+            }
+
             return null;
         }
 
@@ -1300,6 +1428,42 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                 resp=cs.Call_Nosazi_DeleteNosazi(param);
 
                 Lag("Res_del="+resp);
+            }catch(Exception ex)
+            {
+                Lag( "err:  " + ex.toString());
+
+            }
+        }
+        private void DeleteBussiness(String param) {
+            CallSoap cs;
+
+
+
+            try{
+                cs = new CallSoap();
+                resp=cs.Call_Nosazi_DeleteBussiness(param);
+
+                Lag("Res_del="+resp);
+            }catch(Exception ex)
+            {
+                Lag( "err:  " + ex.toString());
+
+            }
+        }
+        private void DeleteBussinessResult() {
+
+
+
+            try{
+                if(resp.equals("true"))
+                {
+                    Lag("okokokok");
+                    String sql= "delete from MyBussiness where BussinessId='"+Param+"'";
+                    Lag(sql);
+                    myDB.execSQL(sql);
+                    item.clear();
+                    load_all_eshterak();
+                }
             }catch(Exception ex)
             {
                 Lag( "err:  " + ex.toString());
@@ -1323,6 +1487,293 @@ public class MyEshterakList extends AppCompatActivity  implements RecyclerViewCl
                 resp=cs.Call_Nosazi_GetInfo(PnosaziKodem, AID,Atuh);
 
                 Lag("Res="+resp);
+            }catch(Exception ex)
+            {
+                Lag( "err:  " + ex.toString());
+
+            }
+        }
+        private void GetInfoBussinessByBussinessId(String bussinessId) {
+
+
+            CallSoap cs;
+
+
+            try{
+                cs = new CallSoap();
+                resp=cs.Call_Bussiness_GetInfo_ByBussinessId(bussinessId);
+
+                Lag("Res="+resp);
+            }catch(Exception ex)
+            {
+                Lag( "err:  " + ex.toString());
+
+            }
+        }
+        private void GetInfoBussinessByBussinessIdResult() {
+
+            fun.enableDisableView(lay_main, false);
+            RelativeLayout lay_message = findViewById(R.id.lay_message);
+            lay_message.setVisibility(View.VISIBLE);
+            LinearLayout lay_detail = findViewById(R.id.lay_detail);
+            lay_detail.setVisibility(View.VISIBLE);
+            ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
+            lay_gate.setVisibility(View.GONE);
+            LinearLayout lay_header_car = findViewById(R.id.lay_header_car);
+            lay_header_car.setVisibility(View.GONE);
+            LinearLayout lay_header_bussiness = findViewById(R.id.lay_header_bussiness);
+            lay_header_bussiness.setVisibility(View.VISIBLE);
+            TextView lbl_header_detail_avarez = findViewById(R.id.lbl_header_detail_avarez);
+            String result = resp;
+
+
+
+            lbl_header_detail_avarez.setText("جزئیات مبلغ عوارض کسب و کار");
+
+            int start1 = result.indexOf("<cnt>");
+            int end1 = result.indexOf("</cnt>");
+            String price="0";
+            if(end1>0) {
+                String cnt = result.substring(start1 + 5, end1);
+                start1 = result.indexOf("<AvarezPrice>");
+                end1 = result.indexOf("</AvarezPrice>");
+                String AvarezPrice = result.substring(start1 + 13 , end1);
+                price = AvarezPrice;
+
+
+
+                item_bussinesses.clear();
+                for (int i = Integer.valueOf(cnt); i >= 1; i--) {
+                    start1 = result.indexOf("<detail" + i + ">");
+                    end1 = result.indexOf("</detail" + i + ">");
+                    String detail = result.substring(start1 + 8 + cnt.length(), end1);
+
+                    start1 = detail.indexOf("<AvarezYear>");
+                    end1 = detail.indexOf("</AvarezYear>");
+                    String avarezYear = detail.substring(start1 + 12, end1);
+
+                    start1 = detail.indexOf("<AvarezRate>");
+                    end1 = detail.indexOf("</AvarezRate>");
+                    String penaltyRate = detail.substring(start1 + 12, end1);
+
+                    start1 = detail.indexOf("<Price>");
+                    end1 = detail.indexOf("</Price>");
+                    String avarezPrice = detail.substring(start1 + 7, end1);
+                    start1 = detail.indexOf("<lateAvarez>");
+                    end1 = detail.indexOf("</lateAvarez>");
+                    String lateAvarez = detail.substring(start1 + 12, end1);
+
+                    start1 = detail.indexOf("<Service>");
+                    end1 = detail.indexOf("</Service>");
+                    String servicePrice = detail.substring(start1 + 9, end1);
+
+                    start1 = detail.indexOf("<ServiceLate>");
+                    end1 = detail.indexOf("</ServiceLate>");
+                    String serviceLate = detail.substring(start1 + 13, end1);
+                    start1 = detail.indexOf("<LocalService>");
+                    end1 = detail.indexOf("</LocalService>");
+                    String LocalService = detail.substring(start1 + 14, end1);
+
+                    start1 = detail.indexOf("<LocalServiceLate>");
+                    end1 = detail.indexOf("</LocalServiceLate>");
+                    String LocalServiceLate = detail.substring(start1 + 18, end1);
+
+                    item_bussinesses.add(new item_bussiness(avarezYear, penaltyRate, avarezPrice, lateAvarez, servicePrice, serviceLate,LocalService,LocalServiceLate));
+                }
+
+                UrlForBussiness="";
+                start1 = result.indexOf("<merchantId>");
+                end1 = result.indexOf("</merchantId>");
+                if (end1 > 0) {
+                    String merchantId = result.substring(start1 + 12, end1);
+                    start1 = result.indexOf("<terminalId>");
+                    end1 = result.indexOf("</terminalId>");
+                    String terminalId = result.substring(start1 + 12, end1);
+                    start1 = result.indexOf("<transactionKey>");
+                    end1 = result.indexOf("</transactionKey>");
+                    String transactionKey = result.substring(start1 + 16, end1);
+                    start1 = result.indexOf("<orderId>");
+                    end1 = result.indexOf("</orderId>");
+                    String orderId = result.substring(start1 + 9, end1);
+                    start1 = result.indexOf("<cityProfileNumberMain>");
+                    end1 = result.indexOf("</cityProfileNumberMain>");
+                    String cityProfileNumberMain = result.substring(start1 + 23, end1);
+
+                    LinearLayout btn_pay_car = findViewById(R.id.btn_pay_car);
+                    btn_pay_car.setVisibility(View.VISIBLE);
+                    String url ="http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + price + "&AdditionalInfo=" + cityProfileNumberMain + "-BTS&MerchantID=" + merchantId + "&TerminalId=" + terminalId + "&TransactionKey=" + transactionKey + "&OrderId=" + orderId;
+                    UrlForBussiness=url;
+                }
+
+                mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_car);
+                mRecyclerView.setHasFixedSize(true);
+                mLayoutManager = new LinearLayoutManager(MyEshterakList.this);
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mAdapter = new adapter_bussiness(MyEshterakList.this, item_bussinesses);
+                mRecyclerView.setAdapter(mAdapter);
+
+            }
+//            Toast.makeText(MyEshterakList.this, resp, Toast.LENGTH_SHORT).show();
+        }
+        private void GetInfoBussinessResult() {
+            int
+                    test_res = resp.indexOf("result");
+            fun.enableDisableView(lay_main, true);
+            RelativeLayout lay_message = findViewById(R.id.lay_message);
+            lay_message.setVisibility(View.GONE);
+            LinearLayout lay_wait = findViewById(R.id.lay_wait);
+            lay_wait.setVisibility(View.GONE);
+
+            int
+                    start1 = resp.indexOf("<result>");
+            int
+                    end1 = resp.indexOf("</result>");
+            String result = "";
+            if (end1 > 7) {
+
+                result = resp.substring(start1 + 8, end1);
+            }
+            if(result.equals("error"))
+            {
+                Toast.makeText(MyEshterakList.this, "خطایی رخ داده است لطفا اطلاعات ورودی و ارتباط اینترنت را بررسی نمایید", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(test_res>0) {
+
+
+                start1 = result.indexOf("<bussinessId>");
+                end1   = result.indexOf("</bussinessId>");
+                if(end1>0) {
+                    Lag("rrr="+result);
+
+                    LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                    TextView lbl_price = findViewById(R.id.lbl_price);
+                    TextView lbl_msg = findViewById(R.id.lbl_msg);
+                    btn_pay.setVisibility(View.VISIBLE);
+                    lbl_price.setVisibility(View.VISIBLE);
+                    LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                    btn_detail.setVisibility(View.VISIBLE);
+                    String
+                            msg = "";
+                    String bussinessId = result.substring(start1 + 13, end1);
+                    start1 = result.indexOf("<fullName>");
+                    end1 = result.indexOf("</fullName>");
+                    String fullName = result.substring(start1 + 10, end1);
+                    start1 = result.indexOf("<bussinessName>");
+                    end1 = result.indexOf("</bussinessName>");
+                    String bussinessName = result.substring(start1 + 15, end1);
+                    start1 = result.indexOf("<AvarezPrice>");
+                    end1 = result.indexOf("</AvarezPrice>");
+                    String AvarezPrice = result.substring(start1 + 13, end1);
+                    start1 = result.indexOf("<cityCouncilId>");
+                    end1 = result.indexOf("</cityCouncilId>");
+                    String cityCouncilId = result.substring(start1 + 15, end1);
+                    start1 = result.indexOf("<cityProfileNumberMain>");
+                    end1 = result.indexOf("</cityProfileNumberMain>");
+                    String cityProfileNumberMain = result.substring(start1 + 23, end1);
+                    start1 = result.indexOf("<merchantId>");
+                    end1 = result.indexOf("</merchantId>");
+                    String merchantId = result.substring(start1 + 12, end1);
+                    start1 = result.indexOf("<terminalId>");
+                    end1 = result.indexOf("</terminalId>");
+                    String terminalId = result.substring(start1 + 12, end1);
+                    start1 = result.indexOf("<transactionKey>");
+                    end1 = result.indexOf("</transactionKey>");
+                    String transactionKey = result.substring(start1 + 16, end1);
+                    start1 = result.indexOf("<orderId>");
+                    end1 = result.indexOf("</orderId>");
+                    String orderId = result.substring(start1 + 9, end1);
+
+
+                    rslt_MerchantId = merchantId;
+                    rslt_TerMinalId = terminalId;
+                    rslt_TransactionKey = transactionKey;
+                    rslt_OrderId = orderId;
+                    rslt_MainProfile = cityProfileNumberMain;
+//                    rslt_CanEPay = "1";
+//                    rslt_price = AvarezPrice;
+//                    BussinessId = bussinessId;
+                    start1 = result.indexOf("<cnt>");
+                    end1 = result.indexOf("</cnt>");
+                    String cnt = result.substring(start1 + 5, end1);
+//                    item_bussinesses.clear();
+                    for (int i = Integer.valueOf(cnt); i >= 1; i--) {
+                        start1 = result.indexOf("<detail" + i + ">");
+                        end1 = result.indexOf("</detail" + i + ">");
+                        String detail = result.substring(start1 + 8 + cnt.length(), end1);
+
+                        start1 = detail.indexOf("<AvarezYear>");
+                        end1 = detail.indexOf("</AvarezYear>");
+                        String avarezYear = detail.substring(start1 + 12, end1);
+
+                        start1 = detail.indexOf("<AvarezRate>");
+                        end1 = detail.indexOf("</AvarezRate>");
+                        String penaltyRate = detail.substring(start1 + 12, end1);
+
+                        start1 = detail.indexOf("<Price>");
+                        end1 = detail.indexOf("</Price>");
+                        String avarezPrice = detail.substring(start1 + 7, end1);
+
+                        start1 = detail.indexOf("<lateAvarez>");
+                        end1 = detail.indexOf("</lateAvarez>");
+                        String lateAvarez = detail.substring(start1 + 12, end1);
+
+                        start1 = detail.indexOf("<Service>");
+                        end1 = detail.indexOf("</Service>");
+                        String servicePrice = detail.substring(start1 + 9, end1);
+
+                        start1 = detail.indexOf("<LocalService>");
+                        end1 = detail.indexOf("</LocalService>");
+                        String serviceLate = detail.substring(start1 + 14, end1);
+
+
+//                        item_bussinesses.add(new item_bussiness(avarezYear, penaltyRate, avarezPrice, lateAvarez, servicePrice, serviceLate));
+                    }
+
+
+                    msg = "نام :" + fullName + "\n";
+                    msg += "نام کسب و کار : " + bussinessName + "\n";
+
+
+                    lbl_price.setText("مبلغ عوارض : " + AvarezPrice);
+                    lbl_msg.setText(msg);
+
+                    LinearLayout lay_header_bussiness = findViewById(R.id.lay_header_car);
+                    LinearLayout lay_header_pasmand = findViewById(R.id.lay_header_pasmand);
+                    LinearLayout lay_header_nosazi = findViewById(R.id.lay_header_nosazi);
+                    lay_header_nosazi.setVisibility(View.INVISIBLE);
+                    lay_header_bussiness.setVisibility(View.VISIBLE);
+                    lay_header_pasmand.setVisibility(View.INVISIBLE);
+
+                    mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_parvandeh);
+                    mRecyclerView.setHasFixedSize(true);
+                    mLayoutManager = new LinearLayoutManager(MyEshterakList.this);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+//                    mAdapter = new adapter_bussiness(MyEshterakList.this, item_bussinesses);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+                else
+                {
+                    Toast.makeText(MyEshterakList.this, "کسب و کار مورد نظر پیدانشد!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        private void GetBussinessList() {
+
+
+
+
+            CallSoap cs;
+            //String PnosaziKodem="1-11-40-7-0-0-0";
+
+
+
+            try{
+                cs = new CallSoap();
+                resp=cs.Call_Bussiness_GetBussinessList();
+
+                Lag("Res=1"+resp);
             }catch(Exception ex)
             {
                 Lag( "err:  " + ex.toString());

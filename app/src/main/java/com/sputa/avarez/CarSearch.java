@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,11 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -36,17 +32,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.sputa.avarez.Functions;
-import com.google.firebase.analytics.FirebaseAnalytics;
+
 import com.sputa.avarez.adapters.adapter_bussiness;
 import com.sputa.avarez.adapters.adapter_nosazi;
 import com.sputa.avarez.adapters.adapter_pasmand;
 import com.sputa.avarez.adapters.adapter_tablo;
 import com.sputa.avarez.adapters.item_adapter;
-import com.sputa.avarez.adapters.item_detail_parvandeh_adapter;
 import com.sputa.avarez.classes.CallSoap;
-import com.sputa.avarez.classes.StaticGasGhabz;
-import com.sputa.avarez.classes.StaticWaterGhabz;
 import com.sputa.avarez.model.item_bussiness;
 import com.sputa.avarez.model.item_nosazi;
 import com.sputa.avarez.model.item_tablo;
@@ -71,10 +63,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import static com.sputa.avarez.Functions.Lag;
 
@@ -119,6 +107,10 @@ public class CarSearch extends AppCompatActivity {
     private int at_jame = 5;
     private String price_avarez;
     private SQLiteDatabase myDB;
+    public String BussinessParvandeh ="";
+    public String Bussinessmelli ="";
+    public String BussinessId ="";
+
 
 
     String
@@ -506,9 +498,11 @@ public class CarSearch extends AppCompatActivity {
 //            String h = Integer.toString( bytesEncoded[i]);
 //            Lag(h);
 //        }
-
+        Lag(String.valueOf(avarez_Type)+"------"+String.valueOf(at_car));
         if (avarez_Type == at_car)
             search_car();
+        else if (avarez_Type == at_bussiness)
+            search_bussiess();
         else if (avarez_Type != at_jame)
             search_bussinessAndOthers();
         else
@@ -673,70 +667,60 @@ public class CarSearch extends AppCompatActivity {
 
     private void search_bussiess() {
 
-        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_bussiness);
+        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_car);
         LinearLayout lay_header_pasmand =findViewById(R.id.lay_header_pasmand);
         LinearLayout lay_header_nosazi =findViewById(R.id.lay_header_nosazi);
         lay_header_nosazi.setVisibility(View.INVISIBLE);
         lay_header_bussiness.setVisibility(View.VISIBLE);
         lay_header_pasmand.setVisibility(View.INVISIBLE);
 
-        EditText txt_parvndeh = findViewById(R.id.txt_parvndeh);
+
+
         EditText txt_melli = findViewById(R.id.txt_melli);
-        Cursor cr = myDB.rawQuery("select * from Business where parvandeh='" + txt_parvndeh.getText().toString() + "'", null);
-        if (txt_parvndeh.getText().toString().length() > 0) {
-            cr = myDB.rawQuery("select * from Business where parvandeh='" + txt_parvndeh.getText().toString() + "'", null);
-        }
+        EditText txt_parvande = findViewById(R.id.txt_parvndeh);
+
+        String parvandeh = txt_parvande.getText().toString();
+        String
+                search_type = "none";
         if (txt_melli.getText().toString().length() > 0) {
-            cr = myDB.rawQuery("select * from Business where ID='" + txt_melli.getText().toString() + "'", null);
+            search_type = "ok";
         }
+        else if (parvandeh.length() > 0) {
+            search_type = "ok";
+        }
+        if (search_type.equals("ok")) {
 
-        if (cr.getCount() > 0) {
-            LinearLayout btn_pay = findViewById(R.id.btn_pay);
-            LinearLayout btn_detail = findViewById(R.id.btn_detail);
-            TextView lbl_msg = findViewById(R.id.lbl_msg);
-            btn_pay.setVisibility(View.VISIBLE);
-            btn_detail.setVisibility(View.VISIBLE);
-            String
-                    msg = "";
-            cr.moveToFirst();
-            if (cr.getFloat(10) != 0) {
-                msg = " شهرداری ارومیه " + "\n" + "نام مالک : " + cr.getString(2) + " " + cr.getString(3) + "\n" + " مبلغ عوارض شما " + digiting(String.valueOf((int) cr.getFloat(10))) + " ریال می باشد.";
-                item_bussinesses.clear();
-                item_bussinesses.add(new item_bussiness(cr.getString(5), cr.getString(6), cr.getString(7), cr.getString(8), cr.getString(9), cr.getString(10)));
-                price_avarez = String.valueOf((int) cr.getFloat(10));
-                mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_parvandeh);
-                mRecyclerView.setHasFixedSize(true);
-                mLayoutManager = new LinearLayoutManager(CarSearch.this);
-                mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter = new adapter_bussiness(CarSearch.this, item_bussinesses);
-                mRecyclerView.setAdapter(mAdapter);
-                lbl_msg.setText(msg);
-            } else {
-                msg = "";
-                lbl_msg.setText(msg);
-                btn_pay.setVisibility(View.GONE);
-                btn_detail.setVisibility(View.GONE);
-                Toast.makeText(this, "موردی پیدا نشد", Toast.LENGTH_SHORT).show();
-            }
+            Bussinessmelli = txt_melli.getText().toString();
+            BussinessParvandeh = parvandeh;
 
-        } else {
+            Asy = new MyAsyncTaskService("GetInfoBussiness","" );
+
+            Asy.execute();
+
+            is_requested = true;
+            fun.enableDisableView(lay_main, false);
+            RelativeLayout lay_message = findViewById(R.id.lay_message);
+            lay_message.setVisibility(View.VISIBLE);
+            LinearLayout lay_wait = findViewById(R.id.lay_wait);
+            lay_wait.setVisibility(View.VISIBLE);
+            set_size(R.id.lay_wait, .6, .3, "rel");
+            set_size_txt(R.id.lbl_please_wait, .05, "line");
             LinearLayout btn_pay = findViewById(R.id.btn_pay);
-            LinearLayout btn_detail = findViewById(R.id.btn_detail);
-            TextView lbl_msg = findViewById(R.id.lbl_msg);
             btn_pay.setVisibility(View.GONE);
+            LinearLayout btn_detail = findViewById(R.id.btn_detail);
             btn_detail.setVisibility(View.GONE);
-            String
-                    msg = "";
-            msg = "";
-            lbl_msg.setText(msg);
-            Toast.makeText(this, "موردی پیدا نشد", Toast.LENGTH_SHORT).show();
+
+            ConstraintLayout lay_confirm = findViewById(R.id.lay_confirm);
+            lay_confirm.setVisibility(View.GONE);
+        } else {
+            Toast.makeText(this, "لطفا اطلاعات درخواستی را وارد کنید", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void search_tablo() {
         EditText txt_parvndeh = findViewById(R.id.txt_parvndeh);
         EditText txt_melli = findViewById(R.id.txt_melli);
-        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_bussiness);
+        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_car);
         LinearLayout lay_header_pasmand =findViewById(R.id.lay_header_pasmand);
         LinearLayout lay_header_nosazi =findViewById(R.id.lay_header_nosazi);
         lay_header_nosazi.setVisibility(View.INVISIBLE);
@@ -797,7 +781,7 @@ public class CarSearch extends AppCompatActivity {
     private void search_pasmand() {
         EditText txt_parvndeh = findViewById(R.id.txt_parvndeh);
         EditText txt_melli = findViewById(R.id.txt_melli);
-        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_bussiness);
+        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_car);
         LinearLayout lay_header_pasmand =findViewById(R.id.lay_header_pasmand);
         LinearLayout lay_header_nosazi =findViewById(R.id.lay_header_nosazi);
         lay_header_nosazi.setVisibility(View.INVISIBLE);
@@ -865,7 +849,7 @@ public class CarSearch extends AppCompatActivity {
         EditText txt_nosazi_code7 = findViewById(R.id.txt_nosazi_code7);
         if(txt_nosazi_code1.getText().toString().length()>0 && txt_nosazi_code2.getText().toString().length()>0 && txt_nosazi_code3.getText().toString().length()>0 && txt_nosazi_code4.getText().toString().length()>0 && txt_nosazi_code5.getText().toString().length()>0 && txt_nosazi_code6.getText().toString().length()>0 && txt_nosazi_code7.getText().toString().length()>0  ) {
             NosaziCode = txt_nosazi_code1.getText().toString()+"-"+txt_nosazi_code2.getText().toString()+"-"+txt_nosazi_code3.getText().toString()+"-"+txt_nosazi_code4.getText().toString()+"-"+txt_nosazi_code5.getText().toString()+"-"+txt_nosazi_code6.getText().toString()+"-"+txt_nosazi_code7.getText().toString();
-            LinearLayout lay_header_bussiness = findViewById(R.id.lay_header_bussiness);
+            LinearLayout lay_header_bussiness = findViewById(R.id.lay_header_car);
             LinearLayout lay_header_pasmand = findViewById(R.id.lay_header_pasmand);
             LinearLayout lay_header_nosazi = findViewById(R.id.lay_header_nosazi);
             lay_header_nosazi.setVisibility(View.VISIBLE);
@@ -899,7 +883,7 @@ public class CarSearch extends AppCompatActivity {
     private void search_nosazi_demo() {
         EditText txt_parvndeh = findViewById(R.id.txt_parvndeh);
         EditText txt_melli = findViewById(R.id.txt_melli);
-        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_bussiness);
+        LinearLayout lay_header_bussiness=findViewById(R.id.lay_header_car);
         LinearLayout lay_header_pasmand =findViewById(R.id.lay_header_pasmand);
         LinearLayout lay_header_nosazi =findViewById(R.id.lay_header_nosazi);
         lay_header_nosazi.setVisibility(View.VISIBLE);
@@ -972,6 +956,7 @@ public class CarSearch extends AppCompatActivity {
         }
         if (search_type.equals("ok")) {
             last_query = getResources().getString(R.string.site_url) + "do.aspx?param=get_avarez_motor&key_motor=" + txt_motor.getText().toString() + "&key_shasi=" + txt_shasi.getText().toString() + "&key_vin=" + txt_vin.getText().toString() + "&u_id=" + Functions.u_id + "&rnd=" + String.valueOf(new Random().nextInt());
+            Lag(last_query);
             //     Toast.makeText(this, last_query, Toast.LENGTH_SHORT).show();
             mm = new MyAsyncTask();
             mm.url = (last_query);
@@ -1160,11 +1145,36 @@ public class CarSearch extends AppCompatActivity {
                 lay_message.setVisibility(View.VISIBLE);
                 ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
                 lay_gate.setVisibility(View.VISIBLE);
+                ConstraintLayout lay_detail_parvandeh = findViewById(R.id.lay_detail_parvandeh);
+                lay_detail_parvandeh.setVisibility(View.GONE);
                 WebView webview = (WebView) findViewById(R.id.web_view);
                 webview.setWebViewClient(new CarSearch.myWebClient());
                 webview.getSettings().setJavaScriptEnabled(true);
 //                rslt_price="1000";
-                String url ="http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId;
+                String url ="http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" +URLEncoder.encode( rslt_TransactionKey) + "&OrderId=" + rslt_OrderId+"&rnd="+String.valueOf(new Random().nextInt());
+                Lag(url);
+//                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                startActivity(i);
+                webview.loadUrl(url);
+//            EditText txt=findViewById(R.id.txt_motor);
+//            txt.setText("http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-CTSCar&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId);
+                //http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=187000&AdditionalInfo=10000089-CTSCar&MerchantID=118088384&TerminalId=17995091&TransactionKey=AZ24JJ95SS&OrderId=10000089235123552
+            } else {
+                Toast.makeText(this, "متاسفانه شهرداری شهر شما فاقد امکان پرداخت الکترونیک می باشد", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else if (avarez_Type == at_bussiness) {
+            if (rslt_CanEPay.equals("1")) {
+                fun.enableDisableView(lay_main, false);
+                RelativeLayout lay_message = findViewById(R.id.lay_message);
+                lay_message.setVisibility(View.VISIBLE);
+                ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
+                lay_gate.setVisibility(View.VISIBLE);
+                WebView webview = (WebView) findViewById(R.id.web_view);
+                webview.setWebViewClient(new CarSearch.myWebClient());
+                webview.getSettings().setJavaScriptEnabled(true);
+//                rslt_price="1000";
+                String url ="http://e-paytoll.ir/Pages/Common/mobilepayment.aspx?Amount=" + rslt_price + "&AdditionalInfo=" + rslt_MainProfile + "-BTS&MerchantID=" + rslt_MerchantId + "&TerminalId=" + rslt_TerMinalId + "&TransactionKey=" + rslt_TransactionKey + "&OrderId=" + rslt_OrderId;
                 Lag(url);
 //                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //                startActivity(i);
@@ -1263,7 +1273,7 @@ public class CarSearch extends AppCompatActivity {
         lay_detail_parvandeh.setVisibility(View.GONE);
         ConstraintLayout lay_gate = findViewById(R.id.lay_gate);
         lay_gate.setVisibility(View.GONE);
-        Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
     }
 
     public void clk_back_detail_jame(View view) {
@@ -1374,6 +1384,10 @@ public class CarSearch extends AppCompatActivity {
         protected void onPostExecute(Double aDouble) {
 
             Lag("Excuted");
+            if(Type.equals("GetInfoBussiness"))
+            {
+                GetInfoBussinessResult();
+            }
             if(Type.equals("GetInfoNosazi")) {
 
               GetInfoNosaziResult();
@@ -1393,7 +1407,17 @@ public class CarSearch extends AppCompatActivity {
                 Lag(resp);
                 GetNosaziCodeAddedResult();
             }
+            if(Type.equals("CheckBussinessIdAdded"))
+            {
+                Lag(resp);
+                GetBuissinessIdAddedResult();
+            }
         }
+
+
+
+
+
         private void GetNosaziCodeAddedResult() {
 
             if(resp.equals("false"))
@@ -1404,7 +1428,7 @@ public class CarSearch extends AppCompatActivity {
                 } else {
                     builder = new AlertDialog.Builder(CarSearch.this);
                 }
-                builder.setTitle("ذخیره خودرو؟")
+                builder.setTitle("ذخیره اشتراک؟")
                         .setMessage("آیا می خواهید این کد نوسازی به لیست اشتراک های من اضافه شود؟")
                         .setPositiveButton("بله", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
@@ -1421,7 +1445,6 @@ public class CarSearch extends AppCompatActivity {
                 })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
-
             }
         }
 
@@ -1498,6 +1521,159 @@ public class CarSearch extends AppCompatActivity {
             }
         }
 
+        private void GetInfoBussinessResult() {
+            int
+                    test_res = resp.indexOf("result");
+            is_requested = false;
+            fun.enableDisableView(lay_main, true);
+            RelativeLayout lay_message = findViewById(R.id.lay_message);
+            lay_message.setVisibility(View.GONE);
+            LinearLayout lay_wait = findViewById(R.id.lay_wait);
+            lay_wait.setVisibility(View.GONE);
+
+            int
+                    start1 = resp.indexOf("<result>");
+            int
+                    end1 = resp.indexOf("</result>");
+            String result = "";
+            if (end1 > 7) {
+
+                result = resp.substring(start1 + 8, end1);
+            }
+            if(result.equals("error"))
+            {
+                Toast.makeText(CarSearch.this, "خطایی رخ داده است لطفا اطلاعات ورودی و ارتباط اینترنت را بررسی نمایید", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(test_res>0) {
+
+
+                start1 = result.indexOf("<bussinessId>");
+                end1   = result.indexOf("</bussinessId>");
+                if(end1>0) {
+                    Lag("rrr="+result);
+                    Check_BussinessIdAdded();
+                    LinearLayout btn_pay = findViewById(R.id.btn_pay);
+                    TextView lbl_price = findViewById(R.id.lbl_price);
+                    TextView lbl_msg = findViewById(R.id.lbl_msg);
+                    btn_pay.setVisibility(View.VISIBLE);
+                    lbl_price.setVisibility(View.VISIBLE);
+                    LinearLayout btn_detail = findViewById(R.id.btn_detail);
+                    btn_detail.setVisibility(View.VISIBLE);
+                    String
+                            msg = "";
+                    String bussinessId = result.substring(start1 + 13, end1);
+                    start1 = result.indexOf("<fullName>");
+                    end1 = result.indexOf("</fullName>");
+                    String fullName = result.substring(start1 + 10, end1);
+                    start1 = result.indexOf("<bussinessName>");
+                    end1 = result.indexOf("</bussinessName>");
+                    String bussinessName = result.substring(start1 + 15, end1);
+                    start1 = result.indexOf("<AvarezPrice>");
+                    end1 = result.indexOf("</AvarezPrice>");
+                    String AvarezPrice = result.substring(start1 + 13, end1);
+                    start1 = result.indexOf("<cityCouncilId>");
+                    end1 = result.indexOf("</cityCouncilId>");
+                    String cityCouncilId = result.substring(start1 + 15, end1);
+                    start1 = result.indexOf("<cityProfileNumberMain>");
+                    end1 = result.indexOf("</cityProfileNumberMain>");
+                    String cityProfileNumberMain = result.substring(start1 + 23, end1);
+                    start1 = result.indexOf("<merchantId>");
+                    end1 = result.indexOf("</merchantId>");
+                    String merchantId = result.substring(start1 + 12, end1);
+                    start1 = result.indexOf("<terminalId>");
+                    end1 = result.indexOf("</terminalId>");
+                    String terminalId = result.substring(start1 + 12, end1);
+                    start1 = result.indexOf("<transactionKey>");
+                    end1 = result.indexOf("</transactionKey>");
+                    String transactionKey = result.substring(start1 + 16, end1);
+                    start1 = result.indexOf("<orderId>");
+                    end1 = result.indexOf("</orderId>");
+                    String orderId = result.substring(start1 + 9, end1);
+
+
+                    rslt_MerchantId = merchantId;
+                    rslt_TerMinalId = terminalId;
+                    rslt_TransactionKey = transactionKey;
+                    rslt_OrderId = orderId;
+                    rslt_MainProfile = cityProfileNumberMain;
+                    rslt_CanEPay = "1";
+                    rslt_price = AvarezPrice;
+                    BussinessId = bussinessId;
+                    start1 = result.indexOf("<cnt>");
+                    end1 = result.indexOf("</cnt>");
+                    String cnt = result.substring(start1 + 5, end1);
+                    item_bussinesses.clear();
+                    for (int i = Integer.valueOf(cnt); i >= 1; i--) {
+                        start1 = result.indexOf("<detail" + i + ">");
+                        end1 = result.indexOf("</detail" + i + ">");
+                        String detail = result.substring(start1 + 8 + cnt.length(), end1);
+
+                        start1 = detail.indexOf("<AvarezYear>");
+                        end1 = detail.indexOf("</AvarezYear>");
+                        String avarezYear = detail.substring(start1 + 12, end1);
+
+                        start1 = detail.indexOf("<AvarezRate>");
+                        end1 = detail.indexOf("</AvarezRate>");
+                        String penaltyRate = detail.substring(start1 + 12, end1);
+
+                        start1 = detail.indexOf("<Price>");
+                        end1 = detail.indexOf("</Price>");
+                        String avarezPrice = detail.substring(start1 + 7, end1);
+
+                        start1 = detail.indexOf("<lateAvarez>");
+                        end1 = detail.indexOf("</lateAvarez>");
+                        String lateAvarez = detail.substring(start1 + 12, end1);
+
+                        start1 = detail.indexOf("<Service>");
+                        end1 = detail.indexOf("</Service>");
+                        String servicePrice = detail.substring(start1 + 9, end1);
+
+                        start1 = detail.indexOf("<ServiceLate>");
+                        end1 = detail.indexOf("</ServiceLate>");
+                        String serviceLate = detail.substring(start1 + 13, end1);
+
+                        start1 = detail.indexOf("<LocalService>");
+                        end1 = detail.indexOf("</LocalService>");
+                        String LocalService = detail.substring(start1 + 14, end1);
+
+                        start1 = detail.indexOf("<LocalServiceLate>");
+                        end1 = detail.indexOf("</LocalServiceLate>");
+                        String LocalServiceLate = detail.substring(start1 + 18, end1);
+
+
+                        item_bussinesses.add(new item_bussiness(avarezYear, penaltyRate, avarezPrice, lateAvarez, servicePrice, serviceLate,LocalService,LocalServiceLate));
+                    }
+
+
+                    msg = "نام :" + fullName + "\n";
+                    msg += "نام کسب و کار : " + bussinessName + "\n";
+
+
+                    lbl_price.setText("مبلغ عوارض : " + AvarezPrice);
+                    lbl_msg.setText(msg);
+
+                    LinearLayout lay_header_bussiness = findViewById(R.id.lay_header_car);
+                    LinearLayout lay_header_pasmand = findViewById(R.id.lay_header_pasmand);
+                    LinearLayout lay_header_nosazi = findViewById(R.id.lay_header_nosazi);
+                    lay_header_nosazi.setVisibility(View.INVISIBLE);
+                    lay_header_bussiness.setVisibility(View.VISIBLE);
+                    lay_header_pasmand.setVisibility(View.INVISIBLE);
+
+                    mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_parvandeh);
+                    mRecyclerView.setHasFixedSize(true);
+                    mLayoutManager = new LinearLayoutManager(CarSearch.this);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mAdapter = new adapter_bussiness(CarSearch.this, item_bussinesses);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+                else 
+                {
+                    Toast.makeText(CarSearch.this, "کسب و کار مورد نظر پیدانشد!", Toast.LENGTH_SHORT).show();
+                }
+                }
+            }
+
         private void GetInfoNosaziResult() {
             int
                     test_res = resp.indexOf("PaymentID");
@@ -1572,6 +1748,10 @@ public class CarSearch extends AppCompatActivity {
         @Override
         protected Double doInBackground(String... strings) {
             Lag(Type);
+            if(Type.equals("GetInfoBussiness"))
+            {
+                GetInfoBussiness();
+            }
             if(Type.equals("GetInfoNosazi"))
             {
                GetInfoNosazi(Param);
@@ -1588,15 +1768,39 @@ public class CarSearch extends AppCompatActivity {
             {
                 GetNosaziCodeAdded();
             }
+            if(Type.equals("CheckBussinessIdAdded"))
+            {
+                GetBuissinessIdAdded();
+            }
+
             if(Type.equals("SaveNosaziCode"))
             {
                 SaveNosaziCode();
+            }
+            if(Type.equals("SaveBussinessId"))
+            {
+                SaveBussinessId();
             }
             return null;
         }
 
         private void SaveNosaziCode() {
-            
+
+
+            CallSoap cs;
+
+            try {
+                cs = new CallSoap();
+                resp = cs.Call_Nosazi_SaveNosziCode(NosaziCode);
+                if (IsPaid.equals("1"))
+                    myDB.execSQL("insert into MyNosazi (NosaziId,Type) values ('" + NosaziCode + "','Paid') ");
+                Lag("Rs_save=" + resp);
+            } catch (Exception ex) {
+                Lag("err:  " + ex.toString());
+            }
+        }
+        private void SaveBussinessId() {
+
 
 
 
@@ -1604,9 +1808,8 @@ public class CarSearch extends AppCompatActivity {
 
             try{
                 cs = new CallSoap();
-                resp=cs.Call_Nosazi_SaveNosziCode(NosaziCode);
-                if(IsPaid.equals("1"))
-                    myDB.execSQL("insert into MyNosazi (NosaziId,Type) values ('"+NosaziCode+"','Paid') ");
+                resp=cs.Call_Nosazi_SaveBussinessId(BussinessId);
+
                 Lag("Rs_save="+resp);
             }catch(Exception ex)
             {
@@ -1624,13 +1827,57 @@ public class CarSearch extends AppCompatActivity {
             try{
                 cs = new CallSoap();
                 resp=cs.Call_Nosazi_GetAddedToList(NosaziCode);
-                Lag("Rs_add="+resp);
+                Lag("Rs_add="+resp+"=="+NosaziCode);
             }catch(Exception ex)
             {
                 Lag( "err:  " + ex.toString());
             }
         }
+ private void GetBuissinessIdAdded() {
 
+
+
+
+            CallSoap cs;
+
+            try{
+                cs = new CallSoap();
+                resp=cs.Call_Bussiness_GetAddedToList(BussinessId);
+                Lag("Rs_add="+resp+"=="+BussinessId);
+            }catch(Exception ex)
+            {
+                Lag( "err:  " + ex.toString());
+            }
+        }
+        private void GetBuissinessIdAddedResult() {
+
+            if(resp.equals("false"))
+            {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(CarSearch.this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(CarSearch.this);
+                }
+                builder.setTitle("ذخیره اشتراک؟")
+                        .setMessage("آیا می خواهید این کسب و کار به لیست اشتراک های من اضافه شود؟")
+                        .setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                // finish();
+                                save_BussinessId();
+
+                            }
+                        }).setNegativeButton("نه", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+
+                    }
+                })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        }
         private void CheckPaidNosazi(String param) {
             
 
@@ -1682,8 +1929,26 @@ public class CarSearch extends AppCompatActivity {
             }
         }
 
+        private void GetInfoBussiness() {
+
+
+            CallSoap cs;
+
+
+            try{
+                cs = new CallSoap();
+                resp=cs.Call_Bussiness_GetInfo(Bussinessmelli,BussinessParvandeh);
+
+                Lag("Res="+resp);
+            }catch(Exception ex)
+            {
+                Lag( "err:  " + ex.toString());
+
+            }
+        }
+
         private void GetInfoNosazi(String PnosaziKodem) {
-            
+
 
 
             IsPaid="0";
@@ -1696,13 +1961,13 @@ public class CarSearch extends AppCompatActivity {
 //            UUID AID=UUID.fromString("359c7fcd-f403-4819-bb64-91e7deede50c");// UUID.randomUUID().toString();
             UUID AID = UUID.randomUUID();
 //            UUID AID=UUID.fromString("867e3038-1db5-4a3f-b249-9ca659ddc356");// UUID.randomUUID().toString();
-            Lag(AID.toString());
+            Lag("AID="+AID.toString());
 //            String AtuhIn =ShG+ShP+Web+AID;
             String AtuhIn =PnosaziKodem+AID;
-            Lag(AtuhIn);
+            Lag("AtuhIn="+AtuhIn);
             String Atuh=SetAtuh(AtuhIn);
 //            String Atuh=SetAtuh(PnosaziKodem+AID);
-            Lag(Atuh);
+            Lag("Atuh="+Atuh);
 
             try{
                 cs = new CallSoap();
@@ -1732,9 +1997,17 @@ public class CarSearch extends AppCompatActivity {
         Asy =new MyAsyncTaskService("SaveNosaziCode","");
         Asy.execute();
     }
+    private void save_BussinessId() {
+        Asy =new MyAsyncTaskService("SaveBussinessId","");
+        Asy.execute();
+    }
 
     private void Check_NosaziCodeAdded() {
         Asy =new MyAsyncTaskService("CheckNosaziCodeAdded","");
+        Asy.execute();
+    }
+    private void Check_BussinessIdAdded() {
+        Asy =new MyAsyncTaskService("CheckBussinessIdAdded","");
         Asy.execute();
     }
 
@@ -1857,6 +2130,7 @@ public class CarSearch extends AppCompatActivity {
                 if (param_str.equals("get_avarez_motor") && is_requested) {
                     start1 = ss.indexOf("<result>");
                     end1 = ss.indexOf("</result>");
+                    Lag(param_str);
                     TextView lbl_msg = findViewById(R.id.lbl_msg);
                     if (end1 > 0) {
                         String

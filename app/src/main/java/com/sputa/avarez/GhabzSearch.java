@@ -376,7 +376,7 @@ public class GhabzSearch extends AppCompatActivity {
                 price_all = cr.getString(12);
 
                 msg =" :   "+ cr.getString(2)+" "+cr.getString(3)+ "\n" ;
-                msg +=" :   "+ digiting(cr.getString(12))+ " ریال \n" ;
+                msg +=" :   "+ digiting(String.format ("%.0f", (cr.getFloat(12))))+ " ریال \n" ;
                 msg +=" :   "+ cr.getString(11)+ "\n" ;
                 msg +=" :   "+ cr.getString(9)+ "\n" ;
 
@@ -404,7 +404,7 @@ public class GhabzSearch extends AppCompatActivity {
                     msg +=" :   "+ cr.getString(9)+ "\n" ;
                     msg +=" :   "+ cr.getString(10)+ "  \n" ;
 
-                    msg +=" :   "+ digiting(cr.getString(12))+ " ریال \n" ;
+                    msg +=" :   "+ digiting(String.format ("%.0f", (cr.getFloat(12))))+ " ریال \n" ;
 
                 lbl_msg_left_detail.setText(msg);
 

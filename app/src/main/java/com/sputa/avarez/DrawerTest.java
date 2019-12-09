@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -44,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.sputa.avarez.adapters.Itm_city_adapter;
 import com.sputa.avarez.adapters.item_cars_adapter;
 import com.sputa.avarez.adapters.item_eshterak_adapter;
 import com.sputa.avarez.app.Config;
@@ -53,6 +55,7 @@ import com.sputa.avarez.classes.StaticGasGhabz;
 import com.sputa.avarez.classes.StaticWaterGhabz;
 import com.sputa.avarez.classes.customFont;
 import com.sputa.avarez.model.DB;
+import com.sputa.avarez.model.Itm_city;
 import com.sputa.avarez.model.items_cars;
 import com.sputa.avarez.model.items_eshterak;
 
@@ -70,13 +73,16 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 import static com.sputa.avarez.Functions.Lag;
+import static com.sputa.avarez.Functions.pob_gas;
 
 public class DrawerTest extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,6 +98,7 @@ public class DrawerTest extends AppCompatActivity
     private String rslt_mobile;
     TextView navMobile;
     TextView navname;
+    TextView cityName;
     private int tim=1;
     private int cnt_eshterak=1;
     private Timer timer;
@@ -99,6 +106,15 @@ public class DrawerTest extends AppCompatActivity
     private SQLiteDatabase myDB;
     private int NosaziCount=0;
     private MyAsyncTaskService Asy;
+    private RecyclerView recycler_city;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter mAdapter_city;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RelativeLayout lay_main;
+    List<Itm_city> itm_city =     new ArrayList<>();
+    Functions fun;
+    private String myCityId="";
+    private String myCityName="";
 
     private void set_size(int vid,Double width,Double height,String typ)
     {
@@ -177,10 +193,11 @@ public class DrawerTest extends AppCompatActivity
         screenHeight = displayMetrics.heightPixels;
         Toolbar toolbar =  findViewById(R.id.toolbar);
         TextView mTitle =  toolbar.findViewById(R.id.toolbar_title);
+        fun = new Functions();
+        lay_main = findViewById(R.id.lay_main);
 
 
-
-//        Functions.u_id ="2";
+//        Functions.u_id ="4";
 //        Toast.makeText(this, Functions.u_id, Toast.LENGTH_SHORT).show();
         setSupportActionBar(toolbar);
         mTitle.setText(toolbar.getTitle());
@@ -205,6 +222,7 @@ public class DrawerTest extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         navMobile = (TextView) headerView.findViewById(R.id.txt_phone);
         navname = (TextView) headerView.findViewById(R.id.txt_name);
+        cityName = (TextView) headerView.findViewById(R.id.txt_city);
       //  navUsername.setText("Your Text Here");
 
 
@@ -244,7 +262,23 @@ public class DrawerTest extends AppCompatActivity
                 "NosaziID varchar(255) NULL," +
                 "Type varchar(255) NULL" +
                 ");" ;
+
         myDB.execSQL(sql);
+        sql= "CREATE TABLE  IF NOT EXISTS MyBussiness(" +
+                "BussinessId varchar(255) NULL," +
+                "Type varchar(255) NULL" +
+                ");" ;
+
+        myDB.execSQL(sql);
+
+        sql= "CREATE TABLE  IF NOT EXISTS MyCity(" +
+                "ID varchar(255) NULL," +
+                "CityId varchar(255) NULL," +
+                "Name varchar(255) NULL" +
+                ");" ;
+
+        myDB.execSQL(sql);
+
         Cursor cr = myDB.rawQuery("select DISTINCT tbl_name  from sqlite_master where tbl_name = 'water'", null);
         if(cr!=null)
         {
@@ -291,7 +325,41 @@ public class DrawerTest extends AppCompatActivity
         };
         timer = new Timer("timeout");
         timer.start();
+
+        cr = myDB.rawQuery("select * from MyCity", null);
+        if(cr.getCount()>0)
+        {
+            cr.moveToFirst();
+            myCityId = cr.getString(1);
+            myCityName = cr.getString(2);
+        }
+
+
+
+//        Toast.makeText(this,"--"+ myCityId+"--", Toast.LENGTH_SHORT).show();
+//         myCityId="220";
       get_info();
+
+
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        TextView text = (TextView) header.findViewById(R.id.txt_changeCity);
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clk_change_city1();
+            }
+        });
+
+        TextView txt_logout = (TextView) header.findViewById(R.id.txt_logout);
+        txt_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fn_exit();
+            }
+        });
+
 
 //        load_my_cars();
 //        load_eshterak_count();
@@ -316,6 +384,20 @@ public class DrawerTest extends AppCompatActivity
             for (int i=0;i<cr.getCount();i++)
             {
                 Lag("PaidOrNot="+cr.getString(1));
+                if(cr.getString(1).equals("Paid"))
+                {
+                    iNotiCount++;
+                }
+                cr.moveToNext();
+            }
+        }
+         cr = myDB.rawQuery("select * from MyBussiness", null);
+        if(cr.getCount()>0)
+        {
+            cr.moveToFirst();
+            for (int i=0;i<cr.getCount();i++)
+            {
+                Lag("BussinessPaidOrNot="+cr.getString(1));
                 if(cr.getString(1).equals("Paid"))
                 {
                     iNotiCount++;
@@ -387,6 +469,14 @@ public class DrawerTest extends AppCompatActivity
 //
         Asy =new MyAsyncTaskService("GetNosaziList","");
         Asy.execute();
+
+        Asy =new MyAsyncTaskService("GetBussinessList","");
+        Asy.execute();
+
+
+
+
+
 //
 //
 //
@@ -404,9 +494,14 @@ public class DrawerTest extends AppCompatActivity
 
     private void get_info() {
         mm = new MyAsyncTask();
-        last_requested_query = getResources().getString(R.string.site_url) + "do?param=get_user_info&ID="+Functions.u_id+ "&gcm_id="+ URLEncoder.encode(regId)+"&rdn="+String.valueOf(new Random().nextInt());
-        // Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
+//        myCityId="123";
+//        regId ="456";
+        String query =getResources().getString(R.string.site_url) + "do?param=get_user_info&ID="+Functions.u_id+ "&city_id="+myCityId+"&gcm_id="+ URLEncoder.encode(regId)+"&rdn="+String.valueOf(new Random().nextInt());
+//        Lag(query);
+        last_requested_query = query;
+//         Toast.makeText(getBaseContext(),last_requested_query,Toast.LENGTH_LONG).show();
         is_requested = true;
+        Lag(last_requested_query);
         tim=1;
         mm.url = (last_requested_query);
         mm.execute("");
@@ -414,7 +509,7 @@ public class DrawerTest extends AppCompatActivity
 
     private void displayFirebaseRegId() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-        regId = pref.getString("regId", null);
+        regId = pref.getString("regId", "");
 
         Log.e("majid", "Firebase reg id: " + regId);
 
@@ -593,6 +688,83 @@ public class DrawerTest extends AppCompatActivity
         intent.putExtra("type","main");
         startActivity(intent);
     }
+    public void clk_change_city(View view) {
+
+        Toast.makeText(this, "123", Toast.LENGTH_SHORT).show();
+//        DrawerLayout mDrawerLayout;
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mDrawerLayout.closeDrawers();
+//
+//
+//
+//
+//        recycler_city.setHasFixedSize(true);
+//        mLayoutManager = new LinearLayoutManager(this);
+//        recycler_city.setLayoutManager(mLayoutManager);
+//        mAdapter_city = new Itm_city_adapter(this,itm_city);
+//        recycler_city.setAdapter(mAdapter_city);
+//
+//        LinearLayout lay_select_city=findViewById(R.id.lay_select_city);
+//        lay_select_city.setVisibility(View.VISIBLE);
+//        fun.enableDisableView(lay_main,false);
+    }
+    public void clk_change_city1() {
+
+
+        DrawerLayout mDrawerLayout;
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.closeDrawers();
+
+
+
+        recycler_city = findViewById(R.id.recycler_city);
+        recycler_city.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recycler_city ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+//                          Toast.makeText(DrawerTest.this, "click", Toast.LENGTH_SHORT).show();
+                        // do whatever
+                        myCityId = itm_city.get(position).getC_id();
+                        myCityName = itm_city.get(position).getTitle();
+                        cityName.setText(myCityName);
+
+
+                       Cursor cr = myDB.rawQuery("select * from MyCity", null);
+                        if(cr.getCount()==0)
+                        {
+                            String sql= "insert into myCity (ID,CityId,Name) values('1','"+myCityId+"','"+myCityName+"') " ;
+
+                            myDB.execSQL(sql);
+                        }
+                        else {
+                            String sql= "update myCity set CityId='"+myCityId+"',Name='"+myCityName+"' where ID='1' " ;
+
+                            myDB.execSQL(sql);
+                        }
+
+
+                        EmptyOptions();
+                        LinearLayout lay_select_city=findViewById(R.id.lay_select_city);
+                        lay_select_city.setVisibility(View.GONE);
+                        fun.enableDisableView(lay_main,true);
+                        get_info();
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // Toast.makeText(NewItem.this, "long Click", Toast.LENGTH_SHORT).show();
+                        // do whatever
+                    }
+                })
+        );
+        recycler_city.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        recycler_city.setLayoutManager(mLayoutManager);
+        mAdapter_city = new Itm_city_adapter(this,itm_city);
+        recycler_city.setAdapter(mAdapter_city);
+
+        LinearLayout lay_select_city=findViewById(R.id.lay_select_city);
+        lay_select_city.setVisibility(View.VISIBLE);
+        fun.enableDisableView(lay_main,false);
+    }
 
     public void clk_avarez(View view) {
         Intent i = new Intent(this,SelectAvarezType.class);
@@ -710,10 +882,15 @@ public class DrawerTest extends AppCompatActivity
 
                 GetNosaziListResult();
             }
+            if(Type.equals("GetBussinessList")) {
+                GetBussinessListResult();
+            }
+
             if(Type.equals("GetInfoNosazi")) {
 
                 GetInfoNosaziResult();
             }
+
         }
         private void GetInfoNosaziResult() {
             int
@@ -819,6 +996,54 @@ public class DrawerTest extends AppCompatActivity
 //            mAdapter = new item_eshterak_adapter(MyEshterakList.this,item,MyEshterakList.this);
 //            mRecyclerView.setAdapter(mAdapter);
         }
+   private void GetBussinessListResult() {
+
+
+            if(resp.length()>0) {
+                String
+                        nosaziCode = "";
+
+                int start1 = resp.indexOf("<cnt>");
+                int end1 = resp.indexOf("</cnt>");
+                int
+                        cnt = 0;
+                myDB.execSQL("delete from MyBussiness ");
+                if (end1 > 0) {
+                    cnt= Integer.valueOf(resp.substring(start1 + 5, end1));
+
+                    for (int i = 1; i <= cnt; i++) {
+                        start1 = resp.indexOf("<bussiness" + i + ">");
+                        end1 = resp.indexOf("</bussiness" + i + ">");
+                        String bussiness = resp.substring(start1 + 10 + String.valueOf(cnt).length(), end1);
+                        start1 = bussiness.indexOf("<bussinessId>");
+                        end1 = bussiness.indexOf("</bussinessId>");
+                        String bussinessId = bussiness.substring(start1 + 13, end1);
+                        start1 = bussiness.indexOf("<AvarezPrice>");
+                        end1 = bussiness.indexOf("</AvarezPrice>");
+                        String avarezPrice = bussiness.substring(start1 + 13, end1);
+
+
+                        String paidType = "NotPaid";
+                        if (avarezPrice.length() > 1)
+                            paidType = "Paid";
+
+                        myDB.execSQL("insert into MyBussiness (BussinessId,Type) values ('" + bussiness + "','" + paidType + "') ");
+                    }
+
+                }
+            }
+//            Toast.makeText(MyEshterakList.this, resp, Toast.LENGTH_SHORT).show();
+//            item.add(new items_eshterak("1024", "123", "456","1",  "nosazi"));
+//
+//            mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler);
+//            mRecyclerView.setHasFixedSize(true);
+//            mLayoutManager = new LinearLayoutManager(MyEshterakList.this);
+//            mRecyclerView.setLayoutManager(mLayoutManager);
+//
+//
+//            mAdapter = new item_eshterak_adapter(MyEshterakList.this,item,MyEshterakList.this);
+//            mRecyclerView.setAdapter(mAdapter);
+        }
 
 
         @Override
@@ -831,6 +1056,9 @@ public class DrawerTest extends AppCompatActivity
             Lag(Type);
             if(Type.equals("GetNosaziList")) {
                 GetNosaziList();
+            }
+            if(Type.equals("GetBussinessList")) {
+                GetBussinessList();
             }
             if(Type.equals("GetInfoNosazi"))
             {
@@ -883,6 +1111,28 @@ public class DrawerTest extends AppCompatActivity
             }
         }
 
+   private void GetBussinessList() {
+
+
+
+
+            CallSoap cs;
+            //String PnosaziKodem="1-11-40-7-0-0-0";
+
+
+
+            try{
+                cs = new CallSoap();
+                resp=cs.Call_Bussiness_GetBussinessList();
+
+                Lag("Res=1"+resp);
+            }catch(Exception ex)
+            {
+                Lag( "err:  " + ex.toString());
+
+            }
+        }
+
 
     }
 
@@ -925,7 +1175,7 @@ public class DrawerTest extends AppCompatActivity
                     end1 = ss.indexOf("</param>");
             if(end1>0) {
                 param_str = ss.substring(start1 + 7, end1);
-               // Toast.makeText(DrawerTest.this, param_str, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DrawerTest.this, param_str, Toast.LENGTH_SHORT).show();
 
                 if (param_str.equals("get_user_info") && is_requested ) {
                     start1 = ss.indexOf("<result>");
@@ -945,14 +1195,109 @@ public class DrawerTest extends AppCompatActivity
                             end1 = ss.indexOf("</mobile>");
                             rslt_mobile = ss.substring(start1 + 8, end1);
 
+                            itm_city.clear();
+                            start1 = ss.indexOf("<city_cnt>");
+                            end1 = ss.indexOf("</city_cnt>");
+                            int cityCount = Integer.parseInt(ss.substring(start1 + 10, end1));
+                            for(int i=1;i<=cityCount;i++)
+                            {
+                                start1 = ss.indexOf("<city"+i+">");
+                                end1 = ss.indexOf("</city"+i+">");
+                                String city=ss.substring(start1 + 6+String.valueOf(i).length(), end1);
+                                start1 = city.indexOf("<title>");
+                                end1 = city.indexOf("</title>");
+                                String title = city.substring(start1+7,end1);
+                                start1 = city.indexOf("<id>");
+                                end1 = city.indexOf("</id>");
+                                String id = city.substring(start1+4,end1);
+
+                                itm_city.add(new Itm_city("",title,id));
+                            }
+
+                            start1 = ss.indexOf("<option_cnt>");
+                            end1 = ss.indexOf("</option_cnt>");
+                            int optionCount = Integer.parseInt(ss.substring(start1 + 12, end1));
+                            EmptyOptions();
+                            for(int i=1;i<=optionCount;i++)
+                            {
+                                start1 = ss.indexOf("<option"+i+">");
+                                end1 = ss.indexOf("</option"+i+">");
+                                String option=ss.substring(start1 + 8+String.valueOf(i).length(), end1);
+
+                                start1 = option.indexOf("<id>");
+                                end1 = option.indexOf("</id>");
+                                String id = option.substring(start1+4,end1);
+
+                                if(id.equals(Functions.po_gas))
+                                    Functions.pob_gas =true;
+                                if(id.equals(Functions.po_electric))
+                                    Functions.pob_electric =true;
+                                if(id.equals(Functions.po_water))
+                                    Functions.pob_water =true;
+                                if(id.equals(Functions.po_telphone))
+                                    Functions.pob_telphone =true;
+                                if(id.equals(Functions.po_car))
+                                    Functions.pob_car =true;
+                                if(id.equals(Functions.po_pasmand))
+                                    Functions.pob_pasmand =true;
+                                if(id.equals(Functions.po_renew))
+                                    Functions.pob_renew =true;
+                                if(id.equals(Functions.po_bussiness))
+                                    Functions.pob_bussiness =true;
+                                if(id.equals(Functions.po_tabloo))
+                                    Functions.pob_tabloo =true;
+                                if(id.equals(Functions.po_jameh))
+                                    Functions.pob_jameh =true;
+//                                Toast.makeText(DrawerTest.this, id, Toast.LENGTH_SHORT).show();
+
+                            }
+                            Lag("Functions.pob_gas="+Functions.pob_gas );
+                            Lag("Functions.pob_water="+Functions.pob_water );
+                            Lag("Functions.pob_electric="+Functions.pob_electric );
+                            Lag("Functions.pob_telphone="+Functions.pob_telphone );
+                            Lag("Functions.pob_car="+Functions.pob_car );
+                            Lag("Functions.pob_renew="+Functions.pob_renew );
+                            Lag("Functions.pob_pasmand="+Functions.pob_pasmand );
+                            Lag("Functions.pob_tabloo="+Functions.pob_tabloo );
+                            Lag("Functions.pob_bussiness="+Functions.pob_bussiness );
+                            Lag("Functions.pob_jameh="+Functions.pob_jameh );
+
+
+
                             navMobile.setText(rslt_mobile);
                             navname.setText(rslt_name + " " + rslt_family);
+
+
+
+
+
+//                            itm_city.add(new Itm_city("","تهران","2"));
+//                            itm_city.add(new Itm_city("","تبریز","3"));
+//                            itm_city.add(new Itm_city("","اردبیل","4"));
+//                            itm_city.add(new Itm_city("","مهاباد","5"));
+//                            itm_city.add(new Itm_city("","خوی","6"));
+
+
+                            if(myCityId.equals(""))
+                            {
+                                clk_change_city1();
+                            }
+                            else
+                            {
+                                cityName.setText(myCityName);
+                            }
+
                         }
                         catch (Exception e1)
                         {
 
                         }
                       //  Toast.makeText(DrawerTest.this, rslt_name, Toast.LENGTH_SHORT).show();
+
+
+
+
+
                     }
 
                 }
@@ -1046,6 +1391,19 @@ public class DrawerTest extends AppCompatActivity
         }
     }
 
+    private void EmptyOptions() {
+        Functions.pob_gas =false;
+        Functions.pob_electric =false;
+        Functions.pob_water =false;
+        Functions.pob_telphone =false;
+        Functions.pob_car =false;
+        Functions.pob_pasmand =false;
+        Functions.pob_tabloo =false;
+        Functions.pob_bussiness =false;
+        Functions.pob_jameh =false;
+        Functions.pob_renew =false;
+    }
+
     public class Timer extends Thread {
 
         int oneSecond=1000;
@@ -1081,7 +1439,7 @@ public class DrawerTest extends AppCompatActivity
                                 {
 
                                     is_requested = false;
-                                    get_info();
+//                                    get_info();
                                     tim=1;
                                     // Log.d("majid",String.valueOf(tim));
                                     //Toast.makeText(DrawerTest.this, "خطای شبکه- اشکال در دریافت اطاعات", Toast.LENGTH_SHORT).show();

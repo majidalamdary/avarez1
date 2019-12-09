@@ -56,44 +56,43 @@
         android:onClick="clk_msg"
         android:visibility="gone">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:id="@+id/lay_detail"
             android:layout_width="320dp"
             android:layout_height="350dp"
             android:background="@drawable/btn_white"
+            android:orientation="vertical"
             android:visibility="gone">
 
             <LinearLayout
-                android:id="@+id/btn_pay_car"
-                android:layout_width="110dp"
-                android:layout_height="41dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/btn_red"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".6"
                 android:gravity="center"
-                android:onClick="clk_pay_car"
-                android:orientation="horizontal"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.34"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.94">
+                android:orientation="horizontal">
 
                 <com.sputa.avarez.my_views.MyTextView
-                    android:id="@+id/lbl_pay"
+                    android:id="@+id/lbl_header_detail_avarez"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="پرداخت"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
+                    android:padding="10dp"
+                    android:text="جزئیات مبلغ عوارض خودرو"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.504"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.052" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay_header_bussiness"
+                android:id="@+id/lay_header_car"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_height="0dp"
+                android:layout_weight=".3"
                 android:orientation="horizontal"
                 android:padding="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -107,8 +106,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -128,8 +127,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -149,8 +148,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -170,8 +169,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -191,8 +190,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="1"
                     android:background="#009ed7"
                     android:padding="0dp"
@@ -202,59 +201,276 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_car"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lay_header_bussiness"
-                app:layout_constraintVertical_bias="0.0" />
-
             <LinearLayout
-                android:id="@+id/btn_back_detail_car"
-                android:layout_width="110dp"
-                android:layout_height="41dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/btn_grey"
-                android:gravity="center"
-                android:onClick="clk_back_car"
+                android:id="@+id/lay_header_bussiness"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".45"
                 android:orientation="horizontal"
+                android:padding="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.91"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.94">
+                app:layout_constraintVertical_bias="0.20999998">
 
                 <com.sputa.avarez.my_views.MyTextView
-                    android:id="@+id/lbl_back_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="برگشت"
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="سال عوارض"
+                    android:textAlignment="center"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp" />
+                    android:textSize="8sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="نرخ جریمه"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="9sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="مبلغ عوارض"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="9sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="عوارض دیرکرد"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="9sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="مبلغ خدمات"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="9sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="دیرکرد خدمات"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="9sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="مبلغ خدمات منطقه ای"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="7sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".02"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <com.sputa.avarez.my_views.MyTextView
+                    android:id="@+id/textView33"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="#009ed7"
+                    android:padding="0dp"
+                    android:text="دیرکرد خدمات منطقه ای"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="7sp" />
+
+
             </LinearLayout>
 
-            <com.sputa.avarez.my_views.MyTextView
-                android:id="@+id/lbl_complete_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="جزئیات مبلغ عوارض خودرو"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_car"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.052" />
+                app:layout_constraintTop_toBottomOf="@+id/lay_header_car"
+                app:layout_constraintVertical_bias="0.083">
 
-        </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/btn_back_detail_car"
+                        android:layout_width="110dp"
+                        android:layout_height="41dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/btn_grey"
+                        android:gravity="center"
+                        android:onClick="clk_back_car"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.91"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.94">
+
+                        <com.sputa.avarez.my_views.MyTextView
+                            android:id="@+id/lbl_back_detail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="برگشت"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/btn_pay_car"
+                        android:layout_width="110dp"
+                        android:layout_height="41dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/btn_red"
+                        android:gravity="center"
+                        android:onClick="clk_pay_car"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.34"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.94">
+
+                        <com.sputa.avarez.my_views.MyTextView
+                            android:id="@+id/lbl_pay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="پرداخت"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/lay_gate"
@@ -293,10 +509,10 @@
                 android:id="@+id/web_view"
                 android:layout_width="302dp"
                 android:layout_height="441dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.918"

@@ -33,6 +33,27 @@ public class Functions {
 
     public static int
             Time_out_limit = 10;
+    public static String po_gas ="2";
+    public static String po_electric ="3";
+    public static String po_water ="4";
+    public static String po_telphone ="5";
+    public static String po_car ="6";
+    public static String po_renew ="7";
+    public static String po_tabloo ="8";
+    public static String po_bussiness ="9";
+    public static String po_pasmand ="10";
+    public static String po_jameh ="11";
+
+    public static boolean pob_gas =false;
+    public static boolean pob_electric =false;
+    public static boolean pob_water =false;
+    public static boolean pob_telphone =false;
+    public static boolean pob_car =false;
+    public static boolean pob_renew =false;
+    public static boolean pob_tabloo =false;
+    public static boolean pob_bussiness =false;
+    public static boolean pob_pasmand =false;
+    public static boolean pob_jameh =false;
 
     public static String u_id = "0";
     public static String u_mobile = "";
@@ -40,6 +61,24 @@ public class Functions {
     public static int    user_normal =1;
     public Functions() {
 
+    }
+
+    public static String Cur(String str)
+    {
+        String result ="";
+        int j=0;
+        for(int i=str.length()-1;i>=0;i--)
+        {
+            j++;
+            result = str.charAt(i)+result;
+            if(j%3==0 &&  j!=str.length())
+            {
+                result = ','+result;
+            }
+        }
+
+
+        return result;
     }
 
     public  void enableDisableView(View view, boolean enabled) {

@@ -167,7 +167,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay_header_bussiness"
+                android:id="@+id/lay_header_car"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:orientation="horizontal"
@@ -286,7 +286,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lay_header_bussiness"
+                app:layout_constraintTop_toBottomOf="@+id/lay_header_car"
                 app:layout_constraintVertical_bias="0.0" />
 
             <LinearLayout

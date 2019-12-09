@@ -45,12 +45,14 @@ public class adapter_bussiness extends RecyclerView.Adapter<adapter_bussiness.my
 
     @Override
     public void onBindViewHolder(final my_view_holder holder, final int position) {
-        holder.txt_last_pay.setText(item.get(position).getLast_pay_date());
-        holder.txt_from_year.setText(item.get(position).getStart_year());
-        holder.txt_to_year.setText(item.get(position).getEnd_year());
-        holder.txt_tax.setText(item.get(position).getTax());
-        holder.txt_punishment.setText(item.get(position).getPenalty());
-        holder.txt_avarez.setText(item.get(position).getAmount());
+        holder.txtAvarezYear.setText(item.get(position).get_avarezYear());
+        holder.txtPenaltyRate.setText(item.get(position).get_penaltyRate());
+        holder.txtAvarezPrice.setText(item.get(position).get_avarezPrice());
+        holder.txtAvarezLate.setText(item.get(position).get_avarezLate());
+        holder.txtServicePrice.setText(item.get(position).get_servicePrice());
+        holder.txtServiceLate.setText(item.get(position).get_serviceLate());
+        holder.txt_local_service_price.setText(item.get(position).get_localServicePrice());
+        holder.txt_local_service_late.setText(item.get(position).get_localServiceLate());
 
 
 
@@ -78,23 +80,27 @@ public class adapter_bussiness extends RecyclerView.Adapter<adapter_bussiness.my
     class my_view_holder extends RecyclerView.ViewHolder
     {
 
-        private TextView txt_last_pay;
-        private TextView txt_from_year;
-        private TextView txt_to_year;
-        private TextView txt_tax;
-        private TextView txt_punishment;
-        private TextView txt_avarez;
+        private TextView txtAvarezYear;
+        private TextView txtPenaltyRate;
+        private TextView txtAvarezPrice;
+        private TextView txtAvarezLate;
+        private TextView txtServicePrice;
+        private TextView txtServiceLate;
+        private TextView txt_local_service_price;
+        private TextView txt_local_service_late;
 
         private CardView crd1;
 
         public my_view_holder(View itemView) {
             super(itemView);
-            txt_last_pay = itemView.findViewById(R.id.txt_last_pay);
-            txt_from_year = itemView.findViewById(R.id.txt_from_year);
-            txt_to_year = itemView.findViewById(R.id.txt_to_year);
-            txt_tax = itemView.findViewById(R.id.txt_tax);
-            txt_punishment = itemView.findViewById(R.id.txt_punishment);
-            txt_avarez = itemView.findViewById(R.id.txt_avarez);
+            txtAvarezYear = itemView.findViewById(R.id.txt_avarez_year);
+            txtPenaltyRate = itemView.findViewById(R.id.txt_penalty_rate);
+            txtAvarezPrice = itemView.findViewById(R.id.txt_avarez_price);
+            txtAvarezLate = itemView.findViewById(R.id.txt_avarez_late);
+            txtServicePrice = itemView.findViewById(R.id.txt_service_price);
+            txtServiceLate = itemView.findViewById(R.id.txt_service_late);
+            txt_local_service_price = itemView.findViewById(R.id.txt_local_service_price);
+            txt_local_service_late = itemView.findViewById(R.id.txt_local_service_late);
 
             crd1 = itemView.findViewById(R.id.crd1);
 
